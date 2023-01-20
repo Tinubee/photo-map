@@ -31,6 +31,9 @@ export const Tab = styled.div`
     border-radius: 10px;
     transition: background-color 0.5s;
   }
+  :active {
+    transform: scale(1.02);
+  }
 `;
 
 function Header() {

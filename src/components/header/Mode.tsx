@@ -37,6 +37,9 @@ export const Icon = styled.div<{ mode: string }>`
     color: ${(props) =>
       props.mode === "normal" ? props.theme.textColor : "#ff0000"};
   }
+  :active {
+    transform: scale(1.02);
+  }
 `;
 
 function Mode() {
