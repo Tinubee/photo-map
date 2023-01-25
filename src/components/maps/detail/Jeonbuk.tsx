@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { MapSvg } from "../../Map";
+import { MapSvg } from "../types/GeneralMap";
 import { Path, Text } from "../Korea";
 
 const Line = styled.path`

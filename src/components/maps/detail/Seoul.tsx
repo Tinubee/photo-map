@@ -1,4 +1,4 @@
-import { MapSvg } from "../../Map";
+import { MapSvg } from "../types/GeneralMap";
 import { Path, Text } from "../Korea";
 
 function Seoul() {

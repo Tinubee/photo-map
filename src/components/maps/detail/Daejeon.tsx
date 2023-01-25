@@ -1,5 +1,5 @@
 import { Path, Text } from "../Korea";
-import { MapSvg } from "../../Map";
+import { MapSvg } from "../types/GeneralMap";
 function Daejeon() {
   return (
     <MapSvg xmlns="http://www.w3.org/2000/svg">

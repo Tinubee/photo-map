@@ -17,18 +17,18 @@ import {
   SEJONG,
   SEOUL,
   ULSAN,
-} from "../MapName";
-import Image from "./Image";
+} from "../../../MapName";
+import Image from "../../Image";
 
-const Container = styled.div`
+export const Container = styled.div`
   /* display: flex;
   justify-content: center;
   align-items: center; */
 `;
 
 export const MapSvg = styled.svg`
-  height: 160vh;
-  width: 70vw;
+  height: 150vh;
+  width: 100vw;
   cursor: pointer;
   overflow: visible;
   background-color: skyblue;
@@ -41,7 +41,7 @@ const Text = styled.text`
   text-anchor: middle;
 `;
 
-function Map() {
+function GeneralMap() {
   const AllRegion = [
     BUSAN,
     CHUNGBUK,
@@ -79,4 +79,4 @@ function Map() {
   );
 }
 
-export default Map;
+export default GeneralMap;
