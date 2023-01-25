@@ -1,4 +1,4 @@
-import { MapSvg } from "../types/GeneralMap";
+import { MapSvg } from "../types/PictureMap";
 import { Path, Text } from "../Korea";
 
 function Jeju() {

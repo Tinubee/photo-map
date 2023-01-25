@@ -1,7 +1,7 @@
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { selectRegionAtom } from "../../atoms";
-import { MapSvg } from "./types/GeneralMap";
+import { MapSvg } from "./types/PictureMap";
 
 export const Path = styled.path`
   stroke-linejoin: round;

@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import { useRecoilState } from "recoil";
+import { selectRegionAtom } from "../../../atoms";
 import {
   BUSAN,
   CHUNGBUK,
@@ -18,30 +19,17 @@ import {
   SEOUL,
   ULSAN,
 } from "../../../MapName";
-import Image from "../../Image";
+import Daegu from "../detail/Daegu";
+import Daejeon from "../detail/Daejeon";
+import GyeonggiDo from "../detail/GyeonggiDo";
+import Jeju from "../detail/Jeju";
+import Jeonbuk from "../detail/Jeonbuk";
+import Jeonnam from "../detail/Jeonnam";
+import Seoul from "../detail/Seoul";
+import Korea from "../Korea";
+import { Container } from "./PictureMap";
 
-export const Container = styled.div`
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
-`;
-
-export const MapSvg = styled.svg`
-  height: 150vh;
-  width: 100vw;
-  cursor: pointer;
-  overflow: visible;
-  background-color: skyblue;
-`;
-
-const Text = styled.text`
-  fill: #ffffff;
-  font-size: 16;
-  font-weight: bold;
-  text-anchor: middle;
-`;
-
-function GeneralMap() {
+function PictureMap() {
   const AllRegion = [
     BUSAN,
     CHUNGBUK,
@@ -61,22 +49,38 @@ function GeneralMap() {
     SEOUL,
     ULSAN,
   ];
+
+  type IDetailType = {
+    [key: string]: JSX.Element;
+  };
+
+  const detailRegion: IDetailType = {
+    서울: <Seoul />,
+    경기도: <GyeonggiDo />,
+    대전: <Daejeon />,
+    전라남도: <Jeonnam />,
+    전라북도: <Jeonbuk />,
+    대구: <Daegu />,
+    제주: <Jeju />,
+  };
+
+  const [selectRegion, setSelectRegion] = useRecoilState(selectRegionAtom);
+  const clickReturnAllRegion = () => {
+    setSelectRegion("");
+  };
   return (
     <Container>
-      <MapSvg xmlns="http://www.w3.org/2000/svg">
-        {AllRegion.map((res) => (
-          <Image key={res.name} name={res.path} />
-        ))}
-        <g>
-          {AllRegion.map((reg) => (
-            <Text key={reg.name} x={reg.coordinate.x} y={reg.coordinate.y}>
-              {reg.name}
-            </Text>
-          ))}
-        </g>
-      </MapSvg>
+      {/* <PageTitle title="About"></PageTitle> */}
+      {selectRegion === "" ? (
+        <Korea AllRegion={AllRegion} />
+      ) : (
+        <div>
+          <button onClick={clickReturnAllRegion}>전체 지도 보기</button>
+          {detailRegion[selectRegion]}
+        </div>
+      )}
     </Container>
   );
 }
 
-export default GeneralMap;
+export default PictureMap;

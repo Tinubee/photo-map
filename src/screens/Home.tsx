@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
 import { mapTypeAtom } from "../atoms";
-import GeneralMap from "../components/maps/types/GeneralMap";
-import PictureMap from "../components/maps/types/PictureMap";
+import GeneralMap from "../components/maps/types/PictureMap";
+import PictureMap from "../components/maps/types/GeneralMap";
 
 import PageTitle from "../components/PageTitle";
 
