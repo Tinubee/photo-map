@@ -1,8 +1,9 @@
-import { Path, Svg, Text } from "./Korea";
+import { MapSvg } from "../../Map";
+import { Path, Text } from "../Korea";
 
 function Seoul() {
   return (
-    <Svg height="656" width="800" xmlns="http://www.w3.org/2000/svg">
+    <MapSvg xmlns="http://www.w3.org/2000/svg">
       <defs>
         <filter id="dropshadow">
           <feGaussianBlur in="SourceAlpha" stdDeviation="7" />
@@ -21,7 +22,7 @@ function Seoul() {
           </feMerge>
         </filter>
       </defs>
-      <g filter="url(#dropshadow)">
+      <g>
         <Path
           id="CD11110"
           d="M 455 297 l 4 -2 1 0 1 0 3 -1 4 5 7 3 2 6 0 8 -11 2 -11 1 -8 0 -9 1 -8 1 -9 1 -9 -2 -10 -1 -9 1 -4 3 -2 3 -6 -6 -3 -4 -5 -6 -4 -5 -2 -5 5 -3 0 -6 0 -10 0 -9 1 -9 -3 -4 -2 0 -2 0 -1 -4 0 -9 -5 -9 1 -10 -1 -11 -1 -6 2 -6 5 -2 7 -3 10 -2 2 -1 3 0 1 0 4 -2 8 -1 3 6 4 1 3 8 3 10 1 6 3 5 0 9 0 7 -1 5 -6 3 -6 4 -1 5 6 4 5 3 5 4 9 1 10 0 4 4 3 4 5 10 1 3 z "
@@ -201,7 +202,7 @@ function Seoul() {
           강동구
         </Text>
       </g>
-    </Svg>
+    </MapSvg>
   );
 }
 
