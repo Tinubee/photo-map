@@ -14,7 +14,13 @@ export const GANGWON: IMapType = {
     x: 370,
     y: 179,
   },
-  picture: ["image/1.jpg"],
+  picture: [
+    "image/1.jpg",
+    "image/17.jpg",
+    "image/16.jpg",
+    "image/15.jpg",
+    "image/14.jpg",
+  ],
 };
 
 export const SEOUL: IMapType = {
@@ -24,7 +30,7 @@ export const SEOUL: IMapType = {
     x: 156,
     y: 214,
   },
-  picture: ["image/1.jpg"],
+  picture: [],
 };
 
 export const BUSAN: IMapType = {
@@ -34,7 +40,7 @@ export const BUSAN: IMapType = {
     x: 503,
     y: 695,
   },
-  picture: ["image/1.jpg"],
+  picture: [],
 };
 
 export const DAEGU: IMapType = {
@@ -44,7 +50,7 @@ export const DAEGU: IMapType = {
     x: 418,
     y: 567,
   },
-  picture: ["image/1.jpg"],
+  picture: [],
 };
 
 export const INCHEON: IMapType = {
@@ -54,7 +60,7 @@ export const INCHEON: IMapType = {
     x: 67,
     y: 177,
   },
-  picture: ["image/1.jpg"],
+  picture: [],
 };
 
 export const GWANGJU: IMapType = {
@@ -64,7 +70,7 @@ export const GWANGJU: IMapType = {
     x: 127,
     y: 707,
   },
-  picture: ["image/1.jpg"],
+  picture: [],
 };
 
 export const DAEJEON: IMapType = {
@@ -74,7 +80,7 @@ export const DAEJEON: IMapType = {
     x: 221,
     y: 463,
   },
-  picture: ["image/1.jpg"],
+  picture: [],
 };
 
 export const ULSAN = {
@@ -84,7 +90,7 @@ export const ULSAN = {
     x: 531,
     y: 622,
   },
-  picture: ["image/1.jpg"],
+  picture: [],
 };
 
 export const SEJONG: IMapType = {
@@ -94,7 +100,7 @@ export const SEJONG: IMapType = {
     x: 199,
     y: 418,
   },
-  picture: ["image/1.jpg"],
+  picture: [],
 };
 
 export const GYEONGGI: IMapType = {
@@ -104,7 +110,13 @@ export const GYEONGGI: IMapType = {
     x: 216,
     y: 245,
   },
-  picture: ["image/1.jpg"],
+  picture: [
+    "image/11.jpg",
+    "image/12.jpg",
+    "image/4.jpg",
+    "image/3.jpg",
+    "image/5.jpg",
+  ],
 };
 
 export const CHUNGBUK: IMapType = {
@@ -114,7 +126,7 @@ export const CHUNGBUK: IMapType = {
     x: 294,
     y: 381,
   },
-  picture: ["image/1.jpg"],
+  picture: [],
 };
 export const CHUNGNAM = {
   name: "충청남도",
@@ -123,7 +135,7 @@ export const CHUNGNAM = {
     x: 105,
     y: 449,
   },
-  picture: ["image/1.jpg"],
+  picture: [],
 };
 
 export const JEONBUK: IMapType = {
@@ -133,7 +145,7 @@ export const JEONBUK: IMapType = {
     x: 179,
     y: 592,
   },
-  picture: ["image/1.jpg"],
+  picture: [],
 };
 
 export const JEONNAM: IMapType = {
@@ -143,7 +155,7 @@ export const JEONNAM: IMapType = {
     x: 138,
     y: 764,
   },
-  picture: ["image/1.jpg"],
+  picture: [],
 };
 
 export const GYEONGBUK: IMapType = {
@@ -153,7 +165,7 @@ export const GYEONGBUK: IMapType = {
     x: 447,
     y: 460,
   },
-  picture: ["image/1.jpg"],
+  picture: [],
 };
 
 export const GYEONGNAM: IMapType = {
@@ -163,7 +175,7 @@ export const GYEONGNAM: IMapType = {
     x: 367,
     y: 672,
   },
-  picture: ["image/1.jpg"],
+  picture: [],
 };
 
 export const JEJU: IMapType = {
@@ -173,5 +185,5 @@ export const JEJU: IMapType = {
     x: 76,
     y: 1070,
   },
-  picture: ["image/1.jpg"],
+  picture: [],
 };

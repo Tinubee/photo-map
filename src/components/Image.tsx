@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const CImage = styled.image`
@@ -13,24 +14,28 @@ interface INameType {
 }
 
 function Image({ name, picturePath }: INameType) {
-  let Count = 0;
+  let count = 0;
+  const [picture, setPicture] = useState("");
 
-  const handlePictureClick = () => {
-    console.log("dd");
-  };
+  const handlePictureClick = () => {};
 
-  const loopImage = () => {
-    Count++;
-    if (Count < picturePath.length) {
-      return picturePath[Count];
-    } else {
-      Count = 0;
+  useEffect(() => {
+    showImage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const showImage = () => {
+    setPicture(picturePath[count]);
+    count++;
+    if (count >= picturePath.length) {
+      count = 0;
     }
+    setTimeout(showImage, 3000);
   };
 
   return (
     <CImage
-      href={picturePath.length === 1 ? picturePath[0] : loopImage()}
+      href={picturePath.length === 1 ? picturePath[0] : picture}
       style={{
         clipPath: `path('${name}')`,
       }}
