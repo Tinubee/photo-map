@@ -21,16 +21,15 @@ import {
 import Image from "../../Image";
 
 export const Container = styled.div`
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
+  display: flex;
 `;
 
 export const MapSvg = styled.svg`
   height: 150vh;
-  width: 100vw;
+  width: 60vw;
   cursor: pointer;
-  overflow: visible;
+  border: 1px solid white;
+  padding: 20px;
   background-color: skyblue;
 `;
 
@@ -41,7 +40,7 @@ const Text = styled.text`
   text-anchor: middle;
 `;
 
-function GeneralMap() {
+function PictureMap() {
   const AllRegion = [
     BUSAN,
     CHUNGBUK,
@@ -79,4 +78,4 @@ function GeneralMap() {
   );
 }
 
-export default GeneralMap;
+export default PictureMap;
