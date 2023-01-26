@@ -76,7 +76,7 @@ body {
   background-color: ${(props) => props.theme.bgColor};
   overflow-x: hidden;
   transition: background-color 0.5s, color 0.5s;
-  height: 100vh;
+  height: 200vh;
   width: 100vw;
 }
 a {

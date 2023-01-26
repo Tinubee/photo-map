@@ -19,16 +19,17 @@ import {
   ULSAN,
 } from "../../../MapName";
 import Image from "../../Image";
+import { Path } from "../Korea";
 
 export const Container = styled.div`
   display: flex;
 `;
 
 export const MapSvg = styled.svg`
-  height: 150vh;
-  width: 60vw;
+  height: 100vh;
+  width: 50vw;
   cursor: pointer;
-  border: 1px solid white;
+  border: 1px solid ${(props) => props.theme.borderColor};
   border-radius: 10px;
   padding: 20px;
 `;
@@ -61,12 +62,17 @@ function PictureMap() {
     SEOUL,
     ULSAN,
   ];
+
   return (
     <Container>
       <MapSvg viewBox="0 0 850 1150" xmlns="http://www.w3.org/2000/svg">
-        {AllRegion.map((res) => (
-          <Image key={res.name} name={res.path} />
-        ))}
+        {AllRegion.map((res) =>
+          res.picture.length === 0 ? (
+            <Path key={res.name} d={res.path} />
+          ) : (
+            <Image key={res.name} name={res.path} picturePath={res.picture} />
+          )
+        )}
         <g>
           {AllRegion.map((reg) => (
             <Text key={reg.name} x={reg.coordinate.x} y={reg.coordinate.y}>
