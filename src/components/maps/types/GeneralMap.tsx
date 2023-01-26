@@ -81,7 +81,6 @@ function GeneralMap() {
       ) : (
         detailRegion[selectRegion]
       )}
-      <div>ddd</div>
     </Container>
   );
 }

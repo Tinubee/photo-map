@@ -17,7 +17,7 @@ const Circle = styled.circle`
 
 function Incheon() {
   return (
-    <MapSvg xmlns="http://www.w3.org/2000/svg">
+    <MapSvg viewBox="50 150 700 900" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <filter id="dropshadow">
           <feGaussianBlur in="SourceAlpha" stdDeviation="7" />

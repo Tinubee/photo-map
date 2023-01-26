@@ -29,8 +29,8 @@ export const MapSvg = styled.svg`
   width: 60vw;
   cursor: pointer;
   border: 1px solid white;
+  border-radius: 10px;
   padding: 20px;
-  background-color: skyblue;
 `;
 
 const Text = styled.text`
@@ -38,6 +38,7 @@ const Text = styled.text`
   font-size: 16;
   font-weight: bold;
   text-anchor: middle;
+  pointer-events: none;
 `;
 
 function PictureMap() {
@@ -62,7 +63,7 @@ function PictureMap() {
   ];
   return (
     <Container>
-      <MapSvg xmlns="http://www.w3.org/2000/svg">
+      <MapSvg viewBox="0 0 850 1150" xmlns="http://www.w3.org/2000/svg">
         {AllRegion.map((res) => (
           <Image key={res.name} name={res.path} />
         ))}

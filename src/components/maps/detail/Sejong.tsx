@@ -17,7 +17,7 @@ const Circle = styled.circle`
 
 function Sejong() {
   return (
-    <MapSvg xmlns="http://www.w3.org/2000/svg">
+    <MapSvg viewBox="40 40 750 1200" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <filter id="dropshadow">
           <feGaussianBlur in="SourceAlpha" stdDeviation="7" />

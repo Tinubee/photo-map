@@ -17,7 +17,7 @@ const Circle = styled.circle`
 
 function Jeonbuk() {
   return (
-    <MapSvg xmlns="http://www.w3.org/2000/svg">
+    <MapSvg viewBox="50 0 750 1000" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <filter id="dropshadow">
           <feGaussianBlur in="SourceAlpha" stdDeviation="7" />

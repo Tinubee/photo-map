@@ -2,7 +2,7 @@ import { Path, Text } from "../Korea";
 import { MapSvg } from "../types/PictureMap";
 function Daejeon() {
   return (
-    <MapSvg xmlns="http://www.w3.org/2000/svg">
+    <MapSvg viewBox="40 40 750 1100" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <filter id="dropshadow">
           <feGaussianBlur in="SourceAlpha" stdDeviation="7" />

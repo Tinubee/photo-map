@@ -3,7 +3,6 @@ import styled from "styled-components";
 const CImage = styled.image`
   position: absolute;
   object-fit: cover;
-  /* outline: 1px solid white; */
 `;
 
 interface INameType {
@@ -11,6 +10,9 @@ interface INameType {
 }
 
 function Image({ name }: INameType) {
+  const handlePictureClick = () => {
+    console.log("dd");
+  };
   return (
     <CImage
       height="1200px"
@@ -19,6 +21,7 @@ function Image({ name }: INameType) {
       style={{
         clipPath: `path('${name}')`,
       }}
+      onClick={handlePictureClick}
     />
   );
 }

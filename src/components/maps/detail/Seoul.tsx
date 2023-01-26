@@ -3,7 +3,7 @@ import { Path, Text } from "../Korea";
 
 function Seoul() {
   return (
-    <MapSvg xmlns="http://www.w3.org/2000/svg">
+    <MapSvg viewBox="0 0 810 1000" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <filter id="dropshadow">
           <feGaussianBlur in="SourceAlpha" stdDeviation="7" />

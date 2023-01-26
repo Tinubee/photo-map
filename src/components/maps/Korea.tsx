@@ -1,6 +1,7 @@
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { selectRegionAtom } from "../../atoms";
+import { IMapType } from "../../MapName";
 import { MapSvg } from "./types/PictureMap";
 
 export const Path = styled.path`
@@ -9,7 +10,7 @@ export const Path = styled.path`
   stroke-width: 2;
   cursor: pointer;
   :hover {
-    fill: red;
+    fill: ${(props) => props.theme.mapHoverColor};
   }
 `;
 
@@ -20,14 +21,18 @@ export const Text = styled.text`
   text-anchor: middle;
 `;
 
-function Korea({ AllRegion }: any) {
+interface IAllRegion {
+  AllRegion: IMapType[];
+}
+
+function Korea({ AllRegion }: IAllRegion) {
   const setSelectRegion = useSetRecoilState(selectRegionAtom);
   const handleClick = (name: string) => {
     setSelectRegion(name);
   };
 
   return (
-    <MapSvg xmlns="http://www.w3.org/2000/svg">
+    <MapSvg viewBox="0 0 850 1150" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <filter id="dropshadow">
           <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
@@ -39,7 +44,7 @@ function Korea({ AllRegion }: any) {
         </filter>
       </defs>
       <g>
-        {AllRegion.map((reg: any) => (
+        {AllRegion.map((reg) => (
           <Path
             key={reg.name}
             d={reg.path}
@@ -48,7 +53,7 @@ function Korea({ AllRegion }: any) {
         ))}
       </g>
       <g>
-        {AllRegion.map((reg: any) => (
+        {AllRegion.map((reg) => (
           <Text key={reg.name} x={reg.coordinate.x} y={reg.coordinate.y}>
             {reg.name}
           </Text>

@@ -7,5 +7,6 @@ declare module "styled-components" {
     borderColor: string;
     iconbgColor: string;
     icontextColor: string;
+    mapHoverColor: string;
   }
 }
