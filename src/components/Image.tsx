@@ -1,7 +1,8 @@
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const CImage = styled.image`
+const CImage = styled(motion.image)`
   position: absolute;
   object-fit: cover;
   height: 150vh;
@@ -32,9 +33,23 @@ function Image({ name, picturePath }: INameType) {
     }
     setTimeout(showImage, 3000);
   };
+  const imageAnimation = {
+    start: {
+      opacity: 0,
+    },
+    end: {
+      opacity: 1,
+    },
+  };
 
   return (
     <CImage
+      variants={imageAnimation}
+      initial="start"
+      animate="end"
+      transition={{
+        default: { duration: 2 },
+      }}
       href={picturePath.length === 1 ? picturePath[0] : picture}
       style={{
         clipPath: `path('${name}')`,

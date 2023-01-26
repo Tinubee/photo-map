@@ -1,10 +1,11 @@
+import { motion } from "framer-motion";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { selectRegionAtom } from "../../atoms";
 import { IMapType } from "../../MapName";
 import { MapSvg } from "./types/PictureMap";
 
-export const Path = styled.path`
+export const Path = styled(motion.path)`
   stroke-linejoin: round;
   stroke: #ffffff;
   stroke-width: 2;
@@ -24,6 +25,14 @@ export const Text = styled.text`
 interface IAllRegion {
   AllRegion: IMapType[];
 }
+
+export const svgAnimation = {
+  start: { pathLength: 0, fill: "rgba(255, 255, 255, 0)" },
+  end: {
+    fill: "#000000",
+    pathLength: 1,
+  },
+};
 
 function Korea({ AllRegion }: IAllRegion) {
   const setSelectRegion = useSetRecoilState(selectRegionAtom);
@@ -46,6 +55,13 @@ function Korea({ AllRegion }: IAllRegion) {
       <g>
         {AllRegion.map((reg) => (
           <Path
+            variants={svgAnimation}
+            initial="start"
+            animate="end"
+            transition={{
+              default: { duration: 2 },
+              fill: { duration: 2 },
+            }}
             key={reg.name}
             d={reg.path}
             onClick={() => handleClick(reg.name)}

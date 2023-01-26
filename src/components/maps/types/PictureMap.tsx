@@ -19,7 +19,7 @@ import {
   ULSAN,
 } from "../../../MapName";
 import Image from "../../Image";
-import { Path } from "../Korea";
+import { Path, svgAnimation } from "../Korea";
 
 export const Container = styled.div`
   display: flex;
@@ -68,7 +68,17 @@ function PictureMap() {
       <MapSvg viewBox="0 0 850 1150" xmlns="http://www.w3.org/2000/svg">
         {AllRegion.map((res) =>
           res.picture.length === 0 ? (
-            <Path key={res.name} d={res.path} />
+            <Path
+              variants={svgAnimation}
+              initial="start"
+              animate="end"
+              transition={{
+                default: { duration: 2 },
+                fill: { duration: 2 },
+              }}
+              key={res.name}
+              d={res.path}
+            />
           ) : (
             <Image key={res.name} name={res.path} picturePath={res.picture} />
           )
