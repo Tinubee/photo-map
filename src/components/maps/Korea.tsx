@@ -15,12 +15,21 @@ export const Path = styled(motion.path)`
   }
 `;
 
-export const Text = styled.text`
+export const Text = styled(motion.text)`
   fill: #ffffff;
   font-size: 16;
   font-weight: bold;
   text-anchor: middle;
 `;
+
+export const textAnimation = {
+  start: {
+    opacity: 0,
+  },
+  end: {
+    opacity: 1,
+  },
+};
 
 interface IAllRegion {
   AllRegion: IMapType[];
@@ -70,7 +79,17 @@ function Korea({ AllRegion }: IAllRegion) {
       </g>
       <g>
         {AllRegion.map((reg) => (
-          <Text key={reg.name} x={reg.coordinate.x} y={reg.coordinate.y}>
+          <Text
+            variants={textAnimation}
+            initial="start"
+            animate="end"
+            transition={{
+              default: { duration: 2 },
+            }}
+            key={reg.name}
+            x={reg.coordinate.x}
+            y={reg.coordinate.y}
+          >
             {reg.name}
           </Text>
         ))}

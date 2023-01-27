@@ -19,7 +19,7 @@ import {
   ULSAN,
 } from "../../../MapName";
 import Image from "../../Image";
-import { Path, svgAnimation } from "../Korea";
+import { Path, svgAnimation, Text, textAnimation } from "../Korea";
 
 export const Container = styled.div`
   display: flex;
@@ -32,14 +32,6 @@ export const MapSvg = styled.svg`
   border: 1px solid ${(props) => props.theme.borderColor};
   border-radius: 10px;
   padding: 20px;
-`;
-
-const Text = styled.text`
-  fill: #ffffff;
-  font-size: 16;
-  font-weight: bold;
-  text-anchor: middle;
-  pointer-events: none;
 `;
 
 function PictureMap() {
@@ -63,6 +55,10 @@ function PictureMap() {
     ULSAN,
   ];
 
+  const handleClick = () => {
+    //Image File Upload
+  };
+
   return (
     <Container>
       <MapSvg viewBox="0 0 850 1150" xmlns="http://www.w3.org/2000/svg">
@@ -78,14 +74,30 @@ function PictureMap() {
               }}
               key={res.name}
               d={res.path}
+              onClick={() => handleClick()}
             />
           ) : (
-            <Image key={res.name} name={res.path} picturePath={res.picture} />
+            <Image
+              key={res.name}
+              name={res.path}
+              picturePath={res.picture}
+              location={res.name}
+            />
           )
         )}
         <g>
           {AllRegion.map((reg) => (
-            <Text key={reg.name} x={reg.coordinate.x} y={reg.coordinate.y}>
+            <Text
+              variants={textAnimation}
+              initial="start"
+              animate="end"
+              transition={{
+                default: { duration: 2 },
+              }}
+              key={reg.name}
+              x={reg.coordinate.x}
+              y={reg.coordinate.y}
+            >
               {reg.name}
             </Text>
           ))}

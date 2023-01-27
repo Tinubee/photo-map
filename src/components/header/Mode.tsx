@@ -1,10 +1,10 @@
 import { faMoon, faSun } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+import { Link, useMatch } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { isDarkAtom } from "../../atoms";
-import { Tab } from "./Header";
+import { Line, Tab } from "./Header";
 
 const ModeContainer = styled.div`
   display: grid;
@@ -44,6 +44,8 @@ export const Icon = styled.div<{ mode: string }>`
 
 function Mode() {
   const [darkAtom, setDarkAtom] = useRecoilState(isDarkAtom);
+  const loginMatch = useMatch("login");
+
   const toggleMode = () => {
     setDarkAtom((prev) => !prev);
     localStorage.setItem("mode", String(!darkAtom));
@@ -61,7 +63,9 @@ function Mode() {
         </Icon>
       )}
       <Tab>
-        <Link to={"/login"}>Login</Link>
+        <Link to={"/login"}>
+          Login{loginMatch?.pathname && <Line layoutId="circle" />}
+        </Link>
       </Tab>
     </ModeContainer>
   );

@@ -12,9 +12,10 @@ const CImage = styled(motion.image)`
 interface INameType {
   name: string;
   picturePath: string[];
+  location: string;
 }
 
-function Image({ name, picturePath }: INameType) {
+function Image({ name, picturePath, location }: INameType) {
   let count = 0;
   const [picture, setPicture] = useState("");
 
