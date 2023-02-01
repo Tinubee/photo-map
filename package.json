@@ -14,6 +14,7 @@
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.11",
     "@types/react": "^18.0.26",
+    "dotenv": "^16.0.3",
     "framer-motion": "^8.5.3",
     "js-confetti": "^0.11.0",
     "react": "^18.2.0",

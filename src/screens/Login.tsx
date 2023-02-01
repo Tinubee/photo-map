@@ -8,6 +8,8 @@ import { useForm } from "react-hook-form";
 import Input from "../components/auth/Input";
 import FormError from "../components/auth/FormError";
 import { useEffect } from "react";
+import KakaoLoginButton from "../components/auth/social-login/KakaoLoginButton";
+import NaverLoginButton from "../components/auth/social-login/NaverLoginButton";
 
 export const FormContainer = styled.div`
   display: flex;
@@ -24,6 +26,12 @@ export const FormTitle = styled.h1`
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
+`;
+
+const SocialLoginBtnContainer = styled.div`
+  width: 100%;
+  display: grid;
+  gap: 10px;
 `;
 
 function Login() {
@@ -85,7 +93,12 @@ function Login() {
           />
           <Button type="submit" value="로그인" disabled={!isValid} />
         </form>
-        <Separator />
+        <Separator cta="" />
+        <SocialLoginBtnContainer>
+          <KakaoLoginButton />
+          <NaverLoginButton />
+        </SocialLoginBtnContainer>
+        <Separator cta="Or" />
         <BottomBox
           cta="계정이 없습니까 ?"
           link={"/signup"}

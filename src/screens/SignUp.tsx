@@ -38,7 +38,7 @@ function SignUp() {
       type: "required",
       message: "비밀번호를 입력해주세요.",
     });
-  }, []);
+  }, [setError]);
 
   const onSubmitValid = async () => {
     const userInfo = getValues();
@@ -110,7 +110,7 @@ function SignUp() {
           />
           <Button type="submit" value="회원 가입" disabled={!isValid} />
         </form>
-        <Separator />
+        <Separator cta="Or" />
         <BottomBox
           cta="계정이 있습니까 ?"
           link={"/login"}
