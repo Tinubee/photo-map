@@ -63,9 +63,7 @@ function Mode() {
         </Icon>
       )}
       <Tab>
-        <Link to={"/login"}>
-          Login{loginMatch?.pathname && <Line layoutId="circle" />}
-        </Link>
+        <Link to={"/login"}>Login{loginMatch?.pathname && <Line />}</Link>
       </Tab>
     </ModeContainer>
   );

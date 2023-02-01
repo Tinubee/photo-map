@@ -7,7 +7,7 @@ import { MapSvg } from "./types/PictureMap";
 
 export const Path = styled(motion.path)`
   stroke-linejoin: round;
-  stroke: #ffffff;
+  stroke: ${(props) => props.theme.borderColor};
   stroke-width: 2;
   cursor: pointer;
   :hover {
@@ -16,7 +16,7 @@ export const Path = styled(motion.path)`
 `;
 
 export const Text = styled(motion.text)`
-  fill: #ffffff;
+  fill: white;
   font-size: 16;
   font-weight: bold;
   text-anchor: middle;
@@ -38,7 +38,7 @@ interface IAllRegion {
 export const svgAnimation = {
   start: { pathLength: 0, fill: "rgba(255, 255, 255, 0)" },
   end: {
-    fill: "#000000",
+    fill: "black",
     pathLength: 1,
   },
 };
