@@ -6,6 +6,8 @@ import { RouterProvider } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import router from "./Router";
 import JSConfetti from "js-confetti";
+import { ApolloProvider } from "@apollo/client";
+import { client } from "./apollo";
 
 export const conteffi = new JSConfetti();
 
@@ -88,12 +90,14 @@ function App() {
   const isDark = useRecoilValue(isDarkAtom);
 
   return (
-    <HelmetProvider>
-      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-        <GlobalStyle />
-        <RouterProvider router={router} />
-      </ThemeProvider>
-    </HelmetProvider>
+    <ApolloProvider client={client}>
+      <HelmetProvider>
+        <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+          <GlobalStyle />
+          <RouterProvider router={router} />
+        </ThemeProvider>
+      </HelmetProvider>
+    </ApolloProvider>
   );
 }
 

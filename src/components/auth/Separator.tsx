@@ -20,11 +20,11 @@ const SSeparator = styled.div`
   }
 `;
 
-interface IScta {
+export interface Icta {
   cta: string;
 }
 
-function Separator({ cta }: IScta) {
+function Separator({ cta }: Icta) {
   return (
     <SSeparator>
       <div></div>

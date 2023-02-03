@@ -1,4 +1,7 @@
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
+import { Icta } from "../Separator";
 import { KakaoButton } from "./KakaoLoginButton";
 
 const NaverLoginBtn = styled(KakaoButton)`
@@ -6,14 +9,17 @@ const NaverLoginBtn = styled(KakaoButton)`
   justify-content: center;
   align-items: center;
   background-color: #03c75a;
+  :hover {
+    opacity: 0.75;
+  }
 `;
 
 // 로그인 버튼 사용가이드 링크를 들어가면 이미지를 받아 이렇게 적용이 가능하다 !
 const NaverIcon = styled.div`
-  width: 40px;
-  height: 40px;
+  width: 25px;
+  height: 25px;
   background: url("/image/Login/navericon.png") no-repeat center;
-  background-size: 40px;
+  background-size: 30px;
 `;
 
 const NaverLoginTitle = styled.div`
@@ -23,6 +29,10 @@ const NaverLoginTitle = styled.div`
   justify-content: center;
   font-weight: 600;
   margin-top: 3px;
+  svg {
+    margin-bottom: 3px;
+    margin-left: 10px;
+  }
 `;
 
 declare global {
@@ -31,14 +41,16 @@ declare global {
   }
 }
 
-function NaverLoginButton() {
+function NaverLoginButton({ cta }: Icta) {
   const handleNaverLogin = () => {};
 
   return (
     <>
       <NaverLoginBtn onClick={handleNaverLogin}>
         <NaverIcon />
-        <NaverLoginTitle>네이버 로그인</NaverLoginTitle>
+        <NaverLoginTitle>
+          {cta} <FontAwesomeIcon icon={faArrowRight} />
+        </NaverLoginTitle>
       </NaverLoginBtn>
     </>
   );

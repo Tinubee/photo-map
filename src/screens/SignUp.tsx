@@ -1,13 +1,37 @@
+import { gql, useMutation } from "@apollo/client";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import BottomBox from "../components/auth/BottomBox";
 import Button from "../components/auth/Button";
 import FormError from "../components/auth/FormError";
 import Input from "../components/auth/Input";
 import Layout from "../components/auth/Layout";
 import Separator from "../components/auth/Separator";
+import KakaoLoginButton from "../components/auth/social-login/KakaoLoginButton";
+import NaverLoginButton from "../components/auth/social-login/NaverLoginButton";
 import PageTitle from "../components/PageTitle";
-import { FormContainer, FormTitle } from "./Login";
+import { FormContainer, FormTitle, SocialLoginBtnContainer } from "./Login";
+
+interface SignUpFormValues {
+  username: string;
+  email: string;
+  password: string;
+  passwordCheck: string;
+  result: string;
+}
+
+const SIGNUP_MUTATION = gql`
+  mutation createAccount(
+    $username: String!
+    $email: String!
+    $password: String!
+  ) {
+    createAccount(username: $username, email: $email, password: $password) {
+      ok
+      error
+    }
+  }
+`;
 
 function SignUp() {
   const {
@@ -17,7 +41,7 @@ function SignUp() {
     getValues,
     setValue,
     setError,
-  } = useForm({
+  } = useForm<SignUpFormValues>({
     mode: "onChange",
     defaultValues: {
       email: "",
@@ -40,23 +64,50 @@ function SignUp() {
     });
   }, [setError]);
 
-  const onSubmitValid = async () => {
-    const userInfo = getValues();
-    if (userInfo.password !== userInfo.passwordCheck) {
+  const onSubmitValid: SubmitHandler<SignUpFormValues> = async () => {
+    if (loading) return;
+    const { username, email, password, passwordCheck } = getValues();
+    if (password !== passwordCheck) {
       setError("passwordCheck", { message: "비밀번호가 일치 하지 않습니다." });
       return;
     }
+
+    signUpMutation({
+      variables: { username, email, password },
+    });
 
     setValue("username", "");
     setValue("email", "");
     setValue("password", "");
     setValue("passwordCheck", "");
   };
+
+  const onCompleted = (data: any) => {
+    if (!data?.createAccount) return;
+    const {
+      createAccount: { ok, error },
+    } = data;
+
+    console.log(data?.createAccount);
+
+    if (ok) {
+      console.log("회원가입성공");
+    }
+    if (!ok) {
+      setError("result", { message: error! });
+    }
+  };
+
+  const [signUpMutation, { loading }] = useMutation(SIGNUP_MUTATION, {
+    onCompleted,
+  });
+
   return (
     <Layout>
       <PageTitle title="Sign Up"></PageTitle>
       <FormContainer>
         <FormTitle>회원 가입</FormTitle>
+        <FormError message={errors?.result?.message} />
         <form onSubmit={handleSubmit(onSubmitValid)}>
           <FormError message={errors?.username?.message} />
           <Input
@@ -108,8 +159,17 @@ function SignUp() {
             hasError={Boolean(errors?.passwordCheck?.message)}
             autoComplete="off"
           />
-          <Button type="submit" value="회원 가입" disabled={!isValid} />
+          <Button
+            type="submit"
+            value={loading ? "회원 가입중..." : "회원 가입"}
+            disabled={!isValid || loading}
+          />
         </form>
+        <Separator cta="" />
+        <SocialLoginBtnContainer>
+          <KakaoLoginButton cta="카카오 회원가입" />
+          <NaverLoginButton cta="네이버 회원가입" />
+        </SocialLoginBtnContainer>
         <Separator cta="Or" />
         <BottomBox
           cta="계정이 있습니까 ?"

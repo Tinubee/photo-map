@@ -1,6 +1,7 @@
-import { faComment } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
+import { Icta } from "../Separator";
 
 export const KakaoButton = styled.a`
   border-radius: 5px;
@@ -13,12 +14,19 @@ export const KakaoButton = styled.a`
   cursor: pointer;
   display: block;
   border: none;
+  svg:nth-child(2) {
+    margin-left: 5px;
+  }
+  :hover {
+    opacity: 0.75;
+  }
 `;
 
-function KakaoLoginButton() {
+function KakaoLoginButton({ cta }: Icta) {
   return (
     <KakaoButton>
-      <FontAwesomeIcon icon={faComment} /> 카카오 로그인
+      <FontAwesomeIcon icon={faComment} /> {cta}
+      <FontAwesomeIcon icon={faArrowRight} />
     </KakaoButton>
   );
 }
