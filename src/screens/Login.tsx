@@ -12,6 +12,7 @@ import KakaoLoginButton from "../components/auth/social-login/KakaoLoginButton";
 import NaverLoginButton from "../components/auth/social-login/NaverLoginButton";
 import { gql, useMutation } from "@apollo/client";
 import { logUserIn } from "../apollo";
+import { useNavigate } from "react-router-dom";
 
 interface LoginFormValues {
   email: string;
@@ -46,9 +47,9 @@ const LoginForm = styled.form`
   margin-top: 10px;
 `;
 
-const LOGIN_MUTATION = gql`
-  mutation login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
+export const LOGIN_MUTATION = gql`
+  mutation login($email: String!, $password: String!, $socialLogin: Boolean!) {
+    login(email: $email, password: $password, socialLogin: $socialLogin) {
       ok
       token
       error
@@ -57,6 +58,7 @@ const LOGIN_MUTATION = gql`
 `;
 
 function Login() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -64,6 +66,7 @@ function Login() {
     setError,
     setValue,
     getValues,
+    clearErrors,
   } = useForm<LoginFormValues>({
     mode: "onChange",
     defaultValues: {
@@ -80,6 +83,7 @@ function Login() {
 
     if (ok && token) {
       logUserIn(token);
+      navigate("/");
     }
     if (!ok) {
       setError("result", { message: error! });
@@ -99,15 +103,18 @@ function Login() {
       type: "required",
       message: "비밀번호를 입력해주세요.",
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [setError, setValue]);
 
   const onSubmitValid: SubmitHandler<LoginFormValues> = async () => {
     if (loading) return;
     const { email, password } = getValues();
     loginMutation({
-      variables: { email, password },
+      variables: { email, password, socialLogin: false },
     });
+  };
+
+  const clearLoginError = () => {
+    clearErrors("result");
   };
 
   return (
@@ -127,6 +134,7 @@ function Login() {
               },
             })}
             placeholder="Email"
+            onFocus={clearLoginError}
             hasError={Boolean(errors?.email?.message)}
             autoComplete="off"
           />
@@ -142,6 +150,7 @@ function Login() {
             placeholder="Password"
             type="password"
             hasError={Boolean(errors?.password?.message)}
+            onFocus={clearLoginError}
             autoComplete="off"
           />
           <Button

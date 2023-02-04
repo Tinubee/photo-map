@@ -3,18 +3,22 @@ import { NavigateFunction } from "react-router-dom";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { createUploadLink } from "apollo-upload-client";
+const TOKEN = "token";
 
-export const isLoggedInVar = makeVar(Boolean(localStorage.getItem("token")));
+export const isLoggedInVar = makeVar(Boolean(localStorage.getItem(TOKEN)));
 
 export const logUserIn = (token: string) => {
-  localStorage.setItem("token", token);
+  localStorage.setItem(TOKEN, token);
   isLoggedInVar(true);
 };
 
 export const logUserOut = (navigate: NavigateFunction) => {
-  localStorage.removeItem("token");
+  localStorage.removeItem(TOKEN);
+  localStorage.removeItem("com.naver.nid.access_token");
+  localStorage.removeItem("com.naver.nid.oauth.state_token");
   isLoggedInVar(false);
-  navigate("/");
+  navigate("/login");
+  window.location.reload();
 };
 
 const uploadHttpLink = createUploadLink({
@@ -28,7 +32,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      token: localStorage.getItem("token"),
+      token: localStorage.getItem(TOKEN),
     },
   };
 });
@@ -46,5 +50,11 @@ const httpLink = authLink.concat(onErrorLink).concat(uploadHttpLink);
 
 export const client = new ApolloClient({
   link: httpLink,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      User: {
+        keyFields: (obj) => `User:${obj.username}`,
+      },
+    },
+  }),
 });

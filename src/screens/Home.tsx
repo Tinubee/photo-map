@@ -13,6 +13,7 @@ const Wrapper = styled.div`
 function Home() {
   const [mapType, setMapType] = useRecoilState(mapTypeAtom);
   const [selectRegion, setSelectRegion] = useRecoilState(selectRegionAtom);
+
   const clickReturnAllRegion = () => {
     setSelectRegion("");
   };

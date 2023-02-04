@@ -5,6 +5,7 @@ import Login from "./screens/Login";
 import NotFound from "./screens/NotFound";
 import SignUp from "./screens/SignUp";
 import About from "./screens/About";
+import Profile from "./screens/Profile";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "signup",
         element: <SignUp />,
+      },
+      {
+        path: "user/:username",
+        element: <Profile />,
       },
     ],
     errorElement: <NotFound />,

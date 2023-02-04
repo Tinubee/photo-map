@@ -1,6 +1,7 @@
 import { gql, useMutation } from "@apollo/client";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import BottomBox from "../components/auth/BottomBox";
 import Button from "../components/auth/Button";
 import FormError from "../components/auth/FormError";
@@ -20,13 +21,21 @@ interface SignUpFormValues {
   result: string;
 }
 
-const SIGNUP_MUTATION = gql`
+export const SIGNUP_MUTATION = gql`
   mutation createAccount(
     $username: String!
     $email: String!
     $password: String!
+    $socialLogin: Boolean!
+    $avatar: String
   ) {
-    createAccount(username: $username, email: $email, password: $password) {
+    createAccount(
+      username: $username
+      email: $email
+      password: $password
+      socialLogin: $socialLogin
+      avatar: $avatar
+    ) {
       ok
       error
     }
@@ -34,6 +43,7 @@ const SIGNUP_MUTATION = gql`
 `;
 
 function SignUp() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -73,7 +83,7 @@ function SignUp() {
     }
 
     signUpMutation({
-      variables: { username, email, password },
+      variables: { username, email, password, socialLogin: false },
     });
 
     setValue("username", "");
@@ -88,10 +98,8 @@ function SignUp() {
       createAccount: { ok, error },
     } = data;
 
-    console.log(data?.createAccount);
-
     if (ok) {
-      console.log("회원가입성공");
+      navigate("/login");
     }
     if (!ok) {
       setError("result", { message: error! });

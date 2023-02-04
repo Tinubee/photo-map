@@ -1,14 +1,20 @@
+import { useReactiveVar } from "@apollo/client";
 import { faMoon, faSun } from "@fortawesome/free-regular-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useMatch } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { isDarkAtom } from "../../atoms";
+import { isLoggedInVar } from "../../apollo";
+import { isDarkAtom, naverLogInUserDataAtom } from "../../atoms";
+import Avatar from "../auth/Avatar";
+import { useSeeMe } from "../hooks/myProfile";
 import { Line, Tab } from "./Header";
 
 const ModeContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
   justify-content: center;
   align-items: center;
   place-items: center;
@@ -45,11 +51,17 @@ export const Icon = styled.div<{ mode: string }>`
 function Mode() {
   const [darkAtom, setDarkAtom] = useRecoilState(isDarkAtom);
   const loginMatch = useMatch("login");
+  const isLoggedIn = useReactiveVar(isLoggedInVar);
+  const naverUserData = useRecoilValue(naverLogInUserDataAtom);
 
   const toggleMode = () => {
     setDarkAtom((prev) => !prev);
     localStorage.setItem("mode", String(!darkAtom));
   };
+
+  const { data } = useSeeMe();
+
+  console.log(naverUserData);
 
   return (
     <ModeContainer>
@@ -62,9 +74,15 @@ function Mode() {
           <FontAwesomeIcon icon={faMoon} />
         </Icon>
       )}
-      <Tab>
-        <Link to={"/login"}>Login{loginMatch?.pathname && <Line />}</Link>
-      </Tab>
+      {isLoggedIn ? (
+        <Link to={`/user/${data?.me?.username}`}>
+          <Avatar url={data?.me?.avatar} />
+        </Link>
+      ) : (
+        <Tab>
+          <Link to={"/login"}>Login{loginMatch?.pathname && <Line />}</Link>
+        </Tab>
+      )}
     </ModeContainer>
   );
 }

@@ -15,3 +15,12 @@ export const mapTypeAtom = atom({
   key: "mapType",
   default: false,
 });
+
+export const naverLogInUserDataAtom = atom({
+  key: "naverUserData",
+  default: {
+    username: "",
+    email: "",
+    avatar: "",
+  },
+});
