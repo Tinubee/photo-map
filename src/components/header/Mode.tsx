@@ -1,12 +1,11 @@
 import { useReactiveVar } from "@apollo/client";
 import { faMoon, faSun } from "@fortawesome/free-regular-svg-icons";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useMatch } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { isLoggedInVar } from "../../apollo";
-import { isDarkAtom, naverLogInUserDataAtom } from "../../atoms";
+import { isDarkAtom } from "../../atoms";
 import Avatar from "../auth/Avatar";
 import { useSeeMe } from "../hooks/myProfile";
 import { Line, Tab } from "./Header";
@@ -52,7 +51,6 @@ function Mode() {
   const [darkAtom, setDarkAtom] = useRecoilState(isDarkAtom);
   const loginMatch = useMatch("login");
   const isLoggedIn = useReactiveVar(isLoggedInVar);
-  const naverUserData = useRecoilValue(naverLogInUserDataAtom);
 
   const toggleMode = () => {
     setDarkAtom((prev) => !prev);
@@ -60,8 +58,6 @@ function Mode() {
   };
 
   const { data } = useSeeMe();
-
-  console.log(naverUserData);
 
   return (
     <ModeContainer>

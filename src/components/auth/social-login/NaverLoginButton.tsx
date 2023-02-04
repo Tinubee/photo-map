@@ -112,7 +112,8 @@ function NaverLoginButton({ cta }: Icta) {
 
     naverLogin.getLoginStatus(async function (status: any) {
       if (status) {
-        const username = naverLogin.user.name;
+        console.log(naverLogin.user);
+        const username = naverLogin.user.nickname;
         const email = naverLogin.user.email;
         const avatar = naverLogin.user.profile_image;
         setNaverUser({
@@ -122,7 +123,7 @@ function NaverLoginButton({ cta }: Icta) {
         });
         signUpMutation({
           variables: {
-            username,
+            username: username === undefined ? email.split("@")[0] : username,
             email,
             password: "",
             socialLogin: true,

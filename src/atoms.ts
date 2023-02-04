@@ -24,3 +24,12 @@ export const naverLogInUserDataAtom = atom({
     avatar: "",
   },
 });
+
+export const kakaoLogInUserDataAtom = atom({
+  key: "kakaoUserData",
+  default: {
+    username: "",
+    email: "",
+    avatar: "",
+  },
+});

@@ -6,6 +6,7 @@ import NotFound from "./screens/NotFound";
 import SignUp from "./screens/SignUp";
 import About from "./screens/About";
 import Profile from "./screens/Profile";
+import KakaoAuth from "./components/auth/social-login/KakaoAuth";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "user/:username",
         element: <Profile />,
+      },
+      {
+        path: "users/kakao/finish",
+        element: <KakaoAuth />,
       },
     ],
     errorElement: <NotFound />,

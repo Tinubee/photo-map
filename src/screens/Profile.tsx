@@ -7,7 +7,6 @@ import PageTitle from "../components/PageTitle";
 function Profile() {
   const navigate = useNavigate();
   const { username } = useParams();
-  console.log(username);
   const { data } = useSeeUser(username!);
 
   return (
