@@ -9,25 +9,34 @@ const SAvatar = styled.div<{ lg: boolean }>`
   border-radius: 50%;
   justify-content: center;
   align-items: center;
+  padding: 25px;
+  transition: background-color 0.5s;
   :hover {
     background-color: ${(props) => props.theme.iconbgColor};
     color: ${(props) => props.theme.textColor};
   }
-  padding: 25px;
-  transition: background-color 0.5s;
+`;
+
+const ImgContainer = styled.div`
+  display: flex;
 `;
 
 const Img = styled.img`
-  max-width: 30px;
-  max-height: 30px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
 `;
 
 function Avatar({ url = "", lg = false }) {
-  console.log(url);
   return (
     <SAvatar lg={lg}>
-      {url !== null ? <Img src={url} /> : <FontAwesomeIcon icon={faUser} />}
+      {url !== null ? (
+        <ImgContainer>
+          <Img src={url} />
+        </ImgContainer>
+      ) : (
+        <FontAwesomeIcon icon={faUser} size="xl" />
+      )}
     </SAvatar>
   );
 }

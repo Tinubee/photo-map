@@ -112,7 +112,6 @@ function NaverLoginButton({ cta }: Icta) {
 
     naverLogin.getLoginStatus(async function (status: any) {
       if (status) {
-        console.log(naverLogin.user);
         const username = naverLogin.user.nickname;
         const email = naverLogin.user.email;
         const avatar = naverLogin.user.profile_image;

@@ -47,9 +47,14 @@ export const Icon = styled.div<{ mode: string }>`
   }
 `;
 
+const AvatarContainer = styled.div`
+  position: relative;
+`;
+
 function Mode() {
   const [darkAtom, setDarkAtom] = useRecoilState(isDarkAtom);
   const loginMatch = useMatch("login");
+  const myProfileMatch = useMatch("user/:userId");
   const isLoggedIn = useReactiveVar(isLoggedInVar);
 
   const toggleMode = () => {
@@ -71,9 +76,13 @@ function Mode() {
         </Icon>
       )}
       {isLoggedIn ? (
-        <Link to={`/user/${data?.me?.username}`}>
-          <Avatar url={data?.me?.avatar} />
-        </Link>
+        <AvatarContainer>
+          <Link to={`/user/${data?.me?.username}`}>
+            <Avatar url={data?.me?.avatar} />
+            {decodeURI(myProfileMatch?.pathname!) ===
+              `/user/${data?.me?.username}` && <Line />}
+          </Link>
+        </AvatarContainer>
       ) : (
         <Tab>
           <Link to={"/login"}>Login{loginMatch?.pathname && <Line />}</Link>

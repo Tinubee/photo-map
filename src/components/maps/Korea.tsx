@@ -36,9 +36,9 @@ interface IAllRegion {
 }
 
 export const svgAnimation = {
-  start: { pathLength: 0, fill: "rgba(255, 255, 255, 0)" },
+  start: { pathLength: 0, fill: "rgb(255, 255, 255)" },
   end: {
-    fill: "black",
+    fill: "rgb(0, 0, 0)",
     pathLength: 1,
   },
 };
