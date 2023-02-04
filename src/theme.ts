@@ -7,6 +7,8 @@ export const darkTheme: DefaultTheme = {
   iconbgColor: "#3c3c3c",
   icontextColor: "#aaaaaa",
   mapHoverColor: "#ffad00",
+  menuBoxShadowColor: "rgba(255, 255, 255, 0.19)",
+  menuBoxShadowColor2: "rgba(255, 255, 255, 0.23)",
 };
 
 export const lightTheme: DefaultTheme = {
@@ -16,4 +18,6 @@ export const lightTheme: DefaultTheme = {
   iconbgColor: "#e6e6e6",
   icontextColor: "#646464",
   mapHoverColor: "#ffad00",
+  menuBoxShadowColor: "rgba(0, 0, 0, 0.19)",
+  menuBoxShadowColor2: "rgba(0, 0, 0, 0.23)",
 };

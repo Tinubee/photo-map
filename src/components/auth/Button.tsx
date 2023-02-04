@@ -12,6 +12,9 @@ const Button = styled.input`
   width: 100%;
   cursor: pointer;
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
+  :hover {
+    opacity: 0.75;
+  }
 `;
 
 export default Button;

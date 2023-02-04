@@ -33,3 +33,8 @@ export const kakaoLogInUserDataAtom = atom({
     avatar: "",
   },
 });
+
+export const showMenuAtom = atom({
+  key: "showMenu",
+  default: false,
+});
