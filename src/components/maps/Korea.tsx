@@ -7,8 +7,8 @@ import { MapSvg } from "./types/PictureMap";
 
 export const Path = styled(motion.path)`
   stroke-linejoin: round;
-  stroke: ${(props) => props.theme.borderColor};
-  stroke-width: 2;
+  stroke: #ffffff;
+  stroke-width: 1;
   cursor: pointer;
   :hover {
     fill: ${(props) => props.theme.mapHoverColor};
@@ -16,7 +16,7 @@ export const Path = styled(motion.path)`
 `;
 
 export const Text = styled(motion.text)`
-  fill: white;
+  fill: #ffffff;
   font-size: 16;
   font-weight: bold;
   text-anchor: middle;
