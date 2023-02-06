@@ -31,7 +31,6 @@ import Jeonnam from "../detail/Jeonnam";
 import Sejong from "../detail/Sejong";
 import Seoul from "../detail/Seoul";
 import Korea from "../Korea";
-import MyKoreaMap from "../MyKoreaMap";
 import { Container } from "./PictureMap";
 
 function GeneralMap() {
@@ -77,7 +76,6 @@ function GeneralMap() {
 
   return (
     <Container>
-      <MyKoreaMap />
       {selectRegion === "" ? (
         <Korea AllRegion={AllRegion} />
       ) : (

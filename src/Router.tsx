@@ -7,6 +7,8 @@ import SignUp from "./screens/SignUp";
 import About from "./screens/About";
 import Profile from "./screens/Profile";
 import KakaoAuth from "./components/auth/social-login/KakaoAuth";
+import MyKoreaMap from "./screens/MyKoreaMap";
+import MyWorldMap from "./screens/MyWorldMap";
 
 const router = createBrowserRouter([
   {
@@ -31,7 +33,20 @@ const router = createBrowserRouter([
       },
       {
         path: "user/:username",
-        element: <Profile />,
+        children: [
+          {
+            path: "profile",
+            element: <Profile />,
+          },
+          {
+            path: "mykoreamap",
+            element: <MyKoreaMap />,
+          },
+          {
+            path: "myworldmap",
+            element: <MyWorldMap />,
+          },
+        ],
       },
       {
         path: "users/kakao/finish",

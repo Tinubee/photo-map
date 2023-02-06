@@ -1,7 +1,7 @@
 import { Path } from "./Korea";
 import { MapSvg } from "./types/PictureMap";
 
-function MyKoreaMap() {
+function KoreaSplite() {
   const setAreaHandler = (w: any, h: any, area: string) => {
     console.log(`Box Size : W${w} / H${h} Area Name : ${area}`);
   };
@@ -76,22 +76,6 @@ function MyKoreaMap() {
             d="M2550.723-922.61l1.716-.981 1.839.981-.981 2.207z"
             transform="translate(-2025.128 1036.605) translate(-439 77)"
           />
-        </g>
-        <g
-          onClick={(e) =>
-            setAreaHandler(
-              e.currentTarget.getBBox().width,
-              e.currentTarget.getBBox().height,
-              "옹진군"
-            )
-          }
-        >
-          <Path d="M90.083 210.772l-3.5 2.167.167 5.833 2.5 1 2.833-2.333 1.167-1.5 2.667-.5-1.5-2.833-4.334-1.834z" />
-          <Path d="M45.25 212.606l-1.167 3.5-.833 4.667 3 .667 2 1.5 2.333-.667 2.167-2.5-3.333-3.167-2.5-1.333-.333-2.333-1.334-.334z" />
-          <Path d="M73.583 214.439l-5.333-2 .167 2.333 5.167 3.333 2.667-2.333-2.668-1.333z" />
-          <Path d="M20.5 171.355l4-1.75-2.25-2.5-4.5-.25-3 1.25-3.75-.25-.75 1 2 2.75 1.25 2.5 3.5.25 3.25 1-.25-2.5.5-1.5z" />
-          <Path d="M21.25 186.105l-1.75-1-2.5 2.25-1.75 1 2.25 2.5 3-.5.75-2.25v-2z" />
-          <Path d="M44.25 188.855l-3.25-.25-.25 1.75 3 1.5v-1.5l.5-1.5z" />
         </g>
 
         <Path
@@ -1992,4 +1976,4 @@ function MyKoreaMap() {
   );
 }
 
-export default MyKoreaMap;
+export default KoreaSplite;
