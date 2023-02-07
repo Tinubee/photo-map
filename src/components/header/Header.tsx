@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useMatch } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import Logo from "../Logo";
 import Mode from "./Mode";
 
 export const Line = styled(motion.span)`
@@ -12,19 +13,21 @@ export const Line = styled(motion.span)`
   left: 0;
   right: 0;
   margin: 0 auto;
-  background-color: red;
+  background-color: #ff2200;
 `;
 
 const HeaderContainer = styled.div`
   display: flex;
-  justify-content: space-around;
-  padding: 15px 0px;
+  padding-top: 15px;
   align-items: center;
   -ms-user-select: none;
   -moz-user-select: -moz-none;
   -webkit-user-select: none;
   -khtml-user-select: none;
   user-select: none;
+  div:last-child {
+    margin-left: auto;
+  }
 `;
 
 const Tabs = styled.div`
@@ -41,9 +44,10 @@ export const Tab = styled.div`
     color: ${(props) => props.theme.textColor};
   }
   a {
+    white-space: nowrap;
     padding: 15px 25px;
     border-radius: 10px;
-    transition: background-color 0.5s;
+    transition: 0.5s;
   }
   :active {
     transform: scale(1.02);
@@ -55,15 +59,18 @@ function Header() {
   const aboutMatch = useMatch("about");
   return (
     <HeaderContainer>
+      <Link to={"/"}>
+        <Logo />
+      </Link>
       <Tabs>
         <Tab>
           <Link to={"/"}>
-            Home {homeMatch?.pathname && <Line layoutId="circle" />}
+            Home {homeMatch?.pathname && <Line layoutId="line" />}
           </Link>
         </Tab>
         <Tab>
           <Link to={"/about"}>
-            About {aboutMatch?.pathname && <Line layoutId="circle" />}
+            About {aboutMatch?.pathname && <Line layoutId="line" />}
           </Link>
         </Tab>
       </Tabs>
