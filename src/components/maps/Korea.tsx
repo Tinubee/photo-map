@@ -68,8 +68,8 @@ function Korea({ AllRegion }: IAllRegion) {
             initial="start"
             animate="end"
             transition={{
-              default: { duration: 2 },
-              fill: { duration: 2 },
+              default: { duration: 1 },
+              fill: { duration: 1 },
             }}
             key={reg.name}
             d={reg.path}
@@ -84,7 +84,7 @@ function Korea({ AllRegion }: IAllRegion) {
             initial="start"
             animate="end"
             transition={{
-              default: { duration: 2 },
+              default: { duration: 1 },
             }}
             key={reg.name}
             x={reg.coordinate.x}

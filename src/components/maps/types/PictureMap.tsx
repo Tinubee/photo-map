@@ -69,8 +69,8 @@ function PictureMap() {
               initial="start"
               animate="end"
               transition={{
-                default: { duration: 2 },
-                fill: { duration: 2 },
+                default: { duration: 1 },
+                fill: { duration: 1 },
               }}
               key={res.name}
               d={res.path}
@@ -92,7 +92,7 @@ function PictureMap() {
               initial="start"
               animate="end"
               transition={{
-                default: { duration: 2 },
+                default: { duration: 1 },
               }}
               key={reg.name}
               x={reg.coordinate.x}

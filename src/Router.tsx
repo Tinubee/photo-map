@@ -9,6 +9,7 @@ import Profile from "./screens/Profile";
 import KakaoAuth from "./components/auth/social-login/KakaoAuth";
 import MyKoreaMap from "./screens/MyKoreaMap";
 import MyWorldMap from "./screens/MyWorldMap";
+import EditProfile from "./screens/EditProfile";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
           {
             path: "profile",
             element: <Profile />,
+          },
+          {
+            path: "edit",
+            element: <EditProfile />,
           },
           {
             path: "mykoreamap",
