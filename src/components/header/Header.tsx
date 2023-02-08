@@ -20,10 +20,12 @@ const HeaderContainer = styled.div`
   display: flex;
   padding-top: 15px;
   align-items: center;
-  -ms-user-select: none;
-  -moz-user-select: -moz-none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
+  position: fixed;
+  width: 100%;
+  z-index: 99;
+  background-color: ${(props) => props.theme.bgColor};
+  top: 0;
+  transition: 0.5s;
   user-select: none;
   div:last-child {
     margin-left: auto;

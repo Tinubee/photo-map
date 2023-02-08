@@ -7,7 +7,7 @@ import Button from "../components/Button";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  margin-left: 10px;
+  margin-top: 100px;
 `;
 
 function Home() {

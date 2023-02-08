@@ -77,9 +77,13 @@ body {
   line-height: 1.2;
   background-color: ${(props) => props.theme.bgColor};
   overflow-x: hidden;
-  transition: background-color 0.5s, color 0.5s;
+  transition: 0.5s;
   height: 200vh;
   width: 100vw;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-use-select: none;
+  user-select: none;
 }
 a {
   text-decoration:none;

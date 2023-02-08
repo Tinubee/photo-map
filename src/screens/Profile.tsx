@@ -6,7 +6,7 @@ import { useSeeUser } from "../components/hooks/userProfile";
 import PageTitle from "../components/PageTitle";
 
 const Container = styled.div`
-  padding-top: 50px;
+  padding-top: 200px;
 `;
 
 const ProfileCard = styled.div`

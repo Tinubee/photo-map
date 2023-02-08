@@ -20,7 +20,7 @@ const ModeContainer = styled.div`
   div:hover {
     cursor: pointer;
     color: "${(props) => props.theme.textColor}";
-    transition: background-color 0.5s, color 0.5s;
+    transition: 0.5s;
   }
 `;
 
