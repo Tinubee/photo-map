@@ -32,7 +32,7 @@ function KakaoAuth() {
     }
 
     if (!ok) {
-      console.log(`네이버 회원가입 오류 : ${error}`);
+      console.log(`카카오 회원가입 오류 : ${error}`);
     }
   };
 
