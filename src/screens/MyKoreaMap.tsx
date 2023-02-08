@@ -5,6 +5,7 @@ import styled from "styled-components";
 import KoreaSplite from "../components/maps/KoreaSplite";
 import { Container } from "../components/maps/types/PictureMap";
 import PageTitle from "../components/PageTitle";
+import { KoreaDetail } from "../MapDetail";
 
 export const Map = styled.div`
   text-align: center;
@@ -24,6 +25,10 @@ const Title = styled.div`
   }
 `;
 
+const Test = styled.div`
+  display: flex;
+`;
+
 function MyKoreaMap() {
   const { username } = useParams();
 
@@ -39,8 +44,9 @@ function MyKoreaMap() {
           {username}님의 국내 지도
           <FontAwesomeIcon icon={faDownload} onClick={handleDownLoadMap} />
         </Title>
-
-        <KoreaSplite />
+        <Test>
+          <KoreaSplite data={KoreaDetail} />
+        </Test>
       </Map>
     </Container>
   );

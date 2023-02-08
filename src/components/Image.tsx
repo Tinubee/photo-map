@@ -10,12 +10,12 @@ const CImage = styled(motion.image)`
 `;
 
 interface INameType {
-  name: string;
+  path: string;
   picturePath: string[];
   location: string;
 }
 
-function Image({ name, picturePath, location }: INameType) {
+function Image({ path, picturePath, location }: INameType) {
   let count = 0;
   const [picture, setPicture] = useState("");
 
@@ -53,7 +53,7 @@ function Image({ name, picturePath, location }: INameType) {
       }}
       href={picturePath.length === 1 ? picturePath[0] : picture}
       style={{
-        clipPath: `path('${name}')`,
+        clipPath: `path('${path}')`,
       }}
       onClick={handlePictureClick}
     />
