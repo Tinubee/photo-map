@@ -51,6 +51,7 @@ function SignUp() {
     getValues,
     setValue,
     setError,
+    clearErrors,
   } = useForm<SignUpFormValues>({
     mode: "onChange",
     defaultValues: {
@@ -85,30 +86,37 @@ function SignUp() {
     signUpMutation({
       variables: { username, email, password, socialLogin: false },
     });
-
-    setValue("username", "");
-    setValue("email", "");
-    setValue("password", "");
-    setValue("passwordCheck", "");
   };
 
   const onCompleted = (data: any) => {
     if (!data?.createAccount) return;
+    const { email, password } = getValues();
+
     const {
       createAccount: { ok, error },
     } = data;
 
     if (ok) {
-      navigate("/login");
+      navigate("/login", {
+        state: { message: "회원 가입이 완료 되었습니다.", email, password },
+      });
     }
     if (!ok) {
       setError("result", { message: error! });
+      setValue("username", "");
+      setValue("email", "");
+      setValue("password", "");
+      setValue("passwordCheck", "");
     }
   };
 
   const [signUpMutation, { loading }] = useMutation(SIGNUP_MUTATION, {
     onCompleted,
   });
+
+  const clearLoginError = () => {
+    clearErrors("result");
+  };
 
   return (
     <Layout>
@@ -124,6 +132,7 @@ function SignUp() {
             })}
             placeholder="Username"
             hasError={Boolean(errors?.username?.message)}
+            onFocus={clearLoginError}
             autoComplete="off"
           />
           <FormError message={errors?.email?.message} />
@@ -137,6 +146,7 @@ function SignUp() {
             })}
             placeholder="Email"
             hasError={Boolean(errors?.email?.message)}
+            onFocus={clearLoginError}
             autoComplete="off"
           />
           <FormError message={errors?.password?.message} />
@@ -151,6 +161,7 @@ function SignUp() {
             placeholder="Password"
             type="password"
             hasError={Boolean(errors?.password?.message)}
+            onFocus={clearLoginError}
             autoComplete="off"
           />
           <FormError message={errors?.passwordCheck?.message} />
@@ -165,6 +176,7 @@ function SignUp() {
             placeholder="Password Again"
             type="password"
             hasError={Boolean(errors?.passwordCheck?.message)}
+            onFocus={clearLoginError}
             autoComplete="off"
           />
           <Button

@@ -12,7 +12,7 @@ import KakaoLoginButton from "../components/auth/social-login/KakaoLoginButton";
 import NaverLoginButton from "../components/auth/social-login/NaverLoginButton";
 import { gql, useMutation } from "@apollo/client";
 import { logUserIn } from "../apollo";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface LoginFormValues {
   email: string;
@@ -58,6 +58,7 @@ export const LOGIN_MUTATION = gql`
 `;
 
 function Login() {
+  const location = useLocation();
   const navigate = useNavigate();
   const {
     register,
@@ -70,8 +71,8 @@ function Login() {
   } = useForm<LoginFormValues>({
     mode: "onChange",
     defaultValues: {
-      email: "",
-      password: "",
+      email: location?.state?.email || "",
+      password: location?.state?.password || "",
     },
   });
 
@@ -87,6 +88,9 @@ function Login() {
     }
     if (!ok) {
       setError("result", { message: error! });
+      setValue("email", "");
+      setValue("password", "");
+      setValue("result", "");
     }
   };
 
@@ -95,9 +99,6 @@ function Login() {
   });
 
   useEffect(() => {
-    setValue("email", "");
-    setValue("password", "");
-    setValue("result", "");
     setError("email", { type: "required", message: "이메일을 입력해주세요." });
     setError("password", {
       type: "required",
