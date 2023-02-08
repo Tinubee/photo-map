@@ -82,6 +82,8 @@ function Login() {
       login: { ok, error, token },
     } = data;
 
+    console.log(data);
+
     if (ok && token) {
       logUserIn(token);
       navigate("/");

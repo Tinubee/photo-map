@@ -100,6 +100,8 @@ function Mode() {
     setShowMenu(!showMenu);
   };
 
+  console.log(data);
+
   return (
     <ModeContainer>
       {!darkAtom ? (

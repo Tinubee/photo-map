@@ -38,3 +38,8 @@ export const showMenuAtom = atom({
   key: "showMenu",
   default: false,
 });
+
+export const selectImageAtom = atom({
+  key: "imageFile",
+  default: "",
+});

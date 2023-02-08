@@ -13,12 +13,12 @@ interface INameType {
   path: string;
   picturePath: string[];
   location: string;
+  transform?: string;
 }
 
-function Image({ path, picturePath, location }: INameType) {
+const Image = ({ path, picturePath, location, transform }: INameType) => {
   let count = 0;
   const [picture, setPicture] = useState("");
-
   const handlePictureClick = () => {};
 
   useEffect(() => {
@@ -54,10 +54,10 @@ function Image({ path, picturePath, location }: INameType) {
       href={picturePath.length === 1 ? picturePath[0] : picture}
       style={{
         clipPath: `path('${path}')`,
+        transform,
       }}
       onClick={handlePictureClick}
     />
   );
-}
-
+};
 export default Image;
