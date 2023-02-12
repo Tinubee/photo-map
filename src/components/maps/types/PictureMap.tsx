@@ -80,7 +80,7 @@ function PictureMap() {
             <Image
               key={res.name}
               path={res.path}
-              picturePath={res.picture}
+              file={res.picture}
               location={res.name}
             />
           )

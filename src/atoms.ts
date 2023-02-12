@@ -43,3 +43,8 @@ export const selectImageAtom = atom({
   key: "imageFile",
   default: "",
 });
+
+export const myRegionAtom = atom<string[]>({
+  key: "myRegion",
+  default: [],
+});

@@ -8,11 +8,6 @@ export const SEEUSER_QUERY = gql`
       email
       username
       avatar
-      photos {
-        file
-        region
-        transform
-      }
     }
   }
 `;

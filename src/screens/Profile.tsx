@@ -74,7 +74,7 @@ const ButtonContainer = styled.div`
 function Profile() {
   const { username } = useParams();
   const { data } = useSeeUser(username!);
-  console.log(data);
+
   return (
     <Container>
       <PageTitle title="My Profile"></PageTitle>

@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const CImage = styled(motion.image)`
@@ -11,29 +10,14 @@ const CImage = styled(motion.image)`
 
 interface INameType {
   path: string;
-  picturePath: string[];
+  file: string;
   location: string;
   transform?: string;
 }
 
-const Image = ({ path, picturePath, location, transform }: INameType) => {
-  let count = 0;
-  const [picture, setPicture] = useState("");
+const Image = ({ path, file, location, transform }: INameType) => {
   const handlePictureClick = () => {};
-
-  useEffect(() => {
-    showImage();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const showImage = () => {
-    setPicture(picturePath[count]);
-    count++;
-    if (count >= picturePath.length) {
-      count = 0;
-    }
-    setTimeout(showImage, 3000);
-  };
+  console.log(transform);
   const imageAnimation = {
     start: {
       opacity: 0,
@@ -49,13 +33,13 @@ const Image = ({ path, picturePath, location, transform }: INameType) => {
       initial="start"
       animate="end"
       transition={{
-        default: { duration: 2 },
+        default: { duration: 1 },
       }}
-      href={picturePath.length === 1 ? picturePath[0] : picture}
+      href={file}
       style={{
         clipPath: `path('${path}')`,
-        transform,
       }}
+      transform={transform}
       onClick={handlePictureClick}
     />
   );
