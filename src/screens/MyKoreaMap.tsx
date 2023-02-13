@@ -86,8 +86,8 @@ function MyKoreaMap() {
 
   const saveImgFile = (event: any) => {
     const file = event.target.files[0];
-    const imageUrl = URL.createObjectURL(file);
-    setImageUrl(imageUrl);
+    const imgUrl = URL.createObjectURL(file);
+    setImageUrl(imgUrl);
     setImgFile(file);
   };
 
@@ -101,8 +101,11 @@ function MyKoreaMap() {
         </Title>
         <Form>
           <Label>
-            <PreviewImage image={imageUrl}></PreviewImage>
-            {imgFile ? "" : <FontAwesomeIcon icon={faImage} />}
+            {imgFile ? (
+              <PreviewImage image={imageUrl}></PreviewImage>
+            ) : (
+              <FontAwesomeIcon icon={faImage} />
+            )}
             <Input type="file" accept="image/*" onChange={saveImgFile} />
           </Label>
         </Form>

@@ -1,3 +1,4 @@
+import ReMap from "../components/maps/re";
 import { Container } from "../components/maps/types/PictureMap";
 import PageTitle from "../components/PageTitle";
 

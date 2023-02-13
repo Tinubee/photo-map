@@ -60,6 +60,7 @@ export const LOGIN_MUTATION = gql`
 function Login() {
   const location = useLocation();
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -81,6 +82,8 @@ function Login() {
     const {
       login: { ok, error, token },
     } = data;
+
+    console.log(data);
 
     if (ok && token) {
       logUserIn(token);

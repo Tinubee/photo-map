@@ -2,9 +2,10 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import { IDetailType } from "../../MapDetail";
 import { Path } from "./Korea";
 import { MapSvg } from "./types/PictureMap";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { myRegionAtom, selectImageAtom } from "../../atoms";
 import { useEffect } from "react";
+import styled from "styled-components";
 
 interface IDetailRegionType {
   data: IDetailType[];
@@ -20,8 +21,8 @@ interface IPhoto {
 }
 
 export const SEEMYPHOTOS_QUERY = gql`
-  query seeMyPhotos($userId: Int!) {
-    seeMyPhotos(userId: $userId) {
+  query seeMyPhotos {
+    seeMyPhotos {
       user {
         username
       }
@@ -54,23 +55,25 @@ const UPLOAD_MUTATION = gql`
   }
 `;
 
+const Image = styled.image`
+  height: 100px;
+`;
+
 function KoreaSplite({ data, userId }: IDetailRegionType) {
   const [myRegion, setMyRegion] = useRecoilState(myRegionAtom);
+  const [imageFile, setImageFile] = useRecoilState(selectImageAtom);
 
-  console.log(userId);
-  const onCompleted = () => {};
+  const { data: myPhotos } = useQuery(SEEMYPHOTOS_QUERY);
 
-  const { data: myPhotos } = useQuery(SEEMYPHOTOS_QUERY, {
-    variables: {
-      userId,
-    },
-    onCompleted,
-  });
-
-  const imageFile = useRecoilValue(selectImageAtom);
+  console.log(myPhotos);
 
   const handleRegionClick = (region: IDetailType, width: any, height: any) => {
-    if (loading) return;
+    console.log(`region : ${region.name}`);
+    console.log(`width : ${width}`);
+    console.log(`height : ${height}`);
+
+    if (!imageFile) return;
+
     const { path, transform, name } = region;
 
     uploadPhotoMutation({
@@ -79,16 +82,23 @@ function KoreaSplite({ data, userId }: IDetailRegionType) {
   };
 
   const uploadFinish = (data: any) => {
+    setImageFile("");
     console.log(data);
   };
 
-  const [uploadPhotoMutation, { loading }] = useMutation(UPLOAD_MUTATION, {
+  const [uploadPhotoMutation] = useMutation(UPLOAD_MUTATION, {
     onCompleted: uploadFinish,
+    refetchQueries: [
+      {
+        query: SEEMYPHOTOS_QUERY,
+      },
+    ],
   });
 
   useEffect(() => {
     myPhotos?.seeMyPhotos.map((photo: any) => {
       setMyRegion((data) => [...new Set([...data, photo.region])]);
+      return "";
     });
   }, [myPhotos?.seeMyPhotos, setMyRegion]);
 
@@ -112,7 +122,7 @@ function KoreaSplite({ data, userId }: IDetailRegionType) {
             width="1"
             height="1"
           >
-            <image href={photo.file} />;
+            <Image href={photo.file} />
           </pattern>
         ))}
       </defs>
@@ -127,8 +137,8 @@ function KoreaSplite({ data, userId }: IDetailRegionType) {
               onClick={(e) =>
                 handleRegionClick(
                   res,
-                  e.currentTarget.getBoundingClientRect().width,
-                  e.currentTarget.getBoundingClientRect().height
+                  e.currentTarget.getBBox().width,
+                  e.currentTarget.getBBox().height
                 )
               }
             />
@@ -145,8 +155,8 @@ function KoreaSplite({ data, userId }: IDetailRegionType) {
               onClick={(e) =>
                 handleRegionClick(
                   res,
-                  e.currentTarget.getBoundingClientRect().width,
-                  e.currentTarget.getBoundingClientRect().height
+                  e.currentTarget.getBBox().width,
+                  e.currentTarget.getBBox().height
                 )
               }
             />

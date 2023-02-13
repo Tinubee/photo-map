@@ -41,7 +41,7 @@ function KakaoAuth() {
     const {
       login: { ok, error, token },
     } = data;
-
+    console.log(data);
     if (ok && token) {
       logUserIn(token);
       navigate("/");
