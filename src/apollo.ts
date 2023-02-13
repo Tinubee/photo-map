@@ -16,6 +16,7 @@ export const logUserOut = (navigate: NavigateFunction) => {
   localStorage.removeItem(TOKEN);
   localStorage.removeItem("com.naver.nid.access_token");
   localStorage.removeItem("com.naver.nid.oauth.state_token");
+  console.log("hi");
   isLoggedInVar(false);
   navigate("/", { replace: true });
 };

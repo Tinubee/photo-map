@@ -1,33 +1,23 @@
-import { useRecoilState } from "recoil";
-import { mapTypeAtom, selectRegionAtom } from "../atoms";
-import PictureMap from "../components/maps/types/PictureMap";
-import GeneralMap from "../components/maps/types/GeneralMap";
 import PageTitle from "../components/PageTitle";
-import Button from "../components/Button";
 import styled from "styled-components";
+import KoreaSplits from "../components/maps/KoreaSplits";
+import { KoreaDetail } from "../MapDetail";
+import { isLoggedInVar } from "../apollo";
+import { useReactiveVar } from "@apollo/client";
 
 const Wrapper = styled.div`
+  display: flex;
   margin-top: 100px;
+  justify-content: space-around;
 `;
 
 function Home() {
-  const [mapType, setMapType] = useRecoilState(mapTypeAtom);
-  const [selectRegion, setSelectRegion] = useRecoilState(selectRegionAtom);
-
-  const clickReturnAllRegion = () => {
-    setSelectRegion("");
-  };
+  const isLoggedIn = useReactiveVar(isLoggedInVar);
 
   return (
     <Wrapper>
       <PageTitle title="Home"></PageTitle>
-      <Button onClick={() => setMapType(!mapType)}>
-        {mapType ? "일반지도 보기" : "사진지도 보기"}
-      </Button>
-      {selectRegion === "" || mapType ? null : (
-        <Button onClick={clickReturnAllRegion}>전체 지도 보기</Button>
-      )}
-      {mapType ? <PictureMap /> : <GeneralMap />}
+      {isLoggedIn ? <KoreaSplits data={KoreaDetail} /> : ""}
     </Wrapper>
   );
 }

@@ -7,6 +7,7 @@ const Layout = styled.div`
   justify-content: center;
   height: 100vh;
   background-color: ${(props) => props.theme.bgColor};
+  margin-top: 100px;
 `;
 
 export default Layout;

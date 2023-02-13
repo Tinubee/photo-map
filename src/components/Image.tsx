@@ -15,17 +15,18 @@ interface INameType {
   transform?: string;
 }
 
+export const imageAnimation = {
+  start: {
+    opacity: 0,
+  },
+  end: {
+    opacity: 1,
+  },
+};
+
 const Image = ({ path, file, location, transform }: INameType) => {
   const handlePictureClick = () => {};
   console.log(transform);
-  const imageAnimation = {
-    start: {
-      opacity: 0,
-    },
-    end: {
-      opacity: 1,
-    },
-  };
 
   return (
     <CImage

@@ -5,11 +5,18 @@ import { selectRegionAtom } from "../../atoms";
 import { IMapType } from "../../MapName";
 import { MapSvg } from "./types/PictureMap";
 
-export const Path = styled(motion.path)`
+export const ImagePath = styled(motion.path)`
   stroke-linejoin: round;
   stroke: #ffffff;
   stroke-width: 1;
   cursor: pointer;
+  :hover {
+    stroke-width: 3;
+    stroke: ${(props) => props.theme.mapHoverColor};
+  }
+`;
+
+export const Path = styled(ImagePath)`
   :hover {
     fill: ${(props) => props.theme.mapHoverColor};
   }

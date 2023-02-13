@@ -5,8 +5,7 @@ import { useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { selectImageAtom } from "../atoms";
-import { useSeeUser } from "../components/hooks/userProfile";
-import KoreaSplite from "../components/maps/KoreaSplite";
+import KoreaSplits from "../components/maps/KoreaSplits";
 import { Container } from "../components/maps/types/PictureMap";
 import PageTitle from "../components/PageTitle";
 import { KoreaDetail } from "../MapDetail";
@@ -76,8 +75,6 @@ const PreviewImage = styled.div<{ image: any }>`
 function MyKoreaMap() {
   const { username } = useParams();
 
-  const { data } = useSeeUser(username!);
-
   const [imgFile, setImgFile] = useRecoilState(selectImageAtom);
   const [imageUrl, setImageUrl] = useState("");
   const handleDownLoadMap = () => {
@@ -110,7 +107,7 @@ function MyKoreaMap() {
           </Label>
         </Form>
         <Map>
-          <KoreaSplite data={KoreaDetail} userId={data?.seeProfile.id} />
+          <KoreaSplits data={KoreaDetail} />
         </Map>
       </Wrapper>
     </Container>

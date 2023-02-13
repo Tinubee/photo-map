@@ -27,7 +27,7 @@ export const Container = styled.div`
 
 export const MapSvg = styled.svg`
   height: 100vh;
-  width: 50vw;
+  width: 45vw;
   cursor: pointer;
   border: 1px solid ${(props) => props.theme.borderColor};
   border-radius: 10px;
