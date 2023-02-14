@@ -1,4 +1,4 @@
-import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import { IDetailType } from "../../MapDetail";
 import { ImagePath, Path, svgAnimation } from "./Korea";
 import { MapSvg } from "./types/PictureMap";
@@ -7,8 +7,9 @@ import { myRegionAtom, selectImageAtom } from "../../atoms";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { imageAnimation } from "../Image";
-import { motion } from "framer-motion";
 import { useMatch } from "react-router-dom";
+import Feed from "../photos/Feed";
+import { SEEMYPHOTOS_QUERY, useSeeMyPhotos } from "../hooks/photo/seeMyPhotos";
 
 interface IDetailRegionType {
   data: IDetailType[];
@@ -21,21 +22,6 @@ interface IPhoto {
   region: string;
   transform?: string;
 }
-
-export const SEEMYPHOTOS_QUERY = gql`
-  query seeMyPhotos {
-    seeMyPhotos {
-      user {
-        username
-      }
-      id
-      file
-      region
-      transform
-      path
-    }
-  }
-`;
 
 export const SEEMYREGIONPHOTOS_QUERY = gql`
   query seeMyRegionPhoto($region: String!) {
@@ -73,28 +59,8 @@ const UPLOAD_MUTATION = gql`
 `;
 
 const Image = styled.image`
-  height: 100px;
+  height: 150px;
 `;
-
-const container = {
-  hidden: { opacity: 1, scale: 0 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      delayChildren: 0.3,
-      staggerChildren: 0.2,
-    },
-  },
-};
-
-const item = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-  },
-};
 
 function KoreaSplits({ data }: IDetailRegionType) {
   const homeMatch = useMatch("");
@@ -102,7 +68,7 @@ function KoreaSplits({ data }: IDetailRegionType) {
   const [imageFile, setImageFile] = useRecoilState(selectImageAtom);
   const [selectRegion, setSelectRegion] = useState("");
 
-  const { data: myPhotos } = useQuery(SEEMYPHOTOS_QUERY);
+  const { data: myPhotos } = useSeeMyPhotos();
 
   const [RegionSetting, { data: myRegionPhotos }] = useLazyQuery(
     SEEMYREGIONPHOTOS_QUERY,
@@ -111,12 +77,13 @@ function KoreaSplits({ data }: IDetailRegionType) {
     }
   );
 
-  const handleImageClick = (name: string) => {
+  const handleImageClick = (region: IDetailType) => {
+    const { name } = region;
     if (homeMatch?.pathname) {
       setSelectRegion(name);
       RegionSetting();
     } else {
-      console.log("hljkhlashdgldskjh");
+      if (!imageFile) return;
     }
   };
 
@@ -136,7 +103,6 @@ function KoreaSplits({ data }: IDetailRegionType) {
 
   const uploadFinish = (data: any) => {
     setImageFile("");
-    console.log(data);
   };
 
   const [uploadPhotoMutation] = useMutation(UPLOAD_MUTATION, {
@@ -220,51 +186,15 @@ function KoreaSplits({ data }: IDetailRegionType) {
                 key={res.id}
                 d={res.path}
                 transform={res?.transform}
-                onClick={() => handleImageClick(res.name)}
+                onClick={() => handleImageClick(res)}
               />
             );
           })}
         </g>
       </MapSvg>
-      {homeMatch?.pathname && (
-        <PhotoBoxContainer>
-          <Container variants={container} initial="hidden" animate="visible">
-            {myRegionPhotos?.seeMyRegionPhoto?.map(
-              (photo: any, index: number) => {
-                return (
-                  <PhotoBox variants={item} key={index} src={photo?.file} />
-                );
-              }
-            )}
-          </Container>
-        </PhotoBoxContainer>
-      )}
+      {homeMatch?.pathname && <Feed myRegionPhotos={myRegionPhotos} />}
     </>
   );
 }
 
 export default KoreaSplits;
-
-const Container = styled(motion.div)`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  gap: 10px;
-`;
-
-const PhotoBoxContainer = styled(motion.div)`
-  height: 100vh;
-  width: 45vw;
-  border-radius: 10px;
-  border: 1px solid ${(props) => props.theme.borderColor};
-  padding: 10px;
-  overflow: auto;
-`;
-
-const PhotoBox = styled(motion.img)`
-  width: 100%;
-  height: 100%;
-  border: 1px solid ${(props) => props.theme.borderColor};
-  object-fit: contain;
-  border-radius: 10px;
-`;
