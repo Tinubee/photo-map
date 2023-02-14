@@ -99,9 +99,67 @@ function Profile() {
           <Link to={""}>See Profile</Link>
         </ButtonContainer>
       </ProfileCard>
-      <ProfileCard></ProfileCard>
+      <ProfileCard>
+        <StempContainer>
+          {[
+            "서울특별시",
+            "강원도",
+            "부산광역시",
+            "대구광역시",
+            "대전광역시",
+            "인천광역시",
+            "광주광역시",
+            "울산광역시",
+            "세종특별자치시",
+            "경기도",
+            "충청북도",
+            "충청남도",
+            "전라북도",
+            "전라남도",
+            "경상북도",
+            "경상남도",
+            "제주특별자치도",
+          ].map((name) => {
+            return (
+              <Stemp key={name}>
+                <StempImage />
+                <StempText>{name}</StempText>
+              </Stemp>
+            );
+          })}
+        </StempContainer>
+      </ProfileCard>
     </Container>
   );
 }
 
 export default Profile;
+
+const StempContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  text-align: center;
+`;
+const Stemp = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+const StempImage = styled.div`
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: tomato;
+`;
+const StempText = styled.span`
+  background-color: ${(props) => props.theme.stempLabelbgColor};
+  color: ${(props) => props.theme.textColor};
+  margin-top: 4px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 6px;
+`;

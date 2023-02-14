@@ -10,5 +10,6 @@ declare module "styled-components" {
     mapHoverColor: string;
     menuBoxShadowColor: string;
     menuBoxShadowColor2: string;
+    stempLabelbgColor: string;
   }
 }

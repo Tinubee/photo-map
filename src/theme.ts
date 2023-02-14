@@ -9,6 +9,7 @@ export const darkTheme: DefaultTheme = {
   mapHoverColor: "#ffad00",
   menuBoxShadowColor: "rgba(255, 255, 255, 0.19)",
   menuBoxShadowColor2: "rgba(255, 255, 255, 0.23)",
+  stempLabelbgColor: "#6b7280",
 };
 
 export const lightTheme: DefaultTheme = {
@@ -20,4 +21,5 @@ export const lightTheme: DefaultTheme = {
   mapHoverColor: "#ffad00",
   menuBoxShadowColor: "rgba(0, 0, 0, 0.19)",
   menuBoxShadowColor2: "rgba(0, 0, 0, 0.23)",
+  stempLabelbgColor: "#f3f4f6",
 };
