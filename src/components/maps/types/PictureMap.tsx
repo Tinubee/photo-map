@@ -32,6 +32,7 @@ export const MapSvg = styled.svg`
   border: 1px solid ${(props) => props.theme.borderColor};
   border-radius: 10px;
   padding: 20px;
+  background-color: #8ab4f8;
 `;
 
 function PictureMap() {

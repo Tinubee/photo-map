@@ -56,6 +56,10 @@ export const Tab = styled.div`
   }
 `;
 
+export const goScrollTop = () => {
+  window.scrollTo({ top: 0 });
+};
+
 function Header() {
   const homeMatch = useMatch("");
   const aboutMatch = useMatch("about");
@@ -65,12 +69,12 @@ function Header() {
         <Logo />
       </Link>
       <Tabs>
-        <Tab>
+        <Tab onClick={goScrollTop}>
           <Link to={"/"}>
             Home {homeMatch?.pathname && <Line layoutId="line" />}
           </Link>
         </Tab>
-        <Tab>
+        <Tab onClick={goScrollTop}>
           <Link to={"/about"}>
             About {aboutMatch?.pathname && <Line layoutId="line" />}
           </Link>
