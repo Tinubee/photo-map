@@ -7,7 +7,7 @@ export const isDarkAtom = atom({
 
 export const selectRegionAtom = atom({
   key: "selectRegion",
-  default: "",
+  default: "서울특별시",
 });
 
 //true:사진지도 , false:일반지도

@@ -9,6 +9,7 @@ const Wrapper = styled.div`
   display: flex;
   margin-top: 100px;
   justify-content: space-around;
+  height: 150vh;
 `;
 
 function Home() {

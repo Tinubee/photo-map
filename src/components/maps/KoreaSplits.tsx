@@ -3,8 +3,8 @@ import { IDetailType } from "../../MapDetail";
 import { ImagePath, Path, svgAnimation } from "./Korea";
 import { MapSvg } from "./types/PictureMap";
 import { useRecoilState } from "recoil";
-import { myRegionAtom, selectImageAtom } from "../../atoms";
-import { useEffect, useState } from "react";
+import { myRegionAtom, selectImageAtom, selectRegionAtom } from "../../atoms";
+import { useEffect } from "react";
 import styled from "styled-components";
 import { imageAnimation } from "../Image";
 import { useMatch } from "react-router-dom";
@@ -34,6 +34,8 @@ export const SEEMYREGIONPHOTOS_QUERY = gql`
       region
       transform
       path
+      isLiked
+      likes
     }
   }
 `;
@@ -63,46 +65,71 @@ const Image = styled.image`
 `;
 
 function KoreaSplits({ data }: IDetailRegionType) {
+  const PHOTO_MAX_COUNT = 9;
   const homeMatch = useMatch("");
   const [myRegion, setMyRegion] = useRecoilState(myRegionAtom);
   const [imageFile, setImageFile] = useRecoilState(selectImageAtom);
-  const [selectRegion, setSelectRegion] = useState("");
+  const [selectRegion, setSelectRegion] = useRecoilState(selectRegionAtom);
 
   const { data: myPhotos } = useSeeMyPhotos();
 
-  const [RegionSetting, { data: myRegionPhotos }] = useLazyQuery(
+  const [RegionSetting, { data: myRegionPhotos, refetch }] = useLazyQuery(
     SEEMYREGIONPHOTOS_QUERY,
     {
       variables: { region: selectRegion },
     }
   );
 
-  const handleImageClick = (region: IDetailType) => {
-    const { name } = region;
-    if (homeMatch?.pathname) {
-      setSelectRegion(name);
-      RegionSetting();
-    } else {
-      if (!imageFile) return;
+  const handleImageClick = async (region: IDetailType) => {
+    const { path, transform, name } = region;
+    setSelectRegion(name);
+
+    const { data } = await RegionSetting();
+
+    if (!homeMatch) {
+      if (!imageFile) {
+        console.log("이미지 파일 불러와야함");
+        return;
+      }
+
+      if (data.seeMyRegionPhoto.length >= PHOTO_MAX_COUNT) {
+        console.log("사진은 최대 9개");
+        setImageFile("");
+        return;
+      }
+
+      uploadPhotoMutation({
+        variables: { file: imageFile, path, transform, region: name },
+      });
     }
   };
 
-  const handleRegionClick = (region: IDetailType, width: any, height: any) => {
-    console.log(`region : ${region.name}`);
-    console.log(`width : ${width}`);
-    console.log(`height : ${height}`);
-    setSelectRegion("");
-    if (!imageFile) return;
-
+  const handleRegionClick = async (region: IDetailType) => {
     const { path, transform, name } = region;
+    setSelectRegion(name);
 
-    uploadPhotoMutation({
-      variables: { file: imageFile, path, transform, region: name },
-    });
+    const { data } = await RegionSetting();
+
+    if (!homeMatch) {
+      if (!imageFile) {
+        console.log("이미지 파일 불러와야함");
+        return;
+      }
+
+      if (data.seeMyRegionPhoto.length >= PHOTO_MAX_COUNT) {
+        console.log("사진은 최대 9개");
+        return;
+      }
+
+      uploadPhotoMutation({
+        variables: { file: imageFile, path, transform, region: name },
+      });
+    }
   };
 
-  const uploadFinish = (data: any) => {
+  const uploadFinish = async (data: any) => {
     setImageFile("");
+    refetch();
   };
 
   const [uploadPhotoMutation] = useMutation(UPLOAD_MUTATION, {
@@ -119,7 +146,8 @@ function KoreaSplits({ data }: IDetailRegionType) {
       setMyRegion((data) => [...new Set([...data, photo.region])]);
       return "";
     });
-  }, [myPhotos?.seeMyPhotos, setMyRegion]);
+    RegionSetting();
+  }, [RegionSetting, myPhotos?.seeMyPhotos, setMyRegion]);
 
   return (
     <>
@@ -161,13 +189,7 @@ function KoreaSplits({ data }: IDetailRegionType) {
                 key={res.id}
                 d={res.path}
                 transform={res?.transform}
-                onClick={(e) =>
-                  handleRegionClick(
-                    res,
-                    e.currentTarget.getBBox().width,
-                    e.currentTarget.getBBox().height
-                  )
-                }
+                onClick={(e) => handleRegionClick(res)}
               />
             ) : (
               <ImagePath
@@ -192,7 +214,9 @@ function KoreaSplits({ data }: IDetailRegionType) {
           })}
         </g>
       </MapSvg>
-      {homeMatch?.pathname && <Feed myRegionPhotos={myRegionPhotos} />}
+      {homeMatch?.pathname && (
+        <Feed myRegionPhotos={myRegionPhotos} region={selectRegion} />
+      )}
     </>
   );
 }

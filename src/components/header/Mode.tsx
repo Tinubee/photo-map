@@ -35,6 +35,7 @@ export const Icon = styled.div<{ mode: string }>`
   background-color: ${(props) => props.theme.bgColor};
   transition: background-color 0.5s, color 0.5s;
   padding: 25px;
+  cursor: pointer;
   color: ${(props) =>
     props.mode === "normal" ? props.theme.icontextColor : "#b10000"};
   :hover {
