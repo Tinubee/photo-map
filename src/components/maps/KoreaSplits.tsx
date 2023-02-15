@@ -73,7 +73,6 @@ const Image = styled.image`
 function KoreaSplits({ data }: IDetailRegionType) {
   const PHOTO_MAX_COUNT = 9;
   const { userId } = useParams();
-  const homeMatch = useMatch("");
   const userMapMatch = useMatch("user/:userId/koreamap");
   const [myRegion, setMyRegion] = useRecoilState(myRegionAtom);
   const [imageFile, setImageFile] = useRecoilState(selectImageAtom);
@@ -95,7 +94,7 @@ function KoreaSplits({ data }: IDetailRegionType) {
 
     const { data } = await RegionSetting();
 
-    if (homeMatch || userMapMatch) return;
+    if (userMapMatch) return;
 
     if (!imageFile) {
       console.log("이미지 파일 불러와야함");
@@ -119,7 +118,7 @@ function KoreaSplits({ data }: IDetailRegionType) {
 
     const { data } = await RegionSetting();
 
-    if (homeMatch || userMapMatch) return;
+    if (userMapMatch) return;
 
     if (!imageFile) {
       console.log("이미지 파일 불러와야함");
@@ -223,9 +222,6 @@ function KoreaSplits({ data }: IDetailRegionType) {
           })}
         </g>
       </MapSvg>
-      {homeMatch?.pathname && (
-        <Feed myRegionPhotos={myRegionPhotos} region={selectRegion} />
-      )}
       {userMapMatch?.pathname && (
         <Feed myRegionPhotos={myRegionPhotos} region={selectRegion} />
       )}
