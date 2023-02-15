@@ -2,14 +2,19 @@ import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import { IDetailType } from "../../MapDetail";
 import { ImagePath, Path, svgAnimation } from "./Korea";
 import { MapSvg } from "./types/PictureMap";
-import { useRecoilState } from "recoil";
-import { myRegionAtom, selectImageAtom, selectRegionAtom } from "../../atoms";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+  hoverRegionAtom,
+  myRegionAtom,
+  selectImageAtom,
+  selectRegionAtom,
+} from "../../atoms";
 import { useEffect } from "react";
 import styled from "styled-components";
 import { imageAnimation } from "../Image";
-import { useMatch } from "react-router-dom";
+import { useMatch, useParams } from "react-router-dom";
 import Feed from "../photos/Feed";
-import { SEEMYPHOTOS_QUERY, useSeeMyPhotos } from "../hooks/photo/seeMyPhotos";
+import { useSeeUserPhotos } from "../hooks/photo/seeUserPhotos";
 
 interface IDetailRegionType {
   data: IDetailType[];
@@ -23,13 +28,14 @@ interface IPhoto {
   transform?: string;
 }
 
-export const SEEMYREGIONPHOTOS_QUERY = gql`
-  query seeMyRegionPhoto($region: String!) {
-    seeMyRegionPhoto(region: $region) {
+export const SEEUSERREGIONPHOTOS_QUERY = gql`
+  query seeUserRegionPhotos($region: String!, $userId: Int!) {
+    seeUserRegionPhotos(region: $region, userId: $userId) {
       user {
         username
       }
       id
+      userId
       file
       region
       transform
@@ -66,17 +72,20 @@ const Image = styled.image`
 
 function KoreaSplits({ data }: IDetailRegionType) {
   const PHOTO_MAX_COUNT = 9;
+  const { userId } = useParams();
   const homeMatch = useMatch("");
+  const userMapMatch = useMatch("user/:userId/koreamap");
   const [myRegion, setMyRegion] = useRecoilState(myRegionAtom);
   const [imageFile, setImageFile] = useRecoilState(selectImageAtom);
   const [selectRegion, setSelectRegion] = useRecoilState(selectRegionAtom);
+  const sethoverRegion = useSetRecoilState(hoverRegionAtom);
 
-  const { data: myPhotos } = useSeeMyPhotos();
+  const { data: myPhotos } = useSeeUserPhotos(+userId!);
 
-  const [RegionSetting, { data: myRegionPhotos, refetch }] = useLazyQuery(
-    SEEMYREGIONPHOTOS_QUERY,
+  const [RegionSetting, { data: myRegionPhotos }] = useLazyQuery(
+    SEEUSERREGIONPHOTOS_QUERY,
     {
-      variables: { region: selectRegion },
+      variables: { region: selectRegion, userId: +userId! },
     }
   );
 
@@ -86,22 +95,22 @@ function KoreaSplits({ data }: IDetailRegionType) {
 
     const { data } = await RegionSetting();
 
-    if (!homeMatch) {
-      if (!imageFile) {
-        console.log("이미지 파일 불러와야함");
-        return;
-      }
+    if (homeMatch || userMapMatch) return;
 
-      if (data.seeMyRegionPhoto.length >= PHOTO_MAX_COUNT) {
-        console.log("사진은 최대 9개");
-        setImageFile("");
-        return;
-      }
-
-      uploadPhotoMutation({
-        variables: { file: imageFile, path, transform, region: name },
-      });
+    if (!imageFile) {
+      console.log("이미지 파일 불러와야함");
+      return;
     }
+
+    if (data.seeUserRegionPhotos.length >= PHOTO_MAX_COUNT) {
+      console.log("사진은 최대 9개");
+      setImageFile("");
+      return;
+    }
+
+    uploadPhotoMutation({
+      variables: { file: imageFile, path, transform, region: name },
+    });
   };
 
   const handleRegionClick = async (region: IDetailType) => {
@@ -110,44 +119,40 @@ function KoreaSplits({ data }: IDetailRegionType) {
 
     const { data } = await RegionSetting();
 
-    if (!homeMatch) {
-      if (!imageFile) {
-        console.log("이미지 파일 불러와야함");
-        return;
-      }
+    if (homeMatch || userMapMatch) return;
 
-      if (data.seeMyRegionPhoto.length >= PHOTO_MAX_COUNT) {
-        console.log("사진은 최대 9개");
-        return;
-      }
-
-      uploadPhotoMutation({
-        variables: { file: imageFile, path, transform, region: name },
-      });
+    if (!imageFile) {
+      console.log("이미지 파일 불러와야함");
+      return;
     }
+
+    if (data.seeUserRegionPhotos.length >= PHOTO_MAX_COUNT) {
+      console.log("사진은 최대 9개");
+      return;
+    }
+
+    uploadPhotoMutation({
+      variables: { file: imageFile, path, transform, region: name },
+    });
   };
 
   const uploadFinish = async (data: any) => {
     setImageFile("");
-    refetch();
+    window.location.reload();
   };
 
   const [uploadPhotoMutation] = useMutation(UPLOAD_MUTATION, {
     onCompleted: uploadFinish,
-    refetchQueries: [
-      {
-        query: SEEMYPHOTOS_QUERY,
-      },
-    ],
   });
 
   useEffect(() => {
-    myPhotos?.seeMyPhotos.map((photo: any) => {
+    setMyRegion([]);
+    myPhotos?.seeUserPhotos?.map((photo: any) => {
       setMyRegion((data) => [...new Set([...data, photo.region])]);
       return "";
     });
     RegionSetting();
-  }, [RegionSetting, myPhotos?.seeMyPhotos, setMyRegion]);
+  }, [RegionSetting, myPhotos?.seeUserPhotos, setMyRegion]);
 
   return (
     <>
@@ -161,7 +166,7 @@ function KoreaSplits({ data }: IDetailRegionType) {
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
-          {myPhotos?.seeMyPhotos?.map((photo: IPhoto) => (
+          {myPhotos?.seeUserPhotos?.map((photo: IPhoto) => (
             <pattern
               key={photo.id}
               id={`imgpattern_${photo.region}`}
@@ -190,6 +195,8 @@ function KoreaSplits({ data }: IDetailRegionType) {
                 d={res.path}
                 transform={res?.transform}
                 onClick={(e) => handleRegionClick(res)}
+                onHoverStart={() => sethoverRegion(res.name)}
+                onHoverEnd={() => sethoverRegion("")}
               />
             ) : (
               <ImagePath
@@ -209,12 +216,17 @@ function KoreaSplits({ data }: IDetailRegionType) {
                 d={res.path}
                 transform={res?.transform}
                 onClick={() => handleImageClick(res)}
+                onHoverStart={() => sethoverRegion(res.name)}
+                onHoverEnd={() => sethoverRegion("")}
               />
             );
           })}
         </g>
       </MapSvg>
       {homeMatch?.pathname && (
+        <Feed myRegionPhotos={myRegionPhotos} region={selectRegion} />
+      )}
+      {userMapMatch?.pathname && (
         <Feed myRegionPhotos={myRegionPhotos} region={selectRegion} />
       )}
     </>

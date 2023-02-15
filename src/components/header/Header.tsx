@@ -7,7 +7,7 @@ import Mode from "./Mode";
 
 export const Line = styled(motion.span)`
   position: absolute;
-  width: 50px;
+  width: 70%;
   height: 2px;
   bottom: -5px;
   left: 0;
@@ -24,6 +24,7 @@ const HeaderContainer = styled.div`
   width: 100%;
   z-index: 99;
   background-color: ${(props) => props.theme.bgColor};
+  border-bottom: 1px solid ${(props) => props.theme.borderColor};
   top: 0;
   transition: 0.5s;
   user-select: none;
@@ -35,7 +36,7 @@ const HeaderContainer = styled.div`
 const Tabs = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
+  text-align: center;
 `;
 export const Tab = styled.div`
   position: relative;
@@ -56,27 +57,33 @@ export const Tab = styled.div`
   }
 `;
 
-export const goScrollTop = () => {
-  window.scrollTo({ top: 0 });
+export const goScrollTop = (mode: boolean) => {
+  window.scrollTo({ top: 0, behavior: mode ? "auto" : "smooth" });
 };
 
 function Header() {
   const homeMatch = useMatch("");
-  const aboutMatch = useMatch("about");
+  const communityMatch = useMatch("community");
+  const likeMatch = useMatch("like");
   return (
     <HeaderContainer>
       <Link to={"/"}>
         <Logo />
       </Link>
       <Tabs>
-        <Tab onClick={goScrollTop}>
+        <Tab onClick={() => goScrollTop(true)}>
           <Link to={"/"}>
             Home {homeMatch?.pathname && <Line layoutId="line" />}
           </Link>
         </Tab>
-        <Tab onClick={goScrollTop}>
-          <Link to={"/about"}>
-            About {aboutMatch?.pathname && <Line layoutId="line" />}
+        <Tab onClick={() => goScrollTop(true)}>
+          <Link to={"/community"}>
+            Community {communityMatch?.pathname && <Line layoutId="line" />}
+          </Link>
+        </Tab>
+        <Tab onClick={() => goScrollTop(true)}>
+          <Link to={"/like"}>
+            Like Photo {likeMatch?.pathname && <Line layoutId="line" />}
           </Link>
         </Tab>
       </Tabs>

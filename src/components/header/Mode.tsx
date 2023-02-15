@@ -126,8 +126,8 @@ function Mode() {
       {showMenu ? (
         <SelectMenu>
           <Link to={`/user/${data?.me?.username}/profile`}>내 프로필</Link>
-          <Link to={`/user/${data?.me?.username}/mykoreamap`}>국내 지도</Link>
-          <Link to={`/user/${data?.me?.username}/myworldmap`}>해외 지도</Link>
+          <Link to={`/user/${data?.me?.id}/mykoreamap`}>국내 지도</Link>
+          <Link to={`/user/${data?.me?.id}/myworldmap`}>해외 지도</Link>
           <Link to="/login" onClick={() => logUserOut(navigate)}>
             로그아웃
           </Link>

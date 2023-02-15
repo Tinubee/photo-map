@@ -23,6 +23,7 @@ import { Path, svgAnimation, Text, textAnimation } from "../Korea";
 
 export const Container = styled.div`
   display: flex;
+  margin-top: 10px;
 `;
 
 export const MapSvg = styled.svg`

@@ -8,14 +8,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import styled from "styled-components";
+import { goScrollTop } from "../header/Header";
 import { Icon } from "../header/Mode";
 import Photo from "./Photo";
 
 const container = {
-  hidden: { opacity: 1, scale: 0 },
+  hidden: { opacity: 1 },
   visible: {
     opacity: 1,
-    scale: 1,
     transition: {
       delayChildren: 0.3,
       staggerChildren: 0.2,
@@ -52,6 +52,7 @@ function Feed({ myRegionPhotos, region }: any) {
   const [photo, setPhoto] = useState<any>(null);
 
   const handlePhotoClick = (photo: any, index: string) => {
+    goScrollTop(false);
     setId(index + 1);
     setPhoto(photo);
   };
@@ -104,10 +105,10 @@ function Feed({ myRegionPhotos, region }: any) {
           <RegionName>{region}</RegionName>
         </Region>
         <Container variants={container} initial="hidden" animate="visible">
-          {myRegionPhotos?.seeMyRegionPhoto?.length === 0 ? (
+          {myRegionPhotos?.seeUserRegionPhotos?.length === 0 ? (
             <PhotoBox variants={item}></PhotoBox>
           ) : (
-            myRegionPhotos?.seeMyRegionPhoto?.map(
+            myRegionPhotos?.seeUserRegionPhotos?.map(
               (photo: any, index: string) => {
                 return (
                   <PhotoBox
@@ -178,7 +179,7 @@ const RegionName = styled.span`
 const Container = styled(motion.div)`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
   gap: 10px;
   height: 100%;
   margin-top: 20px;
@@ -188,14 +189,12 @@ const PhotoBoxContainer = styled(motion.div)`
   height: 100vh;
   width: 45vw;
   border-radius: 10px;
-  border: 1px solid ${(props) => props.theme.borderColor};
   padding: 10px;
-  overflow: hidden;
 `;
 
 const PhotoBox = styled(motion.div)`
   width: 100%;
-  height: 280px;
+  height: 300px;
   border: 1px solid ${(props) => props.theme.borderColor};
   border-radius: 10px;
   cursor: pointer;
@@ -231,13 +230,12 @@ const Top = styled.div`
 `;
 
 const Overlay = styled(motion.div)`
-  height: 100vh;
+  height: 200vh;
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.5);
   position: absolute;
   display: flex;
   justify-content: center;
-  align-items: center;
 `;
 
 const Box = styled(motion.div)`

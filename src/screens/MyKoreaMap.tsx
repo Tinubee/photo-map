@@ -1,16 +1,16 @@
 import { faDownload, faImage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { selectImageAtom } from "../atoms";
+import { hoverRegionAtom, selectImageAtom } from "../atoms";
+import { useSeeMe } from "../components/hooks/myProfile";
 import KoreaSplits from "../components/maps/KoreaSplits";
 import { Container } from "../components/maps/types/PictureMap";
 import PageTitle from "../components/PageTitle";
 import { KoreaDetail } from "../MapDetail";
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   text-align: center;
   padding: 100px;
   margin: auto;
@@ -27,7 +27,7 @@ const Title = styled.div`
   }
 `;
 
-const Map = styled.div`
+export const Map = styled.div`
   display: flex;
 `;
 
@@ -72,10 +72,26 @@ const PreviewImage = styled.div<{ image: any }>`
   background-position: center;
 `;
 
+const Region = styled.div`
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  width: 200px;
+  position: absolute;
+`;
+
+const RegionText = styled.div`
+  font-size: 28px;
+  color: #4e5255;
+`;
+
 function MyKoreaMap() {
-  const { username } = useParams();
+  const { data } = useSeeMe();
 
   const [imgFile, setImgFile] = useRecoilState(selectImageAtom);
+  const hoverRegion = useRecoilValue(hoverRegionAtom);
   const [imageUrl, setImageUrl] = useState("");
   const handleDownLoadMap = () => {
     console.log("download click");
@@ -93,7 +109,7 @@ function MyKoreaMap() {
       <PageTitle title="MyKoreaMap"></PageTitle>
       <Wrapper>
         <Title>
-          {username}님의 국내 지도
+          {data?.me?.username}님의 국내 지도
           <FontAwesomeIcon icon={faDownload} onClick={handleDownLoadMap} />
         </Title>
         <Form>
@@ -106,6 +122,9 @@ function MyKoreaMap() {
             <Input type="file" accept="image/*" onChange={saveImgFile} />
           </Label>
         </Form>
+        <Region>
+          <RegionText>{hoverRegion}</RegionText>
+        </Region>
         <Map>
           <KoreaSplits data={KoreaDetail} />
         </Map>

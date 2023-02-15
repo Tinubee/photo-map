@@ -4,12 +4,14 @@ import Root from "./Root";
 import Login from "./screens/Login";
 import NotFound from "./screens/NotFound";
 import SignUp from "./screens/SignUp";
-import About from "./screens/About";
 import Profile from "./screens/Profile";
 import KakaoAuth from "./components/auth/social-login/KakaoAuth";
 import MyKoreaMap from "./screens/MyKoreaMap";
 import MyWorldMap from "./screens/MyWorldMap";
 import EditProfile from "./screens/EditProfile";
+import UserKoreaMap from "./screens/UserKoreaMap";
+import Community from "./screens/Community";
+import Like from "./screens/Like";
 
 const router = createBrowserRouter([
   {
@@ -25,8 +27,12 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "about",
-        element: <About />,
+        path: "community",
+        element: <Community />,
+      },
+      {
+        path: "like",
+        element: <Like />,
       },
       {
         path: "signup",
@@ -39,6 +45,11 @@ const router = createBrowserRouter([
             path: "profile",
             element: <Profile />,
           },
+        ],
+      },
+      {
+        path: "user/:userId",
+        children: [
           {
             path: "edit",
             element: <EditProfile />,
@@ -50,6 +61,10 @@ const router = createBrowserRouter([
           {
             path: "myworldmap",
             element: <MyWorldMap />,
+          },
+          {
+            path: "koreamap",
+            element: <UserKoreaMap />,
           },
         ],
       },

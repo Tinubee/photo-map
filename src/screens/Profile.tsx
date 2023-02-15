@@ -93,10 +93,8 @@ function Profile() {
           </Info>
         </ProfileInfo>
         <ButtonContainer>
-          <Link to={`/user/${data?.seeProfile?.username}/edit`}>
-            Edit Profile
-          </Link>
-          <Link to={""}>See Profile</Link>
+          <Link to={`/user/${data?.seeProfile?.id}/edit`}>Edit Profile</Link>
+          <Link to={`/user/${data?.seeProfile?.id}/koreamap`}>See Profile</Link>
         </ButtonContainer>
       </ProfileCard>
       <ProfileCard>

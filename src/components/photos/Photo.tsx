@@ -21,11 +21,11 @@ const Wrapper = styled.div`
 `;
 
 const Image = styled.img`
-  width: 99%;
+  width: 100%;
   height: 50%;
   object-fit: contain;
-  border: 1px solid ${(props) => props.theme.borderColor};
-  border-radius: 10px;
+  border-top: 1px solid ${(props) => props.theme.borderColor};
+  border-bottom: 1px solid ${(props) => props.theme.borderColor};
 `;
 
 const PhotoData = styled.div`
