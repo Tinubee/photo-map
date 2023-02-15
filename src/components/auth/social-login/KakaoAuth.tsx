@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { logUserIn } from "../../../apollo";
 import { kakaoLogInUserDataAtom } from "../../../atoms";
-import { LOGIN_MUTATION } from "../../../screens/Login";
+import { LOGIN_MUTATION } from "../../../screens/header/Login";
 import { SIGNUP_MUTATION } from "../../../screens/SignUp";
 
 interface IConfig {

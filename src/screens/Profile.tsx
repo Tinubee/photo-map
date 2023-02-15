@@ -1,3 +1,5 @@
+import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -102,25 +104,31 @@ function Profile() {
           {[
             "서울특별시",
             "강원도",
-            "부산광역시",
-            "대구광역시",
-            "대전광역시",
-            "인천광역시",
-            "광주광역시",
-            "울산광역시",
-            "세종특별자치시",
             "경기도",
+            "인천광역시",
+            "세종특별자치시",
+            "대전광역시",
             "충청북도",
             "충청남도",
+            "광주광역시",
             "전라북도",
             "전라남도",
+            "대구광역시",
             "경상북도",
             "경상남도",
+            "울산광역시",
+            "부산광역시",
             "제주특별자치도",
           ].map((name) => {
             return (
               <Stemp key={name}>
-                <StempImage />
+                <StempImage>
+                  {name.match("광역시") ? null : (
+                    <Icon>
+                      <FontAwesomeIcon icon={faLock} />
+                    </Icon>
+                  )}
+                </StempImage>
                 <StempText>{name}</StempText>
               </Stemp>
             );
@@ -132,6 +140,18 @@ function Profile() {
 }
 
 export default Profile;
+
+const Icon = styled.div`
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.7);
+`;
 
 const StempContainer = styled.div`
   display: grid;
@@ -149,12 +169,12 @@ const StempImage = styled.div`
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background-color: tomato;
+  background-color: #0091ff;
 `;
 const StempText = styled.span`
   background-color: ${(props) => props.theme.stempLabelbgColor};
   color: ${(props) => props.theme.textColor};
-  margin-top: 4px;
+  margin-top: 10px;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
   font-size: 14px;
   font-weight: 500;

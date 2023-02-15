@@ -3,12 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { hoverRegionAtom, selectImageAtom } from "../atoms";
-import { useSeeMe } from "../components/hooks/myProfile";
-import KoreaSplits from "../components/maps/KoreaSplits";
-import { Container } from "../components/maps/types/PictureMap";
-import PageTitle from "../components/PageTitle";
-import { KoreaDetail } from "../MapDetail";
+import { hoverRegionAtom, selectImageAtom } from "../../atoms";
+import { useSeeMe } from "../../components/hooks/myProfile";
+import KoreaSplits from "../../components/maps/KoreaSplits";
+import { Container } from "../../components/maps/types/PictureMap";
+import PageTitle from "../../components/PageTitle";
+import { KoreaDetail } from "../../MapDetail";
 
 export const Wrapper = styled.div`
   text-align: center;

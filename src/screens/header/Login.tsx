@@ -1,17 +1,17 @@
-import PageTitle from "../components/PageTitle";
+import PageTitle from "../../components/PageTitle";
 import styled from "styled-components";
-import Layout from "../components/auth/Layout";
-import Button from "../components/auth/Button";
-import Separator from "../components/auth/Separator";
-import BottomBox from "../components/auth/BottomBox";
+import Layout from "../../components/auth/Layout";
+import Button from "../../components/auth/Button";
+import Separator from "../../components/auth/Separator";
+import BottomBox from "../../components/auth/BottomBox";
 import { SubmitHandler, useForm } from "react-hook-form";
-import Input from "../components/auth/Input";
-import FormError from "../components/auth/FormError";
+import Input from "../../components/auth/Input";
+import FormError from "../../components/auth/FormError";
 import { useEffect } from "react";
-import KakaoLoginButton from "../components/auth/social-login/KakaoLoginButton";
-import NaverLoginButton from "../components/auth/social-login/NaverLoginButton";
+import KakaoLoginButton from "../../components/auth/social-login/KakaoLoginButton";
+import NaverLoginButton from "../../components/auth/social-login/NaverLoginButton";
 import { gql, useMutation } from "@apollo/client";
-import { logUserIn } from "../apollo";
+import { logUserIn } from "../../apollo";
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface LoginFormValues {

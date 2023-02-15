@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useSeeAllUsers } from "../components/hooks/seeAllUsers";
-import PageTitle from "../components/PageTitle";
+import { useSeeAllUsers } from "../../components/hooks/seeAllUsers";
+import PageTitle from "../../components/PageTitle";
 import {
   Email,
   EmailContainer,
@@ -9,7 +9,7 @@ import {
   ProfileInfo,
   Username,
   UsernameContainer,
-} from "./Profile";
+} from "../Profile";
 
 interface IUserData {
   id: number;

@@ -1,8 +1,8 @@
-import PageTitle from "../components/PageTitle";
+import PageTitle from "../../components/PageTitle";
 import styled from "styled-components";
-import { isLoggedInVar } from "../apollo";
+import { isLoggedInVar } from "../../apollo";
 import { useReactiveVar } from "@apollo/client";
-import { useSeeMe } from "../components/hooks/myProfile";
+import { useSeeMe } from "../../components/hooks/myProfile";
 import { Link } from "react-router-dom";
 
 export const Wrapper = styled.div`

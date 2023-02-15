@@ -11,7 +11,11 @@ import Separator from "../components/auth/Separator";
 import KakaoLoginButton from "../components/auth/social-login/KakaoLoginButton";
 import NaverLoginButton from "../components/auth/social-login/NaverLoginButton";
 import PageTitle from "../components/PageTitle";
-import { FormContainer, FormTitle, SocialLoginBtnContainer } from "./Login";
+import {
+  FormContainer,
+  FormTitle,
+  SocialLoginBtnContainer,
+} from "./header/Login";
 
 interface SignUpFormValues {
   username: string;

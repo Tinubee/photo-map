@@ -7,7 +7,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { logUserIn } from "../../../apollo";
 import { naverLogInUserDataAtom } from "../../../atoms";
-import { LOGIN_MUTATION } from "../../../screens/Login";
+import { LOGIN_MUTATION } from "../../../screens/header/Login";
 import { SIGNUP_MUTATION } from "../../../screens/SignUp";
 import { Icta } from "../Separator";
 import { KakaoButton } from "./KakaoLoginButton";

@@ -65,6 +65,7 @@ function Header() {
   const homeMatch = useMatch("");
   const communityMatch = useMatch("community");
   const likeMatch = useMatch("like");
+  const recommendMatch = useMatch("recommend");
   return (
     <HeaderContainer>
       <Link to={"/"}>
@@ -84,6 +85,11 @@ function Header() {
         <Tab onClick={() => goScrollTop(true)}>
           <Link to={"/like"}>
             Like Photo {likeMatch?.pathname && <Line layoutId="line" />}
+          </Link>
+        </Tab>
+        <Tab onClick={() => goScrollTop(true)}>
+          <Link to={"/recommend"}>
+            Recommend {recommendMatch?.pathname && <Line layoutId="line" />}
           </Link>
         </Tab>
       </Tabs>
