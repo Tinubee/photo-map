@@ -86,7 +86,6 @@ function Mode() {
   const [darkAtom, setDarkAtom] = useRecoilState(isDarkAtom);
   const [showMenu, setShowMenu] = useRecoilState(showMenuAtom);
   const loginMatch = useMatch("login");
-  const myProfileMatch = useMatch("user/:userId");
   const isLoggedIn = useReactiveVar(isLoggedInVar);
   const navigate = useNavigate();
 
@@ -115,8 +114,6 @@ function Mode() {
       {isLoggedIn ? (
         <AvatarContainer onClick={handleProfileClick}>
           <Avatar url={data?.me?.avatar} />
-          {decodeURI(myProfileMatch?.pathname!) ===
-            `/user/${data?.me?.username}` && <Line />}
         </AvatarContainer>
       ) : (
         <Tab>
@@ -128,7 +125,7 @@ function Mode() {
           <Link to={`/user/${data?.me?.username}/profile`}>내 프로필</Link>
           <Link to={`/user/${data?.me?.id}/mykoreamap`}>국내 지도</Link>
           <Link to={`/user/${data?.me?.id}/myworldmap`}>해외 지도</Link>
-          <Link to="/login" onClick={() => logUserOut(navigate)}>
+          <Link to="/" onClick={() => logUserOut(navigate)}>
             로그아웃
           </Link>
         </SelectMenu>

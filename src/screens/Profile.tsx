@@ -5,7 +5,7 @@ import Avatar from "../components/auth/Avatar";
 import { useSeeUser } from "../components/hooks/userProfile";
 import PageTitle from "../components/PageTitle";
 
-const Container = styled.div`
+export const Container = styled.div`
   padding-top: 200px;
 `;
 
@@ -18,11 +18,11 @@ const ProfileCard = styled.div`
   margin-bottom: 40px;
 `;
 
-const ProfileInfo = styled.div`
+export const ProfileInfo = styled.div`
   display: flex;
 `;
 
-const Info = styled.div`
+export const Info = styled.div`
   width: 100%;
   margin-left: 50px;
   h1 {
@@ -30,16 +30,16 @@ const Info = styled.div`
   }
 `;
 
-const UsernameContainer = styled.div``;
-const Username = styled.span`
+export const UsernameContainer = styled.div``;
+export const Username = styled.span`
   font-size: 36px;
 `;
 
-const EmailContainer = styled.div`
+export const EmailContainer = styled.div`
   margin-top: 20px;
 `;
 
-const Email = styled.span`
+export const Email = styled.span`
   font-size: 24px;
 `;
 

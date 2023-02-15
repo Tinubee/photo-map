@@ -12,6 +12,7 @@ import EditProfile from "./screens/EditProfile";
 import UserKoreaMap from "./screens/UserKoreaMap";
 import Community from "./screens/Community";
 import Like from "./screens/Like";
+import UserWorldMap from "./screens/UserWorldMap";
 
 const router = createBrowserRouter([
   {
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
           {
             path: "koreamap",
             element: <UserKoreaMap />,
+          },
+          {
+            path: "worldmap",
+            element: <UserWorldMap />,
           },
         ],
       },

@@ -1,5 +1,3 @@
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 const SAvatar = styled.div<{ lg: boolean }>`
@@ -31,13 +29,13 @@ const Img = styled.img<{ lg: boolean }>`
 function Avatar({ url = "", lg = false }) {
   return (
     <SAvatar lg={lg}>
-      {url !== null ? (
-        <ImgContainer>
+      <ImgContainer>
+        {url !== null ? (
           <Img src={url} lg={lg} />
-        </ImgContainer>
-      ) : (
-        <FontAwesomeIcon icon={faUser} size="xl" />
-      )}
+        ) : (
+          <Img src="/defalut_profile.png" lg={lg} />
+        )}
+      </ImgContainer>
     </SAvatar>
   );
 }

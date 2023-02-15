@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 export const Wrapper = styled.div`
   display: flex;
-  margin-top: 100px;
+  padding-top: 120px;
   justify-content: space-around;
   height: 150vh;
 `;
