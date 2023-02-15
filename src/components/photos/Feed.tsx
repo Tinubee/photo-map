@@ -7,9 +7,12 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { goScrollTop } from "../header/Header";
 import { Icon } from "../header/Mode";
+import { useSeeMe } from "../hooks/myProfile";
+import AddPhotoBox from "./AddPhotoBox";
 import Photo from "./Photo";
 
 const container = {
@@ -23,7 +26,7 @@ const container = {
   },
 };
 
-const item = {
+export const item = {
   hidden: { y: 20, opacity: 0 },
   visible: {
     y: 0,
@@ -48,8 +51,10 @@ const TOGGLE_LIKE_MUTATION = gql`
 `;
 
 function Feed({ myRegionPhotos, region }: any) {
+  const { userId } = useParams();
   const [id, setId] = useState<null | string>(null);
   const [photo, setPhoto] = useState<any>(null);
+  const { data } = useSeeMe();
 
   const handlePhotoClick = (photo: any, index: string) => {
     goScrollTop(false);
@@ -106,7 +111,9 @@ function Feed({ myRegionPhotos, region }: any) {
         </Region>
         <Container variants={container} initial="hidden" animate="visible">
           {myRegionPhotos?.seeUserRegionPhotos?.length === 0 ? (
-            <PhotoBox variants={item}></PhotoBox>
+            data?.me?.id === +userId! ? null : (
+              <Message>해당 유저는 현재 지역에 등록된 사진이 없습니다.</Message>
+            )
           ) : (
             myRegionPhotos?.seeUserRegionPhotos?.map(
               (photo: any, index: string) => {
@@ -133,6 +140,10 @@ function Feed({ myRegionPhotos, region }: any) {
               }
             )
           )}
+          {data?.me?.id === +userId! &&
+          myRegionPhotos?.seeUserRegionPhotos?.length < 9 ? (
+            <AddPhotoBox />
+          ) : null}
         </Container>
       </PhotoBoxContainer>
       <AnimatePresence>
@@ -160,6 +171,10 @@ function Feed({ myRegionPhotos, region }: any) {
 }
 
 export default Feed;
+
+const Message = styled.div`
+  position: absolute;
+`;
 
 const Region = styled.div`
   display: flex;
