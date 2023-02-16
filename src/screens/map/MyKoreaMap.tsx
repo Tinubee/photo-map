@@ -77,14 +77,15 @@ const Region = styled.div`
   text-align: center;
   justify-content: center;
   align-items: center;
-  height: 200px;
-  width: 200px;
+  height: 100vh;
+  width: 45vw;
   position: absolute;
+  pointer-events: none;
 `;
 
 const RegionText = styled.div`
-  font-size: 28px;
-  color: #4e5255;
+  font-size: 36px;
+  color: rgba(0, 0, 0, 0.4);
 `;
 
 function MyKoreaMap() {

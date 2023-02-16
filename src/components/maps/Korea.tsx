@@ -8,16 +8,17 @@ import { MapSvg } from "./types/PictureMap";
 export const ImagePath = styled(motion.path)`
   stroke-linejoin: round;
   stroke: #000000;
-  stroke-width: 1;
+  stroke-width: 0;
   cursor: pointer;
   :hover {
-    stroke-width: 3;
-    stroke: ${(props) => props.theme.mapHoverColor};
+    fill: ${(props) => props.theme.mapHoverColor};
   }
 `;
 
 export const Path = styled(ImagePath)`
+  stroke-width: 0.5;
   :hover {
+    stroke-width: 0;
     fill: ${(props) => props.theme.mapHoverColor};
   }
 `;

@@ -123,7 +123,6 @@ function Feed({ myRegionPhotos, region, refetch }: any) {
   });
 
   const handleMarkPhoto = (photo: any) => {
-    console.log(photo);
     changeMarkPhotoMutation({
       variables: {
         id: photo.id,
@@ -142,7 +141,7 @@ function Feed({ myRegionPhotos, region, refetch }: any) {
         <Container variants={container} initial="hidden" animate="visible">
           {myRegionPhotos?.seeUserRegionPhotos?.length === 0 ? (
             data?.me?.id === +userId! ? null : (
-              <Message>해당 유저는 현재 지역에 등록된 사진이 없습니다.</Message>
+              <Message>현재 지역에 등록된 사진이 없습니다.</Message>
             )
           ) : (
             myRegionPhotos?.seeUserRegionPhotos?.map(
@@ -186,7 +185,8 @@ function Feed({ myRegionPhotos, region, refetch }: any) {
           <Overlay>
             <Box layoutId={id}>
               <Top>
-                {photo?.region.includes("⭐️") === false ? (
+                {!photo?.region.includes("⭐️") &&
+                data?.me?.id === photo.userId ? (
                   <button onClick={() => handleMarkPhoto(photo)}>
                     대표사진으로 등록
                   </button>
