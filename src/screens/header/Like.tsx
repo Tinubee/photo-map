@@ -1,4 +1,4 @@
-import { Container } from "../../components/maps/types/PictureMap";
+import { Container } from "../../components/header/Container";
 import PageTitle from "../../components/PageTitle";
 
 function Like() {

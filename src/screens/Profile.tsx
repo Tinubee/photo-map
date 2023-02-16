@@ -7,72 +7,6 @@ import Avatar from "../components/auth/Avatar";
 import { useSeeUser } from "../components/hooks/userProfile";
 import PageTitle from "../components/PageTitle";
 
-export const Container = styled.div`
-  padding-top: 200px;
-`;
-
-const ProfileCard = styled.div`
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px ${(props) => props.theme.borderColor};
-  width: 800px;
-  margin: auto;
-  margin-bottom: 40px;
-`;
-
-export const ProfileInfo = styled.div`
-  display: flex;
-`;
-
-export const Info = styled.div`
-  width: 100%;
-  margin-left: 50px;
-  h1 {
-    opacity: 0.5;
-  }
-`;
-
-export const UsernameContainer = styled.div``;
-export const Username = styled.span`
-  font-size: 36px;
-`;
-
-export const EmailContainer = styled.div`
-  margin-top: 20px;
-`;
-
-export const Email = styled.span`
-  font-size: 24px;
-`;
-
-const ButtonContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  margin-top: 20px;
-  a {
-    color: ${(props) => props.theme.textColor};
-    text-align: center;
-    white-space: nowrap;
-    border: 1px solid #aaaaaa;
-    padding: 10px;
-    border-radius: 10px;
-    transition: 0.5s;
-    :hover {
-      opacity: 0.75;
-    }
-  }
-  a:last-child {
-    color: #ffffff;
-    background-color: #0091ff;
-  }
-  a:first-child {
-    :hover {
-      background-color: ${(props) => props.theme.iconbgColor};
-    }
-  }
-`;
-
 function Profile() {
   const { username } = useParams();
   const { data } = useSeeUser(username!);
@@ -180,4 +114,70 @@ const StempText = styled.span`
   font-weight: 500;
   padding: 4px 8px;
   border-radius: 6px;
+`;
+
+export const Container = styled.div`
+  padding-top: 200px;
+`;
+
+const ProfileCard = styled.div`
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px ${(props) => props.theme.borderColor};
+  width: 800px;
+  margin: auto;
+  margin-bottom: 40px;
+`;
+
+export const ProfileInfo = styled.div`
+  display: flex;
+`;
+
+export const Info = styled.div`
+  width: 100%;
+  margin-left: 50px;
+  h1 {
+    opacity: 0.5;
+  }
+`;
+
+export const UsernameContainer = styled.div``;
+export const Username = styled.span`
+  font-size: 36px;
+`;
+
+export const EmailContainer = styled.div`
+  margin-top: 20px;
+`;
+
+export const Email = styled.span`
+  font-size: 24px;
+`;
+
+const ButtonContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+  a {
+    color: ${(props) => props.theme.textColor};
+    text-align: center;
+    white-space: nowrap;
+    border: 1px solid #aaaaaa;
+    padding: 10px;
+    border-radius: 10px;
+    transition: 0.5s;
+    :hover {
+      opacity: 0.75;
+    }
+  }
+  a:last-child {
+    color: #ffffff;
+    background-color: #0091ff;
+  }
+  a:first-child {
+    :hover {
+      background-color: ${(props) => props.theme.iconbgColor};
+    }
+  }
 `;

@@ -4,11 +4,11 @@ import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { hoverRegionAtom, selectImageAtom } from "../../atoms";
+import { Container } from "../../components/header/Container";
 import { useSeeMe } from "../../components/hooks/myProfile";
-import KoreaSplits from "../../components/maps/KoreaSplits";
-import { Container } from "../../components/maps/types/PictureMap";
+import Korea from "../../components/maps/Korea";
 import PageTitle from "../../components/PageTitle";
-import { KoreaDetail } from "../../MapDetail";
+import { KoreaDetail } from "../../MapInfo";
 
 export const Wrapper = styled.div`
   text-align: center;
@@ -127,7 +127,7 @@ function MyKoreaMap() {
           <RegionText>{hoverRegion}</RegionText>
         </Region>
         <Map>
-          <KoreaSplits data={KoreaDetail} />
+          <Korea data={KoreaDetail} />
         </Map>
       </Wrapper>
     </Container>

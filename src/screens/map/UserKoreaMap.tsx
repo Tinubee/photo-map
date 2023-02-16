@@ -1,9 +1,9 @@
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { hoverRegionAtom } from "../../atoms";
-import KoreaSplits from "../../components/maps/KoreaSplits";
+import Korea from "../../components/maps/Korea";
 import PageTitle from "../../components/PageTitle";
-import { KoreaDetail } from "../../MapDetail";
+import { KoreaDetail } from "../../MapInfo";
 import { Wrapper } from "../header/Home";
 
 function UserKoreaMap() {
@@ -12,7 +12,7 @@ function UserKoreaMap() {
     <Wrapper>
       <PageTitle title="KoreaMap"></PageTitle>
       <RegionText>{hoverRegion}</RegionText>
-      <KoreaSplits data={KoreaDetail} />
+      <Korea data={KoreaDetail} />
     </Wrapper>
   );
 }
