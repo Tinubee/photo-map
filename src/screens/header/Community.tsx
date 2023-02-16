@@ -1,6 +1,7 @@
+import { gql, useQuery } from "@apollo/client";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useSeeAllUsers } from "../../components/hooks/seeAllUsers";
 import PageTitle from "../../components/PageTitle";
 import {
   Email,
@@ -18,9 +19,24 @@ interface IUserData {
   avatar: string;
 }
 
+const SEEALLUSERS_QUERY = gql`
+  query seeAllUsers {
+    seeAllUsers {
+      id
+      username
+      email
+      avatar
+    }
+  }
+`;
+
 function Community() {
-  const { data } = useSeeAllUsers();
-  console.log(data);
+  const { data, refetch } = useQuery(SEEALLUSERS_QUERY);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
   return (
     <ProfileCardContainer>
       <PageTitle title="Community"></PageTitle>

@@ -35,12 +35,6 @@ export const item = {
   },
 };
 
-const overlay = {
-  hidden: { backgroundColor: "rgba(0, 0, 0, 0)" },
-  visible: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
-  exit: { backgroundColor: "rgba(0, 0, 0, 0)" },
-};
-
 const TOGGLE_LIKE_MUTATION = gql`
   mutation toggleLike($id: Int!) {
     toggleLike(id: $id) {
@@ -148,12 +142,7 @@ function Feed({ myRegionPhotos, region }: any) {
       </PhotoBoxContainer>
       <AnimatePresence>
         {id ? (
-          <Overlay
-            variants={overlay}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
+          <Overlay>
             <Box layoutId={id}>
               <Top>
                 <span>{photo.region}</span>
@@ -245,9 +234,6 @@ const Top = styled.div`
 `;
 
 const Overlay = styled(motion.div)`
-  height: 200vh;
-  width: 100vw;
-  background-color: rgba(0, 0, 0, 0.5);
   position: absolute;
   display: flex;
   justify-content: center;
