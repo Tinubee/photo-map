@@ -1,19 +1,133 @@
 import { faDownload, faImage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { hoverRegionAtom, selectImageAtom } from "../../atoms";
-import { Container } from "../../components/header/Container";
 import { useSeeMe } from "../../components/hooks/myProfile";
 import Korea from "../../components/maps/Korea";
 import PageTitle from "../../components/PageTitle";
 import { KoreaDetail } from "../../MapInfo";
 
-export const Wrapper = styled.div`
+function MyKoreaMap() {
+  const { data } = useSeeMe();
+  const [imgFile, setImgFile] = useRecoilState(selectImageAtom);
+  const [hoverRegion, setHoverRegion] = useRecoilState(hoverRegionAtom);
+  const [imageUrl, setImageUrl] = useState("");
+  const handleDownLoadMap = () => {
+    console.log("download click");
+  };
+
+  const saveImgFile = (event: any) => {
+    const file = event.target.files[0];
+    const imgUrl = URL.createObjectURL(file);
+    setImageUrl(imgUrl);
+    setImgFile(file);
+  };
+
+  return (
+    <Container>
+      <PageTitle title="MyKoreaMap"></PageTitle>
+      <Title>
+        {data?.me?.username}님의 국내 지도
+        <FontAwesomeIcon icon={faDownload} onClick={handleDownLoadMap} />
+      </Title>
+      <Wrapper>
+        <Map>
+          <Region>
+            <RegionText exist={Boolean(hoverRegion)}>
+              {hoverRegion || "🚀"}
+            </RegionText>
+          </Region>
+          <Korea data={KoreaDetail} />
+        </Map>
+        <Setting>
+          <Form>
+            <Label>
+              {imgFile ? (
+                <PreviewImage image={imageUrl}></PreviewImage>
+              ) : (
+                <FontAwesomeIcon icon={faImage} />
+              )}
+              <Input type="file" accept="image/*" onChange={saveImgFile} />
+            </Label>
+          </Form>
+          <RegionGrid>
+            {KoreaDetail.map((region) => {
+              return (
+                <RegionName
+                  issame={hoverRegion === region.name ? 1 : 0}
+                  key={region.id}
+                  onMouseOver={() => setHoverRegion(region.name)}
+                  onMouseLeave={() => setHoverRegion("")}
+                >
+                  {region.name}
+                </RegionName>
+              );
+            })}
+          </RegionGrid>
+        </Setting>
+      </Wrapper>
+    </Container>
+  );
+}
+
+export default MyKoreaMap;
+
+const Setting = styled.div`
+  width: 45vw;
+`;
+
+const RegionGrid = styled.div`
+  height: 40vh;
+  border: 1px solid ${(props) => props.theme.borderColor};
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  overflow-y: scroll;
+  padding: 10px;
+`;
+
+const RegionName = styled.div<{ issame: number }>`
+  background-color: ${(props) =>
+    props.issame ? props.theme.mapHoverColor : props.theme.bgColor};
+  border: 1px solid ${(props) => props.theme.borderColor};
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+`;
+
+const Label = styled.label`
+  border: 2px dashed ${(props) => props.theme.borderColor};
+  font-size: 14px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40vh;
+  border-radius: 10px;
+  cursor: pointer;
+  :hover {
+    border: 2px dashed ${(props) => props.theme.mapHoverColor};
+    svg {
+      color: ${(props) => props.theme.mapHoverColor};
+    }
+  }
+  svg {
+    font-size: 56px;
+    position: absolute;
+  }
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
+
+const Container = styled.div`
   text-align: center;
-  padding: 100px;
-  margin: auto;
+  padding: 120px 0px;
 `;
 
 const Title = styled.div`
@@ -27,8 +141,9 @@ const Title = styled.div`
   }
 `;
 
-export const Map = styled.div`
+const Map = styled.div`
   display: flex;
+  width: 45vw;
 `;
 
 const Form = styled.form`
@@ -37,27 +152,6 @@ const Form = styled.form`
 
 const Input = styled.input`
   display: none;
-`;
-
-const Label = styled.label`
-  border: 2px dashed ${(props) => props.theme.borderColor};
-  font-size: 14px;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  cursor: pointer;
-  :hover {
-    border: 2px dashed ${(props) => props.theme.mapHoverColor};
-    svg {
-      color: ${(props) => props.theme.mapHoverColor};
-    }
-  }
-  svg {
-    font-size: 56px;
-    position: absolute;
-  }
 `;
 
 const PreviewImage = styled.div<{ image: any }>`
@@ -83,55 +177,8 @@ const Region = styled.div`
   pointer-events: none;
 `;
 
-const RegionText = styled.div`
+const RegionText = styled.div<{ exist: boolean }>`
   font-size: 36px;
   color: rgba(0, 0, 0, 0.4);
+  opacity: ${(props) => (props.exist ? "1" : "0")};
 `;
-
-function MyKoreaMap() {
-  const { data } = useSeeMe();
-
-  const [imgFile, setImgFile] = useRecoilState(selectImageAtom);
-  const hoverRegion = useRecoilValue(hoverRegionAtom);
-  const [imageUrl, setImageUrl] = useState("");
-  const handleDownLoadMap = () => {
-    console.log("download click");
-  };
-
-  const saveImgFile = (event: any) => {
-    const file = event.target.files[0];
-    const imgUrl = URL.createObjectURL(file);
-    setImageUrl(imgUrl);
-    setImgFile(file);
-  };
-
-  return (
-    <Container>
-      <PageTitle title="MyKoreaMap"></PageTitle>
-      <Wrapper>
-        <Title>
-          {data?.me?.username}님의 국내 지도
-          <FontAwesomeIcon icon={faDownload} onClick={handleDownLoadMap} />
-        </Title>
-        <Form>
-          <Label>
-            {imgFile ? (
-              <PreviewImage image={imageUrl}></PreviewImage>
-            ) : (
-              <FontAwesomeIcon icon={faImage} />
-            )}
-            <Input type="file" accept="image/*" onChange={saveImgFile} />
-          </Label>
-        </Form>
-        <Region>
-          <RegionText>{hoverRegion}</RegionText>
-        </Region>
-        <Map>
-          <Korea data={KoreaDetail} />
-        </Map>
-      </Wrapper>
-    </Container>
-  );
-}
-
-export default MyKoreaMap;

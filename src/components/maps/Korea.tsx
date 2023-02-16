@@ -1,6 +1,6 @@
 import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import { IDetailType } from "../../MapInfo";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import {
   hoverRegionAtom,
   myRegionAtom,
@@ -75,7 +75,7 @@ function Korea({ data }: IDetailRegionType) {
   const [myRegion, setMyRegion] = useRecoilState(myRegionAtom);
   const [imageFile, setImageFile] = useRecoilState(selectImageAtom);
   const [selectRegion, setSelectRegion] = useRecoilState(selectRegionAtom);
-  const sethoverRegion = useSetRecoilState(hoverRegionAtom);
+  const [hoverRegion, setHoverRegion] = useRecoilState(hoverRegionAtom);
 
   const { data: myPhotos } = useSeeUserPhotos(+userId!);
 
@@ -172,8 +172,9 @@ function Korea({ data }: IDetailRegionType) {
                 d={res.path}
                 transform={res?.transform}
                 onClick={(e) => handleRegionClick(res)}
-                onHoverStart={() => sethoverRegion(res.name)}
-                onHoverEnd={() => sethoverRegion("")}
+                onHoverStart={() => setHoverRegion(res.name)}
+                onHoverEnd={() => setHoverRegion("")}
+                issame={res.name === hoverRegion ? 1 : 0}
               />
             ) : (
               <ImagePath
@@ -193,8 +194,9 @@ function Korea({ data }: IDetailRegionType) {
                 d={res.path}
                 transform={res?.transform}
                 onClick={() => handleImageClick(res)}
-                onHoverStart={() => sethoverRegion(res.name)}
-                onHoverEnd={() => sethoverRegion("")}
+                onHoverStart={() => setHoverRegion(res.name)}
+                onHoverEnd={() => setHoverRegion("")}
+                issame={res.name === hoverRegion ? 1 : 0}
               />
             );
           })}
