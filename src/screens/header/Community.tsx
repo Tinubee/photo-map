@@ -1,8 +1,10 @@
 import { gql, useQuery } from "@apollo/client";
+import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import PageTitle from "../../components/PageTitle";
+import { item } from "../../components/photos/Feed";
 import {
   Email,
   EmailContainer,
@@ -42,7 +44,12 @@ function Community() {
       <PageTitle title="Community"></PageTitle>
       {data?.seeAllUsers?.map((user: IUserData) => {
         return (
-          <ProfileCard key={user.id}>
+          <ProfileCard
+            variants={item}
+            initial="hidden"
+            animate="visible"
+            key={user.id}
+          >
             <ProfileInfo>
               <AvatarContainer>
                 {user.avatar !== null ? (
@@ -111,7 +118,7 @@ const ProfileCardContainer = styled.div`
   padding-top: 120px;
 `;
 
-const ProfileCard = styled.div`
+const ProfileCard = styled(motion.div)`
   display: flex;
   align-items: center;
   height: 200px;

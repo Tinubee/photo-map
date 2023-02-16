@@ -81,7 +81,7 @@ function KoreaSplits({ data }: IDetailRegionType) {
 
   const { data: myPhotos } = useSeeUserPhotos(+userId!);
 
-  const [RegionSetting, { data: myRegionPhotos }] = useLazyQuery(
+  const [RegionSetting, { data: myRegionPhotos, refetch }] = useLazyQuery(
     SEEUSERREGIONPHOTOS_QUERY,
     {
       variables: { region: selectRegion, userId: +userId! },
@@ -131,7 +131,7 @@ function KoreaSplits({ data }: IDetailRegionType) {
     }
 
     uploadPhotoMutation({
-      variables: { file: imageFile, path, transform, region: name },
+      variables: { file: imageFile, path, transform, region: `${name}⭐️` },
     });
   };
 
@@ -147,7 +147,9 @@ function KoreaSplits({ data }: IDetailRegionType) {
   useEffect(() => {
     setMyRegion([]);
     myPhotos?.seeUserPhotos?.map((photo: any) => {
-      setMyRegion((data) => [...new Set([...data, photo.region])]);
+      if (photo.region.includes("⭐️")) {
+        setMyRegion((data) => [...new Set([...data, photo.region])]);
+      }
       return "";
     });
     RegionSetting();
@@ -165,23 +167,25 @@ function KoreaSplits({ data }: IDetailRegionType) {
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
-          {myPhotos?.seeUserPhotos?.map((photo: IPhoto) => (
-            <pattern
-              key={photo.id}
-              id={`imgpattern_${photo.region}`}
-              x="0"
-              y="0"
-              width="1"
-              height="1"
-            >
-              <Image href={photo.file} />
-            </pattern>
-          ))}
+          {myPhotos?.seeUserPhotos?.map((photo: IPhoto) =>
+            photo.region.includes("⭐️") ? (
+              <pattern
+                key={photo.id}
+                id={`imgpattern_${photo.region}`}
+                x="0"
+                y="0"
+                width="1"
+                height="1"
+              >
+                <Image href={photo.file} />
+              </pattern>
+            ) : null
+          )}
         </defs>
 
         <g filter="url(#dropshadow)">
           {data.map((res) => {
-            return myRegion.indexOf(res.name) === -1 ? (
+            return myRegion.indexOf(`${res.name}⭐️`) === -1 ? (
               <Path
                 variants={svgAnimation}
                 initial="start"
@@ -206,9 +210,9 @@ function KoreaSplits({ data }: IDetailRegionType) {
                   default: { duration: 1 },
                 }}
                 fill={
-                  document.getElementById(`imgpattern_${res.name}`) !==
+                  document.getElementById(`imgpattern_${res.name}⭐️`) !==
                   undefined
-                    ? `url(#imgpattern_${res.name})`
+                    ? `url(#imgpattern_${res.name}⭐️)`
                     : undefined
                 }
                 key={res.id}
@@ -223,7 +227,11 @@ function KoreaSplits({ data }: IDetailRegionType) {
         </g>
       </MapSvg>
       {userMapMatch?.pathname && (
-        <Feed myRegionPhotos={myRegionPhotos} region={selectRegion} />
+        <Feed
+          myRegionPhotos={myRegionPhotos}
+          region={selectRegion}
+          refetch={refetch}
+        />
       )}
     </>
   );

@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation, useReactiveVar } from "@apollo/client";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import {
   faClose,
@@ -7,13 +7,14 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { goScrollTop } from "../header/Header";
 import { Icon } from "../header/Mode";
 import { useSeeMe } from "../hooks/myProfile";
 import AddPhotoBox from "./AddPhotoBox";
 import Photo from "./Photo";
+import { isLoggedInVar } from "../../apollo";
 
 const container = {
   hidden: { opacity: 1 },
@@ -44,11 +45,22 @@ const TOGGLE_LIKE_MUTATION = gql`
   }
 `;
 
-function Feed({ myRegionPhotos, region }: any) {
+const MARK_PHOTO_MUTATION = gql`
+  mutation changeMarkPhoto($id: Int!, $userId: Int!, $region: String!) {
+    changeMarkPhoto(id: $id, userId: $userId, region: $region) {
+      ok
+      error
+    }
+  }
+`;
+
+function Feed({ myRegionPhotos, region, refetch }: any) {
+  const isLoggedIn = useReactiveVar(isLoggedInVar);
   const { userId } = useParams();
   const [id, setId] = useState<null | string>(null);
   const [photo, setPhoto] = useState<any>(null);
   const { data } = useSeeMe();
+  const navigate = useNavigate();
 
   const handlePhotoClick = (photo: any, index: string) => {
     goScrollTop(false);
@@ -89,10 +101,34 @@ function Feed({ myRegionPhotos, region }: any) {
   });
 
   const handleLikeClick = async (photo: any) => {
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
+    }
     await setPhoto(photo);
     toggleLikeMutation({
       variables: {
         id: photo.id,
+      },
+    });
+  };
+
+  const changeMarkPhotoCompleted = (data: any) => {
+    refetch();
+    handleClosePhoto();
+  };
+
+  const [changeMarkPhotoMutation] = useMutation(MARK_PHOTO_MUTATION, {
+    onCompleted: changeMarkPhotoCompleted,
+  });
+
+  const handleMarkPhoto = (photo: any) => {
+    console.log(photo);
+    changeMarkPhotoMutation({
+      variables: {
+        id: photo.id,
+        userId: +userId!,
+        region: photo.region,
       },
     });
   };
@@ -114,20 +150,25 @@ function Feed({ myRegionPhotos, region }: any) {
                 return (
                   <PhotoBox
                     variants={item}
+                    initial="hidden"
+                    animate="visible"
                     key={index + 1}
                     layoutId={index + 1}
+                    mark={photo?.region.includes("⭐️") ? "true" : "false"}
                   >
                     <Image
                       src={photo?.file}
                       onClick={() => handlePhotoClick(photo, index)}
                     />
                     <PhotoAction onClick={() => handleLikeClick(photo)}>
+                      {photo?.region.includes("⭐️") ? <div>⭐️</div> : null}
                       <FontAwesomeIcon
                         style={{
                           color: photo.isLiked ? "tomato" : "inherit",
                         }}
                         icon={photo.isLiked ? SolidHeart : faHeart}
                       />
+                      {photo?.region.includes("⭐️") ? <div>⭐️</div> : null}
                     </PhotoAction>
                   </PhotoBox>
                 );
@@ -145,7 +186,11 @@ function Feed({ myRegionPhotos, region }: any) {
           <Overlay>
             <Box layoutId={id}>
               <Top>
-                <span>{photo.region}</span>
+                {photo?.region.includes("⭐️") === false ? (
+                  <button onClick={() => handleMarkPhoto(photo)}>
+                    대표사진으로 등록
+                  </button>
+                ) : null}
                 <Icon mode="normal" onClick={handleClosePhoto}>
                   <FontAwesomeIcon icon={faClose} />
                 </Icon>
@@ -196,10 +241,11 @@ const PhotoBoxContainer = styled(motion.div)`
   padding: 10px;
 `;
 
-const PhotoBox = styled(motion.div)`
+const PhotoBox = styled(motion.div)<{ mark: string }>`
   width: 100%;
   height: 300px;
-  border: 1px solid ${(props) => props.theme.borderColor};
+  border: ${(props) => (props.mark === "true" ? "3px" : "1px")} solid
+    ${(props) => (props.mark === "true" ? "tomato" : props.theme.borderColor)};
   border-radius: 10px;
   cursor: pointer;
 `;
@@ -207,19 +253,19 @@ const PhotoBox = styled(motion.div)`
 const Image = styled.img`
   width: 100%;
   height: 90%;
-  border: 1px solid ${(props) => props.theme.borderColor};
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   object-fit: contain;
+  border-bottom: 1px solid ${(props) => props.theme.borderColor};
   :hover {
-    border: 1px solid ${(props) => props.theme.mapHoverColor};
+    opacity: 0.75;
   }
 `;
 
 const PhotoAction = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   cursor: pointer;
   :hover {
     color: ${(props) => props.theme.mapHoverColor};
