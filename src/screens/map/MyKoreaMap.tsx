@@ -1,35 +1,140 @@
 import { faDownload, faImage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRef, useState } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import {
+  errMsgAtom,
   hoverRegionAtom,
+  isErrorAtom,
+  myRegionAtom,
   searchRegionAtom,
   selectImageAtom,
+  selectRegionAtom,
 } from "../../atoms";
 import SearchBox from "../../components/auth/SearchBox";
+import Button from "../../components/Button";
 import { useSeeMe } from "../../components/hooks/myProfile";
-import Korea from "../../components/maps/Korea";
+import Korea, {
+  SEEUSERREGIONPHOTOS_QUERY,
+  UPLOAD_MUTATION,
+} from "../../components/maps/Korea";
 import PageTitle from "../../components/PageTitle";
-import { KoreaDetail } from "../../MapInfo";
+import { IDetailType, KoreaDetail } from "../../MapInfo";
+import * as ExifReader from "exifreader";
+import axios from "axios";
+import { useLazyQuery, useMutation } from "@apollo/client";
+import { useMatch } from "react-router-dom";
 
 function MyKoreaMap() {
+  const PHOTO_MAX_COUNT = 9;
   const { data } = useSeeMe();
   const [imgFile, setImgFile] = useRecoilState(selectImageAtom);
   const [hoverRegion, setHoverRegion] = useRecoilState(hoverRegionAtom);
+  const [selectRegion, setSelectRegion] = useRecoilState(selectRegionAtom);
+  const setIsError = useSetRecoilState(isErrorAtom);
+  const setErrMsg = useSetRecoilState(errMsgAtom);
+
+  const myRegion = useRecoilValue(myRegionAtom);
   const [imageUrl, setImageUrl] = useState("");
   const searchRegion = useRecoilValue(searchRegionAtom);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [address, setAddres] = useState("");
+  const userMapMatch = useMatch("user/:userId/koreamap");
 
   const handleDownLoadMap = () => {
-    console.log("download click");
+    console.log("DownLoad Image");
   };
 
-  const saveImgFile = (event: any) => {
+  const saveImgFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return;
+
     const file = event.target.files[0];
     const imgUrl = URL.createObjectURL(file);
+    const address = await getAddress(file);
+
+    setAddres(address);
     setImageUrl(imgUrl);
     setImgFile(file);
+  };
+
+  const getAddress = async (file: any) => {
+    try {
+      const tags = await ExifReader.load(file, { expanded: true });
+
+      const latitude = tags.exif?.GPSLatitude?.description;
+      const longitude = tags.exif?.GPSLongitude?.description;
+
+      const getUrl = `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}&input_coord=WGS84`;
+      const headers = {
+        "Content-Type": "application/json;charset=UTF-8",
+        Authorization: `KakaoAK ${process.env.REACT_APP_KAKAO_REST_API}`,
+      };
+
+      const {
+        data: { documents },
+      }: any = await axios.get(getUrl, {
+        headers,
+      });
+
+      return documents[0].address.address_name;
+    } catch {
+      return "";
+    }
+  };
+
+  const handlePhotoInit = () => {
+    setImgFile(null);
+    setImageUrl("");
+    setAddres("");
+  };
+
+  const uploadFinish = async (data: any) => {
+    setImgFile(null);
+    setImageUrl("");
+    window.location.reload();
+  };
+
+  const [uploadPhotoMutation] = useMutation(UPLOAD_MUTATION, {
+    onCompleted: uploadFinish,
+  });
+
+  const [RegionSetting] = useLazyQuery(SEEUSERREGIONPHOTOS_QUERY, {
+    variables: { region: selectRegion, userId: data?.me?.id },
+  });
+
+  const handleNameClick = async (region: IDetailType) => {
+    const { path, transform, name } = region;
+    setSelectRegion(name);
+
+    const { data } = await RegionSetting();
+
+    if (userMapMatch) return;
+
+    if (!imgFile) {
+      setErrMsg("No Image");
+      setIsError(true);
+      setTimeout(() => setIsError(false), 2000);
+      return;
+    }
+
+    if (data.seeUserRegionPhotos.length >= PHOTO_MAX_COUNT) {
+      setErrMsg("사진은 최대 9개");
+      setImgFile(null);
+      setImageUrl("");
+      setIsError(true);
+      setTimeout(() => setIsError(false), 2000);
+      return;
+    }
+
+    uploadPhotoMutation({
+      variables: {
+        file: imgFile,
+        path,
+        transform,
+        region: myRegion.indexOf(`${name}⭐️`) === -1 ? `${name}⭐️` : name,
+      },
+    });
   };
 
   return (
@@ -46,7 +151,7 @@ function MyKoreaMap() {
               {hoverRegion || "🚀"}
             </RegionText>
           </Region>
-          <Korea data={KoreaDetail} />
+          <Korea ref={svgRef} data={KoreaDetail} />
         </Map>
         <Setting>
           <Form>
@@ -59,7 +164,11 @@ function MyKoreaMap() {
               <ImageInput type="file" accept="image/*" onChange={saveImgFile} />
             </Label>
           </Form>
-          <SearchBox />
+          <div>사진 지역 정보 : {address ? address : "없음"}</div>
+          <InputContainer>
+            <SearchBox />
+            <Button onClick={handlePhotoInit}>사진 초기화</Button>
+          </InputContainer>
           <RegionGrid>
             {KoreaDetail.filter((res) => res.name.match(searchRegion)).map(
               (region) => {
@@ -69,6 +178,7 @@ function MyKoreaMap() {
                     key={region.id}
                     onMouseOver={() => setHoverRegion(region.name)}
                     onMouseLeave={() => setHoverRegion("")}
+                    onClick={() => handleNameClick(region)}
                   >
                     {region.name}
                   </RegionName>
@@ -83,6 +193,12 @@ function MyKoreaMap() {
 }
 
 export default MyKoreaMap;
+
+const InputContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+`;
 
 const Setting = styled.div`
   width: 45vw;

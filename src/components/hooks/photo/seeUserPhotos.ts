@@ -17,7 +17,7 @@ export const SEEUSERPHOTOS_QUERY = gql`
 `;
 
 export const useSeeUserPhotos = (userId: number) => {
-  const { data } = useQuery(SEEUSERPHOTOS_QUERY, {
+  const { data, loading } = useQuery(SEEUSERPHOTOS_QUERY, {
     variables: {
       userId,
     },
@@ -25,5 +25,6 @@ export const useSeeUserPhotos = (userId: number) => {
 
   return {
     data,
+    loading,
   };
 };

@@ -12,7 +12,7 @@ function UserKoreaMap() {
     <Wrapper>
       <PageTitle title="KoreaMap"></PageTitle>
       <RegionText>{hoverRegion}</RegionText>
-      <Korea data={KoreaDetail} />
+      <Korea ref={null} data={KoreaDetail} />
     </Wrapper>
   );
 }

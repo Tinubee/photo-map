@@ -39,9 +39,9 @@ export const showMenuAtom = atom({
   default: false,
 });
 
-export const selectImageAtom = atom({
+export const selectImageAtom = atom<File | null>({
   key: "imageFile",
-  default: "",
+  default: null,
 });
 
 export const myRegionAtom = atom<string[]>({
@@ -56,5 +56,15 @@ export const hoverRegionAtom = atom<string>({
 
 export const searchRegionAtom = atom<string>({
   key: "searchRegion",
+  default: "",
+});
+
+export const isErrorAtom = atom<boolean>({
+  key: "isError",
+  default: false,
+});
+
+export const errMsgAtom = atom<string>({
+  key: "errMsg",
   default: "",
 });

@@ -24,8 +24,6 @@ function Defs({ myPhotos }: any) {
           <pattern
             key={photo.id}
             id={`imgpattern_${photo.region}`}
-            x="0"
-            y="0"
             width="1"
             height="1"
           >

@@ -2,12 +2,14 @@ import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import { IDetailType } from "../../MapInfo";
 import { useRecoilState } from "recoil";
 import {
+  errMsgAtom,
   hoverRegionAtom,
+  isErrorAtom,
   myRegionAtom,
   selectImageAtom,
   selectRegionAtom,
 } from "../../atoms";
-import { useEffect } from "react";
+import { forwardRef, useEffect } from "react";
 import styled from "styled-components";
 import { imageAnimation } from "../Image";
 import { useMatch, useParams } from "react-router-dom";
@@ -17,6 +19,7 @@ import { Path } from "./svg/Path";
 import { ImagePath } from "./svg/ImagePath";
 import { MapSvg } from "./svg/MapSvg";
 import Defs from "./svg/Defs";
+import ErrorBox from "../ErrorBox";
 
 interface IDetailRegionType {
   data: IDetailType[];
@@ -40,7 +43,7 @@ export const SEEUSERREGIONPHOTOS_QUERY = gql`
   }
 `;
 
-const UPLOAD_MUTATION = gql`
+export const UPLOAD_MUTATION = gql`
   mutation uploadPhoto(
     $file: Upload!
     $path: String!
@@ -68,7 +71,10 @@ const svgAnimation = {
   },
 };
 
-function Korea({ data }: IDetailRegionType) {
+const Korea = forwardRef(function Korea(
+  { data }: IDetailRegionType,
+  forwardedRef: any
+) {
   const PHOTO_MAX_COUNT = 9;
   const { userId } = useParams();
   const userMapMatch = useMatch("user/:userId/koreamap");
@@ -76,8 +82,12 @@ function Korea({ data }: IDetailRegionType) {
   const [imageFile, setImageFile] = useRecoilState(selectImageAtom);
   const [selectRegion, setSelectRegion] = useRecoilState(selectRegionAtom);
   const [hoverRegion, setHoverRegion] = useRecoilState(hoverRegionAtom);
+  const [isError, setIsError] = useRecoilState(isErrorAtom);
+  const [errMsg, setErrMsg] = useRecoilState(errMsgAtom);
 
-  const { data: myPhotos } = useSeeUserPhotos(+userId!);
+  const { data: myPhotos, loading: myPhotosLoading } = useSeeUserPhotos(
+    +userId!
+  );
 
   const [RegionSetting, { data: myRegionPhotos, refetch }] = useLazyQuery(
     SEEUSERREGIONPHOTOS_QUERY,
@@ -95,13 +105,17 @@ function Korea({ data }: IDetailRegionType) {
     if (userMapMatch) return;
 
     if (!imageFile) {
-      console.log("이미지 파일 불러와야함");
+      setErrMsg("No Image");
+      setIsError(true);
+      setTimeout(() => setIsError(false), 2000);
       return;
     }
 
     if (data.seeUserRegionPhotos.length >= PHOTO_MAX_COUNT) {
-      console.log("사진은 최대 9개");
-      setImageFile("");
+      setErrMsg("사진은 최대 9개");
+      setImageFile(null);
+      setIsError(true);
+      setTimeout(() => setIsError(false), 2000);
       return;
     }
 
@@ -119,12 +133,16 @@ function Korea({ data }: IDetailRegionType) {
     if (userMapMatch) return;
 
     if (!imageFile) {
-      console.log("이미지 파일 불러와야함");
+      setErrMsg("No Image");
+      setIsError(true);
+      setTimeout(() => setIsError(false), 2000);
       return;
     }
 
     if (data.seeUserRegionPhotos.length >= PHOTO_MAX_COUNT) {
-      console.log("사진은 최대 9개");
+      setErrMsg("사진은 최대 9개");
+      setIsError(true);
+      setTimeout(() => setIsError(false), 2000);
       return;
     }
 
@@ -134,7 +152,7 @@ function Korea({ data }: IDetailRegionType) {
   };
 
   const uploadFinish = async (data: any) => {
-    setImageFile("");
+    setImageFile(null);
     window.location.reload();
   };
 
@@ -155,53 +173,62 @@ function Korea({ data }: IDetailRegionType) {
 
   return (
     <>
-      <MapSvg viewBox="0 -50 550 800" xmlns="http://www.w3.org/2000/svg">
-        <Defs myPhotos={myPhotos} />
-        <G>
-          {data.map((res) => {
-            return myRegion.indexOf(`${res.name}⭐️`) === -1 ? (
-              <Path
-                variants={svgAnimation}
-                initial="start"
-                animate="end"
-                transition={{
-                  default: { duration: 1 },
-                  fill: { duration: 1 },
-                }}
-                key={res.id}
-                d={res.path}
-                transform={res?.transform}
-                onClick={(e) => handleRegionClick(res)}
-                onHoverStart={() => setHoverRegion(res.name)}
-                onHoverEnd={() => setHoverRegion("")}
-                issame={res.name === hoverRegion ? 1 : 0}
-              />
-            ) : (
-              <ImagePath
-                variants={imageAnimation}
-                initial="start"
-                animate="end"
-                transition={{
-                  default: { duration: 1 },
-                }}
-                fill={
-                  document.getElementById(`imgpattern_${res.name}⭐️`) !==
-                  undefined
-                    ? `url(#imgpattern_${res.name}⭐️)`
-                    : undefined
-                }
-                key={res.id}
-                d={res.path}
-                transform={res?.transform}
-                onClick={() => handleImageClick(res)}
-                onHoverStart={() => setHoverRegion(res.name)}
-                onHoverEnd={() => setHoverRegion("")}
-                issame={res.name === hoverRegion ? 1 : 0}
-              />
-            );
-          })}
-        </G>
-      </MapSvg>
+      {myPhotosLoading ? (
+        ""
+      ) : (
+        <MapSvg
+          ref={forwardedRef}
+          viewBox="0 -50 550 800"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <Defs myPhotos={myPhotos} />
+          <G>
+            {data.map((res) => {
+              return myRegion.indexOf(`${res.name}⭐️`) === -1 ? (
+                <Path
+                  variants={svgAnimation}
+                  initial="start"
+                  animate="end"
+                  transition={{
+                    default: { duration: 1 },
+                    fill: { duration: 1 },
+                  }}
+                  key={res.id}
+                  d={res.path}
+                  transform={res?.transform}
+                  onClick={(e) => handleRegionClick(res)}
+                  onHoverStart={() => setHoverRegion(res.name)}
+                  onHoverEnd={() => setHoverRegion("")}
+                  issame={res.name === hoverRegion ? 1 : 0}
+                />
+              ) : (
+                <ImagePath
+                  variants={imageAnimation}
+                  initial="start"
+                  animate="end"
+                  transition={{
+                    default: { duration: 1 },
+                  }}
+                  fill={
+                    document.getElementById(`imgpattern_${res.name}⭐️`) !==
+                    undefined
+                      ? `url(#imgpattern_${res.name}⭐️)`
+                      : undefined
+                  }
+                  key={res.id}
+                  d={res.path}
+                  transform={res?.transform}
+                  onClick={() => handleImageClick(res)}
+                  onHoverStart={() => setHoverRegion(res.name)}
+                  onHoverEnd={() => setHoverRegion("")}
+                  issame={res.name === hoverRegion ? 1 : 0}
+                />
+              );
+            })}
+          </G>
+        </MapSvg>
+      )}
+      {isError ? <ErrorBox msg={errMsg} /> : ""}
       {userMapMatch?.pathname && (
         <Feed
           myRegionPhotos={myRegionPhotos}
@@ -211,7 +238,7 @@ function Korea({ data }: IDetailRegionType) {
       )}
     </>
   );
-}
+});
 
 export default Korea;
 
