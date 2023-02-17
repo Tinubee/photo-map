@@ -229,9 +229,9 @@ const Container = styled(motion.div)`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 10px;
+  gap: 30px;
   height: 100%;
-  margin-top: 20px;
+  margin-top: 30px;
 `;
 
 const PhotoBoxContainer = styled(motion.div)`
@@ -248,6 +248,10 @@ const PhotoBox = styled(motion.div)<{ mark: string }>`
     ${(props) => (props.mark === "true" ? "tomato" : props.theme.borderColor)};
   border-radius: 10px;
   cursor: pointer;
+  transition: 0.5s;
+  :hover {
+    scale: 1.1;
+  }
 `;
 
 const Image = styled.img`
