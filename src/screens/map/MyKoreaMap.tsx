@@ -1,9 +1,14 @@
 import { faDownload, faImage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { hoverRegionAtom, selectImageAtom } from "../../atoms";
+import {
+  hoverRegionAtom,
+  searchRegionAtom,
+  selectImageAtom,
+} from "../../atoms";
+import SearchBox from "../../components/auth/SearchBox";
 import { useSeeMe } from "../../components/hooks/myProfile";
 import Korea from "../../components/maps/Korea";
 import PageTitle from "../../components/PageTitle";
@@ -14,6 +19,8 @@ function MyKoreaMap() {
   const [imgFile, setImgFile] = useRecoilState(selectImageAtom);
   const [hoverRegion, setHoverRegion] = useRecoilState(hoverRegionAtom);
   const [imageUrl, setImageUrl] = useState("");
+  const searchRegion = useRecoilValue(searchRegionAtom);
+
   const handleDownLoadMap = () => {
     console.log("download click");
   };
@@ -49,22 +56,25 @@ function MyKoreaMap() {
               ) : (
                 <FontAwesomeIcon icon={faImage} />
               )}
-              <Input type="file" accept="image/*" onChange={saveImgFile} />
+              <ImageInput type="file" accept="image/*" onChange={saveImgFile} />
             </Label>
           </Form>
+          <SearchBox />
           <RegionGrid>
-            {KoreaDetail.map((region) => {
-              return (
-                <RegionName
-                  issame={hoverRegion === region.name ? 1 : 0}
-                  key={region.id}
-                  onMouseOver={() => setHoverRegion(region.name)}
-                  onMouseLeave={() => setHoverRegion("")}
-                >
-                  {region.name}
-                </RegionName>
-              );
-            })}
+            {KoreaDetail.filter((res) => res.name.match(searchRegion)).map(
+              (region) => {
+                return (
+                  <RegionName
+                    issame={hoverRegion === region.name ? 1 : 0}
+                    key={region.id}
+                    onMouseOver={() => setHoverRegion(region.name)}
+                    onMouseLeave={() => setHoverRegion("")}
+                  >
+                    {region.name}
+                  </RegionName>
+                );
+              }
+            )}
           </RegionGrid>
         </Setting>
       </Wrapper>
@@ -79,22 +89,27 @@ const Setting = styled.div`
 `;
 
 const RegionGrid = styled.div`
-  height: 40vh;
+  height: 45vh;
   border: 1px solid ${(props) => props.theme.borderColor};
   border-radius: 10px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 5px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  gap: 10px;
   overflow-y: scroll;
   padding: 10px;
 `;
 
 const RegionName = styled.div<{ issame: number }>`
+  display: flex;
   background-color: ${(props) =>
     props.issame ? props.theme.mapHoverColor : props.theme.bgColor};
   border: 1px solid ${(props) => props.theme.borderColor};
   border-radius: 10px;
   padding: 10px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 `;
 
@@ -150,7 +165,7 @@ const Form = styled.form`
   display: block;
 `;
 
-const Input = styled.input`
+const ImageInput = styled.input`
   display: none;
 `;
 

@@ -56,13 +56,10 @@ function Profile() {
           ].map((name) => {
             return (
               <Stemp key={name}>
-                <StempImage>
-                  {name.match("광역시") ? null : (
-                    <Icon>
-                      <FontAwesomeIcon icon={faLock} />
-                    </Icon>
-                  )}
-                </StempImage>
+                <StempImage src={`/logo/${name}.svg`} alt="" />
+                <Icon>
+                  <FontAwesomeIcon icon={faLock} />
+                </Icon>
                 <StempText>{name}</StempText>
               </Stemp>
             );
@@ -76,15 +73,16 @@ function Profile() {
 export default Profile;
 
 const Icon = styled.div`
-  background-color: rgba(0, 0, 0, 0.5);
-  width: 100px;
-  height: 100px;
+  background-color: rgba(0, 0, 0, 1);
+  padding: 10px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: 14px;
   color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 30px;
+  position: absolute;
 `;
 
 const StempContainer = styled.div`
@@ -99,11 +97,14 @@ const Stemp = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const StempImage = styled.div`
+
+const StempImage = styled.img`
   width: 100px;
   height: 100px;
-  border-radius: 50%;
-  background-color: #0091ff;
+  border-radius: 15px;
+  border: 1px solid ${(props) => props.theme.borderColor};
+  padding: 10px;
+  object-fit: contain;
 `;
 const StempText = styled.span`
   background-color: ${(props) => props.theme.stempLabelbgColor};

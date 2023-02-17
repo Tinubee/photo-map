@@ -7,7 +7,7 @@ export const isDarkAtom = atom({
 
 export const selectRegionAtom = atom({
   key: "selectRegion",
-  default: "인제군",
+  default: "서울특별시",
 });
 
 //true:사진지도 , false:일반지도
@@ -51,5 +51,10 @@ export const myRegionAtom = atom<string[]>({
 
 export const hoverRegionAtom = atom<string>({
   key: "hoverRegion",
+  default: "",
+});
+
+export const searchRegionAtom = atom<string>({
+  key: "searchRegion",
   default: "",
 });
