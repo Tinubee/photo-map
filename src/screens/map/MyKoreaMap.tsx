@@ -1,7 +1,7 @@
 import { faDownload, faImage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef, useState } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import {
   errMsgAtom,
@@ -25,6 +25,7 @@ import * as ExifReader from "exifreader";
 import axios from "axios";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { useMatch } from "react-router-dom";
+import ErrorBox from "../../components/ErrorBox";
 
 function MyKoreaMap() {
   const PHOTO_MAX_COUNT = 9;
@@ -32,10 +33,10 @@ function MyKoreaMap() {
   const [imgFile, setImgFile] = useRecoilState(selectImageAtom);
   const [hoverRegion, setHoverRegion] = useRecoilState(hoverRegionAtom);
   const [selectRegion, setSelectRegion] = useRecoilState(selectRegionAtom);
-  const setIsError = useSetRecoilState(isErrorAtom);
-  const setErrMsg = useSetRecoilState(errMsgAtom);
-
+  const [isError, setIsError] = useRecoilState(isErrorAtom);
+  const [errMsg, setErrMsg] = useRecoilState(errMsgAtom);
   const myRegion = useRecoilValue(myRegionAtom);
+
   const [imageUrl, setImageUrl] = useState("");
   const searchRegion = useRecoilValue(searchRegionAtom);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -139,6 +140,7 @@ function MyKoreaMap() {
 
   return (
     <Container>
+      {isError ? <ErrorBox msg={errMsg} /> : ""}
       <PageTitle title="MyKoreaMap"></PageTitle>
       <Title>
         {data?.me?.username}님의 국내 지도

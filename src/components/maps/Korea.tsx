@@ -1,6 +1,6 @@
 import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import { IDetailType } from "../../MapInfo";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   errMsgAtom,
   hoverRegionAtom,
@@ -19,7 +19,6 @@ import { Path } from "./svg/Path";
 import { ImagePath } from "./svg/ImagePath";
 import { MapSvg } from "./svg/MapSvg";
 import Defs from "./svg/Defs";
-import ErrorBox from "../ErrorBox";
 
 interface IDetailRegionType {
   data: IDetailType[];
@@ -82,8 +81,8 @@ const Korea = forwardRef(function Korea(
   const [imageFile, setImageFile] = useRecoilState(selectImageAtom);
   const [selectRegion, setSelectRegion] = useRecoilState(selectRegionAtom);
   const [hoverRegion, setHoverRegion] = useRecoilState(hoverRegionAtom);
-  const [isError, setIsError] = useRecoilState(isErrorAtom);
-  const [errMsg, setErrMsg] = useRecoilState(errMsgAtom);
+  const setIsError = useSetRecoilState(isErrorAtom);
+  const setErrMsg = useSetRecoilState(errMsgAtom);
 
   const { data: myPhotos, loading: myPhotosLoading } = useSeeUserPhotos(
     +userId!
@@ -228,7 +227,7 @@ const Korea = forwardRef(function Korea(
           </G>
         </MapSvg>
       )}
-      {isError ? <ErrorBox msg={errMsg} /> : ""}
+
       {userMapMatch?.pathname && (
         <Feed
           myRegionPhotos={myRegionPhotos}
