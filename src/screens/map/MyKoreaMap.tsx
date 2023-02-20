@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import {
+  addresInfoAtom,
   errMsgAtom,
   hoverRegionAtom,
   isErrorAtom,
@@ -30,17 +31,20 @@ import ErrorBox from "../../components/ErrorBox";
 function MyKoreaMap() {
   const PHOTO_MAX_COUNT = 9;
   const { data } = useSeeMe();
+
   const [imgFile, setImgFile] = useRecoilState(selectImageAtom);
   const [hoverRegion, setHoverRegion] = useRecoilState(hoverRegionAtom);
   const [selectRegion, setSelectRegion] = useRecoilState(selectRegionAtom);
   const [isError, setIsError] = useRecoilState(isErrorAtom);
   const [errMsg, setErrMsg] = useRecoilState(errMsgAtom);
   const myRegion = useRecoilValue(myRegionAtom);
+  const searchRegion = useRecoilValue(searchRegionAtom);
+  const [addressInfo, setAddressInfo] = useRecoilState(addresInfoAtom);
 
   const [imageUrl, setImageUrl] = useState("");
-  const searchRegion = useRecoilValue(searchRegionAtom);
+
   const svgRef = useRef<SVGSVGElement>(null);
-  const [address, setAddres] = useState("");
+
   const userMapMatch = useMatch("user/:userId/koreamap");
 
   const handleDownLoadMap = () => {
@@ -48,13 +52,14 @@ function MyKoreaMap() {
   };
 
   const saveImgFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.files?.length);
     if (!event.target.files) return;
+    if (event.target.files?.length === 0) return;
 
     const file = event.target.files[0];
     const imgUrl = URL.createObjectURL(file);
-    const address = await getAddress(file);
+    await getAddress(file);
 
-    setAddres(address);
     setImageUrl(imgUrl);
     setImgFile(file);
   };
@@ -63,8 +68,8 @@ function MyKoreaMap() {
     try {
       const tags = await ExifReader.load(file, { expanded: true });
 
-      const latitude = tags.exif?.GPSLatitude?.description;
-      const longitude = tags.exif?.GPSLongitude?.description;
+      const latitude = +tags.exif?.GPSLatitude?.description!;
+      const longitude = +tags.exif?.GPSLongitude?.description!;
 
       const getUrl = `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}&input_coord=WGS84`;
       const headers = {
@@ -78,6 +83,12 @@ function MyKoreaMap() {
         headers,
       });
 
+      setAddressInfo({
+        address: documents[0].address.address_name,
+        latitude,
+        longitude,
+      });
+
       return documents[0].address.address_name;
     } catch {
       return "";
@@ -87,12 +98,21 @@ function MyKoreaMap() {
   const handlePhotoInit = () => {
     setImgFile(null);
     setImageUrl("");
-    setAddres("");
+    setAddressInfo({
+      address: null,
+      longitude: null,
+      latitude: null,
+    });
   };
 
   const uploadFinish = async (data: any) => {
     setImgFile(null);
     setImageUrl("");
+    setAddressInfo({
+      address: null,
+      longitude: null,
+      latitude: null,
+    });
     window.location.reload();
   };
 
@@ -106,6 +126,7 @@ function MyKoreaMap() {
 
   const handleNameClick = async (region: IDetailType) => {
     const { path, transform, name } = region;
+    const { latitude, longitude, address } = addressInfo;
     setSelectRegion(name);
 
     const { data } = await RegionSetting();
@@ -134,6 +155,9 @@ function MyKoreaMap() {
         path,
         transform,
         region: myRegion.indexOf(`${name}⭐️`) === -1 ? `${name}⭐️` : name,
+        latitude,
+        longitude,
+        address,
       },
     });
   };
@@ -166,7 +190,10 @@ function MyKoreaMap() {
               <ImageInput type="file" accept="image/*" onChange={saveImgFile} />
             </Label>
           </Form>
-          <div>사진 지역 정보 : {address ? address : "없음"}</div>
+          <div>
+            사진 지역 정보 :{" "}
+            {addressInfo.address ? addressInfo.address : "없음"}
+          </div>
           <InputContainer>
             <SearchBox />
             <Button onClick={handlePhotoInit}>사진 초기화</Button>

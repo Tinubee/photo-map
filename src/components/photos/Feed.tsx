@@ -6,7 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { goScrollTop } from "../header/Header";
@@ -132,6 +132,10 @@ function Feed({ myRegionPhotos, region, refetch }: any) {
     });
   };
 
+  useEffect(() => {
+    refetch();
+  }, [myRegionPhotos, refetch]);
+
   return (
     <>
       <PhotoBoxContainer>
@@ -248,10 +252,6 @@ const PhotoBox = styled(motion.div)<{ mark: string }>`
     ${(props) => (props.mark === "true" ? "tomato" : props.theme.borderColor)};
   border-radius: 10px;
   cursor: pointer;
-  transition: 0.5s;
-  :hover {
-    scale: 1.1;
-  }
 `;
 
 const Image = styled.img`

@@ -1,5 +1,11 @@
 import { atom } from "recoil";
 
+export interface IAddressType {
+  address?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+}
+
 export const isDarkAtom = atom({
   key: "Dark",
   default: localStorage.getItem("mode") === "true" ? true : false,
@@ -67,4 +73,13 @@ export const isErrorAtom = atom<boolean>({
 export const errMsgAtom = atom<string>({
   key: "errMsg",
   default: "",
+});
+
+export const addresInfoAtom = atom<IAddressType>({
+  key: "addressinfo",
+  default: {
+    address: null,
+    longitude: null,
+    latitude: null,
+  },
 });
