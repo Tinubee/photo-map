@@ -1,7 +1,7 @@
 import { faDownload, faImage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRef, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useEffect, useRef, useState } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import {
   addresInfoAtom,
@@ -10,25 +10,25 @@ import {
   isErrorAtom,
   mapColorSetAtom,
   myRegionAtom,
+  photoUploadCheckAtom,
   searchRegionAtom,
   selectImageAtom,
   selectRegionAtom,
+  uploadRegionAtom,
 } from "../../atoms";
 import SearchBox from "../../components/auth/SearchBox";
 import Button from "../../components/Button";
 import { useSeeMe } from "../../components/hooks/myProfile";
-import Korea, {
-  SEEUSERREGIONPHOTOS_QUERY,
-  UPLOAD_MUTATION,
-} from "../../components/maps/Korea";
+import Korea, { SEEUSERREGIONPHOTOS_QUERY } from "../../components/maps/Korea";
 import PageTitle from "../../components/PageTitle";
 import { IDetailType, KoreaDetail } from "../../MapInfo";
 import * as ExifReader from "exifreader";
 import axios from "axios";
-import { useLazyQuery, useMutation } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { useMatch } from "react-router-dom";
 import ErrorBox from "../../components/ErrorBox";
 import MapColor from "../../components/maps/MapColor";
+import CheckUpload from "../../components/photos/CheckUpload";
 
 function MyKoreaMap() {
   const PHOTO_MAX_COUNT = 9;
@@ -43,6 +43,8 @@ function MyKoreaMap() {
   const searchRegion = useRecoilValue(searchRegionAtom);
   const [addressInfo, setAddressInfo] = useRecoilState(addresInfoAtom);
   const [mapColor, setMapColor] = useRecoilState(mapColorSetAtom);
+  const [uploadCheck, setUploadCheck] = useRecoilState(photoUploadCheckAtom);
+  const setUploadRegion = useSetRecoilState(uploadRegionAtom);
 
   const [imageUrl, setImageUrl] = useState("");
 
@@ -108,29 +110,19 @@ function MyKoreaMap() {
     });
   };
 
-  const uploadFinish = async (data: any) => {
-    setImgFile(null);
-    setImageUrl("");
-    setAddressInfo({
-      address: null,
-      longitude: null,
-      latitude: null,
-    });
-    window.location.reload();
-  };
-
-  const [uploadPhotoMutation] = useMutation(UPLOAD_MUTATION, {
-    onCompleted: uploadFinish,
-  });
-
   const [RegionSetting] = useLazyQuery(SEEUSERREGIONPHOTOS_QUERY, {
     variables: { region: selectRegion, userId: data?.me?.id },
   });
 
   const handleNameClick = async (region: IDetailType) => {
     const { path, transform, name } = region;
-    const { latitude, longitude, address } = addressInfo;
     setSelectRegion(name);
+
+    setUploadRegion({
+      path,
+      transform,
+      region: myRegion.indexOf(`${name}⭐️`) === -1 ? `${name}⭐️` : name,
+    });
 
     const { data } = await RegionSetting();
 
@@ -144,30 +136,25 @@ function MyKoreaMap() {
     }
 
     if (data.seeUserRegionPhotos.length >= PHOTO_MAX_COUNT) {
-      setErrMsg("사진은 최대 9개");
       setImgFile(null);
       setImageUrl("");
+      setErrMsg("사진은 최대 9개");
       setIsError(true);
       setTimeout(() => setIsError(false), 2000);
       return;
     }
 
-    uploadPhotoMutation({
-      variables: {
-        file: imgFile,
-        path,
-        transform,
-        region: myRegion.indexOf(`${name}⭐️`) === -1 ? `${name}⭐️` : name,
-        latitude,
-        longitude,
-        address,
-      },
-    });
+    setUploadCheck(true);
   };
 
   const handleMapColorSet = (type: string) => {
     setMapColor(type);
   };
+
+  useEffect(() => {
+    setImageUrl("");
+    setImgFile(null);
+  }, [setImgFile]);
 
   return (
     <Container>
@@ -237,6 +224,7 @@ function MyKoreaMap() {
             )}
           </RegionGrid>
         </Setting>
+        {uploadCheck ? <CheckUpload image={imageUrl} /> : null}
         {mapColor !== null ? <MapColor layoutId={mapColor} /> : null}
       </Wrapper>
     </Container>

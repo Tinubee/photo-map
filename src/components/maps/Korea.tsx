@@ -1,15 +1,16 @@
-import { gql, useLazyQuery, useMutation } from "@apollo/client";
+import { gql, useLazyQuery } from "@apollo/client";
 import { IDetailType } from "../../MapInfo";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  addresInfoAtom,
   errMsgAtom,
   hoverRegionAtom,
   isErrorAtom,
   mapColorAtom,
   myRegionAtom,
+  photoUploadCheckAtom,
   selectImageAtom,
   selectRegionAtom,
+  uploadRegionAtom,
 } from "../../atoms";
 import { forwardRef, useEffect } from "react";
 import styled from "styled-components";
@@ -81,7 +82,8 @@ const Korea = forwardRef(function Korea(
   const [imageFile, setImageFile] = useRecoilState(selectImageAtom);
   const [selectRegion, setSelectRegion] = useRecoilState(selectRegionAtom);
   const [hoverRegion, setHoverRegion] = useRecoilState(hoverRegionAtom);
-  const [addressInfo, setAddressInfo] = useRecoilState(addresInfoAtom);
+  const [uploadCheck, setUploadCheck] = useRecoilState(photoUploadCheckAtom);
+  const setUploadRegion = useSetRecoilState(uploadRegionAtom);
 
   const mapBgColor = useRecoilValue(mapColorAtom);
   const setIsError = useSetRecoilState(isErrorAtom);
@@ -110,9 +112,12 @@ const Korea = forwardRef(function Korea(
 
   const handleImageClick = async (region: IDetailType) => {
     const { path, transform, name } = region;
-    const { latitude, longitude, address } = addressInfo;
     setSelectRegion(name);
-
+    setUploadRegion({
+      path,
+      transform,
+      region: name,
+    });
     const { data } = await RegionSetting();
 
     if (userMapMatch) return;
@@ -131,25 +136,18 @@ const Korea = forwardRef(function Korea(
       setTimeout(() => setIsError(false), 2000);
       return;
     }
-
-    uploadPhotoMutation({
-      variables: {
-        file: imageFile,
-        path,
-        transform,
-        region: name,
-        latitude,
-        longitude,
-        address,
-      },
-    });
+    setUploadCheck(true);
   };
 
   const handleRegionClick = async (region: IDetailType) => {
     const { path, transform, name } = region;
-    const { latitude, longitude, address } = addressInfo;
 
     setSelectRegion(name);
+    setUploadRegion({
+      path,
+      transform,
+      region: `${name}⭐️`,
+    });
     const { data } = await RegionSetting();
 
     if (userMapMatch) return;
@@ -168,33 +166,8 @@ const Korea = forwardRef(function Korea(
       return;
     }
 
-    uploadPhotoMutation({
-      variables: {
-        file: imageFile,
-        path,
-        transform,
-        region: `${name}⭐️`,
-        latitude,
-        longitude,
-        address,
-      },
-    });
+    setUploadCheck(true);
   };
-
-  const uploadFinish = async (data: any) => {
-    setImageFile(null);
-    setAddressInfo({
-      address: null,
-      longitude: null,
-      latitude: null,
-    });
-    myPhtosRefetch();
-    //window.location.reload();
-  };
-
-  const [uploadPhotoMutation] = useMutation(UPLOAD_MUTATION, {
-    onCompleted: uploadFinish,
-  });
 
   useEffect(() => {
     setMyRegion([]);
@@ -206,6 +179,10 @@ const Korea = forwardRef(function Korea(
     });
     RegionSetting();
   }, [RegionSetting, myPhotos?.seeUserPhotos, setMyRegion]);
+
+  useEffect(() => {
+    myPhtosRefetch();
+  }, [myPhtosRefetch, uploadCheck]);
 
   return (
     <>

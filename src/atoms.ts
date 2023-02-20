@@ -6,6 +6,12 @@ export interface IAddressType {
   longitude?: number | null;
 }
 
+export interface IUploadRegion {
+  region: string;
+  path: string;
+  transform?: string;
+}
+
 export interface IMapColor {
   mapColor: string | null;
   mapBgColor: string | null;
@@ -89,6 +95,15 @@ export const addresInfoAtom = atom<IAddressType>({
   },
 });
 
+export const uploadRegionAtom = atom<IUploadRegion>({
+  key: "uploadRegion",
+  default: {
+    path: "",
+    transform: "",
+    region: "",
+  },
+});
+
 export const mapColorAtom = atom<IMapColor>({
   key: "mapcolors",
   default: {
@@ -104,4 +119,9 @@ export const mapColorAtom = atom<IMapColor>({
 export const mapColorSetAtom = atom<string | null>({
   key: "mapcolorset",
   default: null,
+});
+
+export const photoUploadCheckAtom = atom<boolean>({
+  key: "photouploadcheck",
+  default: false,
 });
