@@ -6,6 +6,11 @@ export interface IAddressType {
   longitude?: number | null;
 }
 
+export interface IMapColor {
+  mapColor: string | null;
+  mapBgColor: string | null;
+}
+
 export const isDarkAtom = atom({
   key: "Dark",
   default: localStorage.getItem("mode") === "true" ? true : false,
@@ -82,4 +87,21 @@ export const addresInfoAtom = atom<IAddressType>({
     longitude: null,
     latitude: null,
   },
+});
+
+export const mapColorAtom = atom<IMapColor>({
+  key: "mapcolors",
+  default: {
+    mapColor: localStorage.getItem("mapColor")
+      ? localStorage.getItem("mapColor")
+      : "#9ed6ad",
+    mapBgColor: localStorage.getItem("mapBgColor")
+      ? localStorage.getItem("mapBgColor")
+      : "#8ab4f8",
+  },
+});
+
+export const mapColorSetAtom = atom<string | null>({
+  key: "mapcolorset",
+  default: null,
 });

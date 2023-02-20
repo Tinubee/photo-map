@@ -1,11 +1,12 @@
 import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import { IDetailType } from "../../MapInfo";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   addresInfoAtom,
   errMsgAtom,
   hoverRegionAtom,
   isErrorAtom,
+  mapColorAtom,
   myRegionAtom,
   selectImageAtom,
   selectRegionAtom,
@@ -69,14 +70,6 @@ export const UPLOAD_MUTATION = gql`
   }
 `;
 
-const svgAnimation = {
-  start: { pathLength: 0, fill: "rgb(255, 255, 255)" },
-  end: {
-    fill: "#9ed6ad",
-    pathLength: 1,
-  },
-};
-
 const Korea = forwardRef(function Korea(
   { data }: IDetailRegionType,
   forwardedRef: any
@@ -88,9 +81,19 @@ const Korea = forwardRef(function Korea(
   const [imageFile, setImageFile] = useRecoilState(selectImageAtom);
   const [selectRegion, setSelectRegion] = useRecoilState(selectRegionAtom);
   const [hoverRegion, setHoverRegion] = useRecoilState(hoverRegionAtom);
+  const [addressInfo, setAddressInfo] = useRecoilState(addresInfoAtom);
+
+  const mapBgColor = useRecoilValue(mapColorAtom);
   const setIsError = useSetRecoilState(isErrorAtom);
   const setErrMsg = useSetRecoilState(errMsgAtom);
-  const [addressInfo, setAddressInfo] = useRecoilState(addresInfoAtom);
+
+  const svgAnimation = {
+    start: { pathLength: 0, fill: "rgb(255, 255, 255)" },
+    end: {
+      fill: `${mapBgColor.mapColor}`,
+      pathLength: 1,
+    },
+  };
 
   const {
     data: myPhotos,
@@ -213,6 +216,7 @@ const Korea = forwardRef(function Korea(
           ref={forwardedRef}
           viewBox="0 -50 550 800"
           xmlns="http://www.w3.org/2000/svg"
+          mapBgColor={mapBgColor.mapBgColor}
         >
           <Defs myPhotos={myPhotos} />
           <G>

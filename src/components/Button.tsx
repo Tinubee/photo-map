@@ -1,6 +1,7 @@
+import { motion } from "framer-motion";
 import styled from "styled-components";
 
-const Button = styled.button`
+const Button = styled(motion.button)`
   border: 1px solid ${(props) => props.theme.textColor};
   background-color: ${(props) => props.theme.bgColor};
   color: ${(props) => props.theme.textColor};
@@ -10,6 +11,7 @@ const Button = styled.button`
   display: inline-block;
   font-size: 16px;
   margin: 4px 2px;
+  white-space: nowrap;
   cursor: pointer;
   border-radius: 12px;
   :hover {

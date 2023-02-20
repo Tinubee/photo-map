@@ -8,6 +8,7 @@ import {
   errMsgAtom,
   hoverRegionAtom,
   isErrorAtom,
+  mapColorSetAtom,
   myRegionAtom,
   searchRegionAtom,
   selectImageAtom,
@@ -27,6 +28,7 @@ import axios from "axios";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { useMatch } from "react-router-dom";
 import ErrorBox from "../../components/ErrorBox";
+import MapColor from "../../components/maps/MapColor";
 
 function MyKoreaMap() {
   const PHOTO_MAX_COUNT = 9;
@@ -40,6 +42,7 @@ function MyKoreaMap() {
   const myRegion = useRecoilValue(myRegionAtom);
   const searchRegion = useRecoilValue(searchRegionAtom);
   const [addressInfo, setAddressInfo] = useRecoilState(addresInfoAtom);
+  const [mapColor, setMapColor] = useRecoilState(mapColorSetAtom);
 
   const [imageUrl, setImageUrl] = useState("");
 
@@ -162,6 +165,10 @@ function MyKoreaMap() {
     });
   };
 
+  const handleMapColorSet = (type: string) => {
+    setMapColor(type);
+  };
+
   return (
     <Container>
       {isError ? <ErrorBox msg={errMsg} /> : ""}
@@ -194,6 +201,20 @@ function MyKoreaMap() {
             사진 지역 정보 :{" "}
             {addressInfo.address ? addressInfo.address : "없음"}
           </div>
+          <SetMapColorContainer>
+            <Button
+              layoutId="mapColor"
+              onClick={() => handleMapColorSet("mapColor")}
+            >
+              지도 색깔 설정
+            </Button>
+            <Button
+              layoutId="mapBgColor"
+              onClick={() => handleMapColorSet("mapBgColor")}
+            >
+              지도 배경색 설정
+            </Button>
+          </SetMapColorContainer>
           <InputContainer>
             <SearchBox />
             <Button onClick={handlePhotoInit}>사진 초기화</Button>
@@ -216,6 +237,7 @@ function MyKoreaMap() {
             )}
           </RegionGrid>
         </Setting>
+        {mapColor !== null ? <MapColor layoutId={mapColor} /> : null}
       </Wrapper>
     </Container>
   );
@@ -227,6 +249,10 @@ const InputContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
+`;
+
+const SetMapColorContainer = styled(InputContainer)`
+  justify-content: flex-start;
 `;
 
 const Setting = styled.div`
@@ -255,6 +281,7 @@ const RegionName = styled.div<{ issame: number }>`
   height: 50px;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
   cursor: pointer;
 `;
 
