@@ -187,67 +187,69 @@ const Korea = forwardRef(function Korea(
   return (
     <>
       {myPhotosLoading ? (
-        ""
+        <div>Loading...</div>
       ) : (
-        <MapSvg
-          ref={forwardedRef}
-          viewBox="0 -50 550 800"
-          xmlns="http://www.w3.org/2000/svg"
-          mapBgColor={mapBgColor.mapBgColor}
-        >
-          <Defs myPhotos={myPhotos} />
-          <G>
-            {data.map((res) => {
-              return myRegion.indexOf(`${res.name}⭐️`) === -1 ? (
-                <Path
-                  variants={svgAnimation}
-                  initial="start"
-                  animate="end"
-                  transition={{
-                    default: { duration: 1 },
-                    fill: { duration: 1 },
-                  }}
-                  key={res.id}
-                  d={res.path}
-                  transform={res?.transform}
-                  onClick={(e) => handleRegionClick(res)}
-                  onHoverStart={() => setHoverRegion(res.name)}
-                  onHoverEnd={() => setHoverRegion("")}
-                  issame={res.name === hoverRegion ? 1 : 0}
-                />
-              ) : (
-                <ImagePath
-                  variants={imageAnimation}
-                  initial="start"
-                  animate="end"
-                  transition={{
-                    default: { duration: 1 },
-                  }}
-                  fill={
-                    document.getElementById(`imgpattern_${res.name}⭐️`) !==
-                    undefined
-                      ? `url(#imgpattern_${res.name}⭐️)`
-                      : undefined
-                  }
-                  key={res.id}
-                  d={res.path}
-                  transform={res?.transform}
-                  onClick={() => handleImageClick(res)}
-                  onHoverStart={() => setHoverRegion(res.name)}
-                  onHoverEnd={() => setHoverRegion("")}
-                  issame={res.name === hoverRegion ? 1 : 0}
-                />
-              );
-            })}
-          </G>
-        </MapSvg>
-      )}
-      {userMapMatch?.pathname && (
-        <Feed
-          myRegionPhotos={myRegionPhotos}
-          region={selectRegion}
-          refetch={refetch}
-        />
+        <>
+          <MapSvg
+            ref={forwardedRef}
+            viewBox="0 -50 550 800"
+            xmlns="http://www.w3.org/2000/svg"
+            mapBgColor={mapBgColor.mapBgColor}
+          >
+            <Defs myPhotos={myPhotos} />
+            <G>
+              {data.map((res) => {
+                return myRegion.indexOf(`${res.name}⭐️`) === -1 ? (
+                  <Path
+                    variants={svgAnimation}
+                    initial="start"
+                    animate="end"
+                    transition={{
+                      default: { duration: 1 },
+                      fill: { duration: 1 },
+                    }}
+                    key={res.id}
+                    d={res.path}
+                    transform={res?.transform}
+                    onClick={(e) => handleRegionClick(res)}
+                    onHoverStart={() => setHoverRegion(res.name)}
+                    onHoverEnd={() => setHoverRegion("")}
+                    issame={res.name === hoverRegion ? 1 : 0}
+                  />
+                ) : (
+                  <ImagePath
+                    variants={imageAnimation}
+                    initial="start"
+                    animate="end"
+                    transition={{
+                      default: { duration: 1 },
+                    }}
+                    fill={
+                      document.getElementById(`imgpattern_${res.name}⭐️`) !==
+                      undefined
+                        ? `url(#imgpattern_${res.name}⭐️)`
+                        : undefined
+                    }
+                    key={res.id}
+                    d={res.path}
+                    transform={res?.transform}
+                    onClick={() => handleImageClick(res)}
+                    onHoverStart={() => setHoverRegion(res.name)}
+                    onHoverEnd={() => setHoverRegion("")}
+                    issame={res.name === hoverRegion ? 1 : 0}
+                  />
+                );
+              })}
+            </G>
+          </MapSvg>
+          {userMapMatch?.pathname && (
+            <Feed
+              myRegionPhotos={myRegionPhotos}
+              region={selectRegion}
+              refetch={refetch}
+            />
+          )}
+        </>
       )}
     </>
   );
