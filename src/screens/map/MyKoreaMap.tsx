@@ -57,7 +57,6 @@ function MyKoreaMap() {
   };
 
   const saveImgFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.files?.length);
     if (!event.target.files) return;
     if (event.target.files?.length === 0) return;
 

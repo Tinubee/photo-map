@@ -4,12 +4,14 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Avatar from "../components/auth/Avatar";
+import { useSeeMe } from "../components/hooks/myProfile";
 import { useSeeUser } from "../components/hooks/userProfile";
 import PageTitle from "../components/PageTitle";
 
 function Profile() {
   const { username } = useParams();
   const { data } = useSeeUser(username!);
+  const { data: myData } = useSeeMe();
 
   return (
     <Container>
@@ -29,7 +31,9 @@ function Profile() {
           </Info>
         </ProfileInfo>
         <ButtonContainer>
-          <Link to={`/user/${data?.seeProfile?.id}/edit`}>Edit Profile</Link>
+          {myData?.me?.username === data?.seeProfile?.username ? (
+            <Link to={`/user/${myData?.me?.id}/edit`}>Edit Profile</Link>
+          ) : null}
           <Link to={`/user/${data?.seeProfile?.id}/koreamap`}>See Profile</Link>
         </ButtonContainer>
       </ProfileCard>
@@ -121,7 +125,7 @@ export const Container = styled.div`
   padding-top: 200px;
 `;
 
-const ProfileCard = styled.div`
+export const ProfileCard = styled.div`
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0px 0px 10px ${(props) => props.theme.borderColor};

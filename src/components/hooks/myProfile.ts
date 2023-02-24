@@ -18,7 +18,7 @@ export const useSeeMe = () => {
   const navigate = useNavigate();
   const isLoggedIn = useReactiveVar(isLoggedInVar);
 
-  const { data } = useQuery(ME_QUERY, {
+  const { data, refetch } = useQuery(ME_QUERY, {
     skip: !isLoggedIn,
   });
 
@@ -29,5 +29,6 @@ export const useSeeMe = () => {
   }, [data, navigate]);
   return {
     data,
+    refetch,
   };
 };
