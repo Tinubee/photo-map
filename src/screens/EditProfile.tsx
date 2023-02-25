@@ -5,6 +5,7 @@ import PageTitle from "../components/PageTitle";
 import { Container } from "./Profile";
 import { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
+import Input from "../components/auth/Input";
 
 const EDITPROFILE_MUTATION = gql`
   mutation editProfile(
@@ -31,6 +32,8 @@ function EditProfile() {
   const { data: myData, refetch: refetchMyData } = useSeeMe();
   const [avatarUrl, setAvatarUrl] = useState("");
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleAvatarFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
@@ -51,13 +54,30 @@ function EditProfile() {
     });
   };
 
-  const avatarUploadFinish = () => {
+  const handleUsernameEmailSave = () => {
+    editProfileMutation({
+      variables: {
+        username,
+        email,
+      },
+    });
+  };
+
+  const handleUsernameSet = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(event.target.value);
+  };
+
+  const handleEmailSet = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+
+  const editProfileFinished = () => {
     console.log("complete");
     refetchMyData();
   };
 
   const [editProfileMutation] = useMutation(EDITPROFILE_MUTATION, {
-    onCompleted: avatarUploadFinish,
+    onCompleted: editProfileFinished,
   });
 
   return (
@@ -82,6 +102,28 @@ function EditProfile() {
           <SaveBtn onClick={handleAvatarSave}>저장하기</SaveBtn>
         </BtnContainer>
       </ProfileCard>
+      <ProfileCard>
+        <Title>Username / Email</Title>
+        <div>
+          <Input
+            placeholder={myData?.me?.username}
+            type="Username"
+            hasError={false}
+            autoComplete="off"
+            onChange={handleUsernameSet}
+          />
+          <Input
+            placeholder={myData?.me?.email}
+            type="Email"
+            hasError={false}
+            autoComplete="off"
+            onChange={handleEmailSet}
+          />
+        </div>
+        <BtnContainer>
+          <SaveBtn onClick={handleUsernameEmailSave}>저장하기</SaveBtn>
+        </BtnContainer>
+      </ProfileCard>
     </Container>
   );
 }
@@ -96,10 +138,11 @@ const ProfileCard = styled.div`
   box-shadow: 0px 0px 10px ${(props) => props.theme.borderColor};
   width: 800px;
   margin: auto;
+  margin-bottom: 100px;
 `;
 
 const Title = styled.span`
-  font-size: 36px;
+  font-size: 28px;
   padding: 0px 10px;
 `;
 
