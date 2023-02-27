@@ -24,6 +24,7 @@ const Img = styled.img<{ lg: boolean }>`
   width: ${(props) => (props.lg ? "150px" : "35px")};
   height: ${(props) => (props.lg ? "150px" : "35px")};
   border-radius: 50%;
+  object-fit: cover;
 `;
 
 function Avatar({ url = "", lg = false }) {

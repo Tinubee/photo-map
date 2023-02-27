@@ -10,6 +10,7 @@ export const ME_QUERY = gql`
       email
       username
       avatar
+      socialLogin
     }
   }
 `;
