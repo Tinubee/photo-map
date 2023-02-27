@@ -64,7 +64,6 @@ export const goScrollTop = (mode: boolean) => {
 function Header() {
   const homeMatch = useMatch("");
   const communityMatch = useMatch("community");
-  const likeMatch = useMatch("like");
   const recommendMatch = useMatch("recommend");
   return (
     <HeaderContainer>
@@ -80,11 +79,6 @@ function Header() {
         <Tab onClick={() => goScrollTop(true)}>
           <Link to={"/community"}>
             Community {communityMatch?.pathname && <Line layoutId="line" />}
-          </Link>
-        </Tab>
-        <Tab onClick={() => goScrollTop(true)}>
-          <Link to={"/like"}>
-            Like Photo {likeMatch?.pathname && <Line layoutId="line" />}
           </Link>
         </Tab>
         <Tab onClick={() => goScrollTop(true)}>

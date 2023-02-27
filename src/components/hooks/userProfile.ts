@@ -1,9 +1,8 @@
-import { gql, useQuery, useReactiveVar } from "@apollo/client";
-import { isLoggedInVar } from "../../apollo";
+import { gql, useQuery } from "@apollo/client";
 
 export const SEEUSER_QUERY = gql`
-  query seeProfile($username: String!) {
-    seeProfile(username: $username) {
+  query seeProfile($id: Int!) {
+    seeProfile(id: $id) {
       id
       email
       username
@@ -12,13 +11,11 @@ export const SEEUSER_QUERY = gql`
   }
 `;
 
-export const useSeeUser = (username: string) => {
-  const isLoggedIn = useReactiveVar(isLoggedInVar);
+export const useSeeUser = (id: number) => {
   const { data } = useQuery(SEEUSER_QUERY, {
     variables: {
-      username,
+      id,
     },
-    skip: !isLoggedIn,
   });
   return { data };
 };

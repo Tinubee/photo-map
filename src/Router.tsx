@@ -11,7 +11,6 @@ import MyWorldMap from "./screens/map/MyWorldMap";
 import EditProfile from "./screens/EditProfile";
 import UserKoreaMap from "./screens/map/UserKoreaMap";
 import Community from "./screens/header/Community";
-import Like from "./screens/header/Like";
 import UserWorldMap from "./screens/map/UserWorldMap";
 import Recommend from "./screens/header/Recommend";
 
@@ -37,25 +36,16 @@ const router = createBrowserRouter([
         element: <Recommend />,
       },
       {
-        path: "like",
-        element: <Like />,
-      },
-      {
         path: "signup",
         element: <SignUp />,
       },
       {
-        path: "user/:username",
+        path: "user/:userId",
         children: [
           {
             path: "profile",
             element: <Profile />,
           },
-        ],
-      },
-      {
-        path: "user/:userId",
-        children: [
           {
             path: "edit",
             element: <EditProfile />,
