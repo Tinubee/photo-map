@@ -5,6 +5,82 @@ export interface IDetailType {
   transform?: string;
 }
 
+export interface IKoreaRegion {
+  code: number;
+  region: string;
+}
+
+export const KoreaRegion: IKoreaRegion[] = [
+  {
+    code: 1,
+    region: "서울특별시",
+  },
+  {
+    code: 2,
+    region: "인천광역시",
+  },
+  {
+    code: 3,
+    region: "대전광역시",
+  },
+  {
+    code: 4,
+    region: "대구광역시",
+  },
+  {
+    code: 5,
+    region: "광주광역시",
+  },
+  {
+    code: 6,
+    region: "부산광역시",
+  },
+  {
+    code: 7,
+    region: "울산광역시",
+  },
+  {
+    code: 8,
+    region: "세종특별자치시",
+  },
+  {
+    code: 31,
+    region: "경기도",
+  },
+  {
+    code: 32,
+    region: "강원도",
+  },
+  {
+    code: 33,
+    region: "충청북도",
+  },
+  {
+    code: 34,
+    region: "충청남도",
+  },
+  {
+    code: 35,
+    region: "경상북도",
+  },
+  {
+    code: 36,
+    region: "경상남도",
+  },
+  {
+    code: 37,
+    region: "전라북도",
+  },
+  {
+    code: 38,
+    region: "전라남도",
+  },
+  {
+    code: 39,
+    region: "제주특별자치도",
+  },
+];
+
 export const KoreaDetail: IDetailType[] = [
   {
     id: 0,
